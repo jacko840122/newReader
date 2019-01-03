@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search_bar2"
+    style="@style/Header"
+    android:layout_width="fill_parent"
+    android:layout_height="105px"
+    android:gravity="right|center_vertical"
+    android:background="#ffd2d2d2"
+    android:visibility="visible" >
+
+    <ImageView
+        android:id="@+id/search_btn"
+        style="@style/PanelButton"
+        android:layout_marginRight="28px"
+        android:src="@drawable/toolbar_search" />
+
+    <ImageView
+        android:id="@+id/icon_btn"
+        style="@style/PanelButton"
+        android:layout_marginRight="30px"
+        android:layout_marginLeft="31px"
+        android:src="@drawable/head_icon" />
+
+</LinearLayout>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <include layout="@layout/search_bar"></include>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="32px"
+        android:layout_marginBottom="32px"
+        android:layout_marginLeft="38px"
+        android:id="@+id/rc_sort"
+        android:layout_width="match_parent"
+        android:layout_height="240px">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <View
+        android:layout_marginLeft="38px"
+        android:layout_width="match_parent"
+        android:layout_marginRight="10px"
+        android:layout_height="2px"
+        android:background="#000000">
+    </View>
+    <RelativeLayout
+        android:visibility="invisible"
+        android:id="@+id/rv_book_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="38px"
+        android:layout_marginTop="34px"
+        android:layout_marginBottom="34px"
+        android:layout_weight="1">
+        
+        <ImageView
+            android:id="@+id/iv_cover"
+            android:layout_alignParentLeft="true"
+            android:layout_width="600px"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:layout_toRightOf="@id/iv_cover"
+            android:id="@+id/tv_book_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_below="@id/tv_book_name"
+            android:layout_alignLeft="@id/tv_book_name"
+            android:id="@+id/tv_book_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_alignLeft="@id/tv_book_name"
+            android:layout_below="@id/tv_book_author"
+            android:id="@+id/tv_person_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_alignLeft="@id/tv_book_name"
+            android:layout_toRightOf="@id/tv_person_count"
+            android:layout_alignTop="@id/tv_person_count"
+            android:id="@+id/tv_read_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_alignLeft="@id/tv_book_name"
+            android:layout_below="@id/tv_read_time"
+            android:id="@+id/tv_create_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_alignLeft="@id/tv_book_name"
+            android:layout_below="@id/tv_create_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_brief"
+            android:text="简介"
+            android:textColor="#010101"
+            android:textStyle="bold"
+            android:textSize="30sp"/>
+
+        <TextView
+            android:layout_alignLeft="@id/tv_book_name"
+            android:layout_below="@id/tv_brief"
+            android:id="@+id/tv_content"
+            android:textColor="#010101"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <View
+        android:layout_marginLeft="10px"
+        android:layout_marginRight="10px"
+        android:layout_width="match_parent"
+        android:layout_height="4px"
+        android:background="#000000">
+    </View>
+
+    <TextView
+        android:layout_marginTop="31px"
+        android:layout_marginStart="41px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="读后感"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:textSize="38sp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_review"
+        android:layout_width="match_parent"
+        android:layout_marginStart="38px"
+        android:layout_marginTop="28px"
+        android:layout_marginBottom="28px"
+        android:background="@drawable/review_fake"
+        android:layout_height="380px"></androidx.recyclerview.widget.RecyclerView>
+
+
+</LinearLayout>

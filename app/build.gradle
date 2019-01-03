@@ -1,0 +1,83 @@
+apply plugin: 'com.android.application'
+apply plugin: 'checkstyle'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.jakewharton.butterknife'
+
+android {
+    useLibrary 'org.apache.http.legacy'
+    compileSdkVersion ANDROID_COMPILE_SDK_VERSION
+    buildToolsVersion "28.0.3"
+
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+
+    defaultConfig {
+        applicationId "com.greenlemonmobile.app.ebook"
+        minSdkVersion ANDROID_MIN_SDK
+        targetSdkVersion ANDROID_TARGET_SDK_VERSION
+        versionCode VERSION_CODE
+        versionName VERSION_NAME
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+    sourceSets {
+        main {
+            jni.srcDirs = []
+            jniLibs.srcDirs = ['src/main/libs']
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+
+
+}
+
+dependencies {
+    compile 'androidx.legacy:legacy-support-v4:1.0.0'
+    compile 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+    compile files('libs/download.jar')
+    compile files('libs/GoogleAdMobAdsSdk-6.2.1.jar')
+    compile files('libs/statusclasses.jar')
+    compile files('libs/universal-image-loader-1.9.5.jar')
+    compile files('libs/user-center.jar')
+    implementation project(':folioreader')
+    implementation project(':hwtxtreaderlib')
+    implementation project(':pdf')
+    //implementation "com.folioreader:folioreader:0.5.1"
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+    implementation 'com.jakewharton:butterknife:9.0.0-rc3'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc3'
+}
