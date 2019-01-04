@@ -162,7 +162,7 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
 
     @Override
     protected PdfMainPresenter setPresenter() {
-        return new PdfMainPresenter(this);
+        return new PdfMainPresenter(this,this);
     }
 
     @Override

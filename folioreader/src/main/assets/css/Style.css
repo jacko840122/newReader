@@ -262,11 +262,11 @@ html.nightMode .highlight_underline {border-bottom: 2px solid rgba(240, 40, 20, 
      font-family: "raleway", sans-serif;
  }
 
-html.textSizeOne { font-size: 13px !important; }
-html.textSizeTwo { font-size: 15px !important; }
-html.textSizeThree { font-size: 17px !important; }
-html.textSizeFour { font-size: 19px !important; }
-html.textSizeFive { font-size: 21px !important; }
+html.textSizeOne { font-size: 23px !important; }
+html.textSizeTwo { font-size: 25px !important; }
+html.textSizeThree { font-size: 27px !important; }
+html.textSizeFour { font-size: 29px !important; }
+html.textSizeFive { font-size: 31px !important; }
 
 h1 {
     font-size: 2rem;

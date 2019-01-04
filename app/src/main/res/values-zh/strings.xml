@@ -73,7 +73,7 @@
     <string name="items">%s本</string>
     <string name="brightness_settings">亮度设置</string>
     <string name="brightness">亮度</string>
-    <string name="library_noitems_message">"去“热门图书”或“分类图书”中下载吧！"</string>
+    <string name="library_noitems_message">"去下载吧！"</string>
     <string name="library_noresult_message">按要求找不到对应的书</string>
     <string name="about">关于</string>
     <string name="about_product">Product name</string>

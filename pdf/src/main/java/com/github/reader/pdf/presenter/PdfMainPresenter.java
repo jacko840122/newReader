@@ -54,9 +54,10 @@ public class PdfMainPresenter extends BasePresenter<IPdfMainView>
     private SearchTask mSearchTask;
     private PdfPresentation mPresentation;
 
-    public PdfMainPresenter(IPdfMainView mvpView) {
+    public PdfMainPresenter(IPdfMainView mvpView,Context context) {
         super(mvpView);
-        mContext = AppUtils.getAppContext();
+//        mContext = AppUtils.getAppContext();
+        mContext = context;
     }
 
     @Override

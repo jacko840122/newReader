@@ -105,7 +105,8 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
     private static final int ID_SORT_BY_LAST_ACCESS_DATE = 4;
     
     private static final int REQUEST_CODE_IMPORT_FILES = 1;
-    
+    private TextView mTitle;
+
     public enum ViewType {
         BIG_THUMB, MEDIUM_THUMB, SMALL_THUMB, DETAILS, LIST, BOOK_SHELF
     }
@@ -209,6 +210,12 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
         mBack_btn=(ImageButton)findViewById(R.id.back_btn);
         mItems = (TextView) findViewById(R.id.items);
         mNo_books_tip_bar=(View) findViewById(R.id.no_books_tip_bar);
+        String Subdir=getIntent().getStringExtra("Subdir");
+        if(!TextUtils.isEmpty(Subdir)){
+            mTitle= (TextView) findViewById(R.id.tv_title);
+            mTitle.setText(Subdir);
+        }
+
         mNo_books_tip_lable=(TextView) findViewById(R.id.no_books_tip);
         mIt_go=(ImageButton) findViewById(R.id.bt_go);
 
@@ -335,20 +342,27 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
             
             if (codecType != null) {
             	startReading = true;
-            	if (codecType.getContextClass().getSimpleName().equals(EpubContext.class.getSimpleName())) {
-    	    		Intent readIntent = new Intent(LibraryActivity.this, EpubReaderActivity.class);
-    	    		String filePath = intent.getDataString();
-    	    		if (filePath.startsWith("file://"))
-    	    			filePath = filePath.substring(7);
-    	    		readIntent.putExtra("BookPath", filePath);
-    	    		startActivity(readIntent);
-            	} else {
-    	    		Intent readIntent = new Intent(LibraryActivity.this, org.ebookdroid.ui.viewer.ViewerActivity.class);
-    	    		readIntent.setData(intent.getData());
-    	    		readIntent.putExtra("persistent", "false");
-    	    		readIntent.putExtra("nightMode", "false");
-    	            startActivity(readIntent);
-            	}
+
+                String filePath = intent.getData().getPath();
+                if (!TextUtils.isEmpty(filePath)){
+                    openFile(new File(filePath));
+                }
+
+
+//            	if (codecType.getContextClass().getSimpleName().equals(EpubContext.class.getSimpleName())) {
+//    	    		Intent readIntent = new Intent(LibraryActivity.this, EpubReaderActivity.class);
+//    	    		String filePath = intent.getDataString();
+//    	    		if (filePath.startsWith("file://"))
+//    	    			filePath = filePath.substring(7);
+//    	    		readIntent.putExtra("BookPath", filePath);
+//    	    		startActivity(readIntent);
+//            	} else {
+//    	    		Intent readIntent = new Intent(LibraryActivity.this, org.ebookdroid.ui.viewer.ViewerActivity.class);
+//    	    		readIntent.setData(intent.getData());
+//    	    		readIntent.putExtra("persistent", "false");
+//    	    		readIntent.putExtra("nightMode", "false");
+//    	            startActivity(readIntent);
+//            	}
             }
         }
     	return startReading;
@@ -416,9 +430,19 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
     private void LoadFilesOfSomeDirectories() {
     	
     	final String[]  Directories={"/mnt/sdcard/ebook","/mnt/internal_sd","/mnt/internal_sd/ebook","/mnt/external_sd","/mnt/external_sd/ebook","/mnt/internal_sd/跨学书城","/mnt/external_sd/跨学书城"};
-        ArrayList<File> DirList2BeImported = new ArrayList<File>();
-        for(String Dir:Directories){
-        	DirList2BeImported.add(new File(Dir));
+
+        String Subdir=getIntent().getStringExtra("Subdir");
+    	ArrayList<File> DirList2BeImported = new ArrayList<File>();
+    	if(!TextUtils.isEmpty(Subdir)){
+            File file=new File("/mnt/sdcard/ebook"+File.separator+Subdir);
+            if(!file.exists()){
+                file.mkdirs();
+            }
+            DirList2BeImported.add(file);
+        }else {
+            for(String Dir:Directories){
+                DirList2BeImported.add(new File(Dir));
+            }
         }
         
         showImportProgress(getResources().getString(R.string.adding_book));
@@ -828,29 +852,42 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
         
         if (mLocalBooks != null && mLocalBooks.size() > position) {
         	LocalBook book = mLocalBooks.get(position);
-        	
-        	final File file = new File(book.file);
-            final Uri data = Uri.fromFile(file);
-            CodecType codecType = CodecType.getByUri(data.toString());
+            openFile(new File(book.file));
 
-        	if (codecType.getContextClass().getSimpleName().equals(EpubContext.class.getSimpleName())) {
+        }
+    }
+
+    private void openFile(File file){
+        final Uri data = Uri.fromFile(file);
+        CodecType codecType = CodecType.getByUri(data.toString());
+
+        if (codecType.getContextClass().getSimpleName().equals(EpubContext.class.getSimpleName())) {
 //	    		Intent intent = new Intent(this, EpubReaderActivity.class);
 //	    		intent.putExtra("BookID", book.id);
 //	    		startActivity(intent);
-                if(codecType.compareTo(CodecType.TXT)==0){
-                    HwTxtPlayActivity.loadTxtFile(this, file.getPath());
-                }else {
-                    Config config = AppUtil.getSavedConfig(getApplicationContext());
-                    if (config == null)
-                        config = new Config();
-                    config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL).setDirection(Config.Direction.HORIZONTAL);
-                    FolioReader folioReader = FolioReader.get();
-                    folioReader.setConfig(config,true).openBook(file.getPath());
+            if(codecType.compareTo(CodecType.TXT)==0){
+                HwTxtPlayActivity.loadTxtFile(this, file.getPath());
+            }else {
+//                Config config = AppUtil.getSavedConfig(getApplicationContext());
+//                if (config == null)
+//                    config = new Config();
+//                config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL).setDirection(Config.Direction.HORIZONTAL);
+//                FolioReader folioReader = FolioReader.get();
+//                folioReader.setConfig(config,true).openBook(file.getPath());
+//                    Intent intent = new Intent(this, EpubReaderActivity.class);
+//                    intent.putExtra("BookID", book.id);
+//                    startActivity(intent);
+                Uri uri = Uri.parse(file.getPath());
+                Intent intent = new Intent(this, PdfActivity.class);
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(uri);
+                startActivity(intent);
+                mNeedUpdateBookMark=true;
 
-                }
+            }
 
-	    		mNeedUpdateBookMark=true;
-        	} else {
+            mNeedUpdateBookMark=true;
+        } else {
 
 //                int currentPage = 0;
 //                Bookmark bookmark = Bookmark.getBookmark(this, Md5Encrypt.md5(book.file));
@@ -865,13 +902,12 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
 //                intent.putExtra("pageIndex", Integer.toString((currentPage>0)?(currentPage-1):0));
 //                intent.putExtra("BookID", book.id);
 //                startActivity(intent);
-                Uri uri = Uri.parse(book.file);
-                Intent intent = new Intent(this, PdfActivity.class);
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(uri);
-                startActivity(intent);
-                mNeedUpdateBookMark=true;
-        	}
+            Uri uri = Uri.parse(file.getPath());
+            Intent intent = new Intent(this, PdfActivity.class);
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setData(uri);
+            startActivity(intent);
+            mNeedUpdateBookMark=true;
         }
     }
     

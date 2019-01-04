@@ -75,6 +75,7 @@ public class BookinfosGridAdapter extends BaseAdapter {
         
         if(position>=mLocalBooks.size()){
         	convertView =mInflater.inflate(R.layout.add_book_button, null);
+            convertView.setVisibility(View.GONE);
         	ImageView imageview=(ImageView) convertView.findViewById(R.id.imageview_add_book);
     		imageview.setOnClickListener(new OnClickListener() {
 				

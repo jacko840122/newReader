@@ -1,8 +1,11 @@
 package com.greenlemonmobile.app.ebook;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -11,8 +14,14 @@ import android.widget.Toast;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,14 +60,92 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView mRvReview;
     @BindView(R.id.search_bar2)
     LinearLayout searchBar2;
+    private SortAdapter mSortAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
         ButterKnife.bind(this);
+        initViews();
         checkPermissions();
     }
+
+
+    private void initViews(){
+        mRcSort.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        List<SortItem> list=new ArrayList<SortItem>();
+        list.add(new SortItem(R.drawable.sort1,"文学"));
+        list.add(new SortItem(R.drawable.sort2,"人生修养"));
+        list.add(new SortItem(R.drawable.sort3,"名人传记"));
+        list.add(new SortItem(R.drawable.sort4,"科学"));
+        mSortAdapter = new SortAdapter(list);
+        mRcSort.setItemAnimator(new DefaultItemAnimator());
+        mRcSort.setAdapter(mSortAdapter);
+
+    }
+
+    class SortItem{
+        int mResId;
+        String mName;
+
+        SortItem(int resId,String name){
+            mResId=resId;
+            mName=name;
+        }
+    }
+
+
+
+
+
+    public class SortAdapter extends RecyclerView.Adapter<SortAdapter.ViewHolder> implements View.OnClickListener {
+        private List<SortItem> list;
+
+        public SortAdapter(List<SortItem> list) {
+            this.list = list;
+        }
+
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sort, parent, false);
+            SortAdapter.ViewHolder viewHolder = new SortAdapter.ViewHolder(view);
+            return viewHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(SortAdapter.ViewHolder holder, int position) {
+            holder.mIcon.setImageResource(list.get(position).mResId);
+            holder.mIcon.setTag(list.get(position));
+            holder.mIcon.setOnClickListener(this);
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return list.size();
+        }
+
+        @Override
+        public void onClick(View view) {
+            SortItem sortItem= (SortItem) view.getTag();
+            Intent intent = new Intent(MainActivity.this, LibraryActivity.class);
+            intent.putExtra("Subdir",sortItem.mName);
+            startActivity(intent);
+
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+            ImageView mIcon;
+            ViewHolder(View itemView) {
+                super(itemView);
+                mIcon = itemView.findViewById(R.id.sort_icon);
+            }
+        }
+    }
+
 
 
     private void checkPermissions() {
