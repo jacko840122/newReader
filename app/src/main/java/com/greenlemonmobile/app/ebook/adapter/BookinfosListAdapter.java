@@ -1,9 +1,5 @@
 package com.greenlemonmobile.app.ebook.adapter;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
@@ -17,28 +13,29 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.greenlemonmobile.app.ebook.LibraryActivity.ViewType;
 import com.greenlemonmobile.app.ebook.R;
 import com.greenlemonmobile.app.ebook.adapter.BookinfosGridAdapter.BaseViewHolder;
 import com.greenlemonmobile.app.ebook.entity.LocalBook;
 import com.greenlemonmobile.app.utils.FileUtil;
 import com.greenlemonmobile.app.utils.ImageBuffer;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
 public class BookinfosListAdapter extends BaseAdapter {   
     private final Context mContext;
     private final ArrayList<LocalBook> mLocalBooks;
     private final LayoutInflater mInflater;
-    private final ViewType mItemType;
     private final OnCheckedChangeListener mCheckedChangedListener;
     
     
     private final static SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     
-    public BookinfosListAdapter(Context context, ViewType type, ArrayList<LocalBook> books, OnCheckedChangeListener listener) {
+    public BookinfosListAdapter(Context context,ArrayList<LocalBook> books, OnCheckedChangeListener listener) {
         mContext = context;
         mLocalBooks = books;
         mInflater = LayoutInflater.from(context);
-        mItemType = type;
         mCheckedChangedListener = listener;
     }
 
@@ -61,14 +58,7 @@ public class BookinfosListAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if (convertView == null) {
-            switch (mItemType) {
-                case DETAILS:
-                    convertView = mInflater.inflate(R.layout.library_bookinfos_details, null);
-                    break;
-                case LIST:
-                    convertView = mInflater.inflate(R.layout.library_bookinfos_list, null);
-                    break;
-            }
+            convertView = mInflater.inflate(R.layout.library_bookinfos_list, null);
             holder = new ViewHolder();
             convertView.setTag(holder);
             
@@ -95,9 +85,12 @@ public class BookinfosListAdapter extends BaseAdapter {
         holder.format.setImageResource(BaseViewHolder.getFormatDrawable(book.file));
         holder.icon.setImageBitmap(null);
         holder.icon.setImageResource(R.drawable.no_cover);
-        Bitmap bitmap = ImageBuffer.getBitmap(mContext, (mItemType == ViewType.DETAILS) ? book.detail_image : book.list_image);
-        if (bitmap != null)
-        	holder.icon.setImageBitmap(bitmap);
+        Bitmap bitmap = ImageBuffer.getBitmap(mContext,  book.list_image);
+        if (bitmap != null) {
+            holder.icon.setImageBitmap(bitmap);
+            holder.title.setVisibility(View.INVISIBLE);
+
+        }
 //        // Using an AsyncTask to load the slow images in a background thread
 //        new AsyncTask<ViewHolder, Void, Bitmap>() {
 //            private ViewHolder v;

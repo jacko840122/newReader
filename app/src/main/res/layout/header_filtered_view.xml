@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Header"
-    android:layout_marginTop="25dp"
-    android:background="#ff00dd88" >
+    android:background="#ffd2d2d2" >
 
     <ImageButton
         android:id="@id/back_btn"
@@ -11,7 +10,7 @@
         android:paddingLeft="0dp"
         android:paddingRight="0dp"
         android:src="@drawable/back_button"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <CheckBox
         android:id="@id/library_order_icon"
@@ -22,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_marginRight="20.0dip"
-        android:visibility="visible" >
+        android:visibility="gone" >
 
         <Button
             android:id="@id/library_change_sort_criteria_header"
@@ -56,6 +55,7 @@
         android:src="@drawable/bookdelete_btn" />
 
     <ImageView
+        android:visibility="gone"
         android:id="@+id/downManager_btn"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/bookdelete"

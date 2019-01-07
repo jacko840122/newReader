@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<color name="pdf_bg_color">#77FEF9E6</color>
-	<color name="menu_bg_color">#EE20211C</color>
+	<color name="menu_bg_color">#FF20211C</color>
 	<color name="menu_text_color">#B6B3AA</color>
 
 	<color name="common_white">#FFFFFFFF</color>

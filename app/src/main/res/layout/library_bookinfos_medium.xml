@@ -19,14 +19,16 @@
         <TextView
             android:id="@id/title"
             style="@style/ThumbnailMediumTitle"
+            android:layout_margin="15dp"
             android:layout_width="219.5dp"
             android:layout_height="30dp"
             android:layout_below="@id/icon"
+            android:layout_alignParentTop="true"
             android:background="@android:color/transparent"
             android:ellipsize="end"
-            android:gravity="center_horizontal|bottom"
+            android:gravity="center"
             android:singleLine="true"
-            android:textColor="#ff333333"
+            android:textColor="#ff454545"
             android:textSize="36px" />
 
         <ImageView

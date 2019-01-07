@@ -12,7 +12,7 @@ import com.bifan.txtreaderlib.interfaces.ITextSelectDrawer;
  */
 
 public class PageDrawerBase {
-    protected int PageSwitchTime = 400;
+    protected int PageSwitchTime = 200;
     protected TxtReaderView readerView;
     protected TxtReaderContext readerContext;
     protected Scroller scroller;

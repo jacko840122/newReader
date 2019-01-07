@@ -75,10 +75,10 @@ public class MainActivity extends AppCompatActivity {
     private void initViews(){
         mRcSort.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         List<SortItem> list=new ArrayList<SortItem>();
-        list.add(new SortItem(R.drawable.sort1,"文学"));
-        list.add(new SortItem(R.drawable.sort2,"人生修养"));
-        list.add(new SortItem(R.drawable.sort3,"名人传记"));
-        list.add(new SortItem(R.drawable.sort4,"科学"));
+        list.add(new SortItem(R.drawable.wenxun,"文学"));
+        list.add(new SortItem(R.drawable.xiuyang,"人生修养"));
+        list.add(new SortItem(R.drawable.minren,"名人传记"));
+        list.add(new SortItem(R.drawable.kexue,"科学技术"));
         mSortAdapter = new SortAdapter(list);
         mRcSort.setItemAnimator(new DefaultItemAnimator());
         mRcSort.setAdapter(mSortAdapter);

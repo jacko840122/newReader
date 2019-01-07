@@ -13,7 +13,7 @@
     <dimen name="thumbnailSmallTitleTextSize">8.0dip</dimen>
     <dimen name="thumbnailSmallTitleHeight">24.0dip</dimen>
     <dimen name="thumbnailSmallImageWidth">70.0dip</dimen>
-    <dimen name="thumbnailMediumTitleTextSize">10.0dip</dimen>
+    <dimen name="thumbnailMediumTitleTextSize">18.0dip</dimen>
     <dimen name="thumbnailMediumTitleHeight">32.0dip</dimen>
     <dimen name="thumbnailMediumImageWidth">95.0dip</dimen>
     <dimen name="thumbnailBigTitleTextSize">13.0dip</dimen>

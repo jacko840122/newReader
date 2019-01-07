@@ -47,63 +47,53 @@
                 <!--<category android:name="android.intent.category.LAUNCHER"></category>-->
             <!--</intent-filter>-->
 
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="file"/>
-                <data android:mimeType="application/pdf" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
+                <!--<data android:scheme="file"/>-->
+                <!--<data android:mimeType="application/pdf" />-->
+            <!--</intent-filter>-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
 
-                <data android:host="*" />
-                <data android:scheme="file" />
-                <data android:scheme="content" />
-                <data android:mimeType="*/*" />
-                <data android:pathPattern=".*\\.pdf" />
-                <!--  
-                <data android:pathPattern=".*\\.djvu" />
-                <data android:pathPattern=".*\\.djv" />
-                <data android:pathPattern=".*\\.xps" />
-                <data android:pathPattern=".*\\.oxps" />
-                <data android:pathPattern=".*\\.cbz" />
-                <data android:pathPattern=".*\\.cbr" />
-                <data android:pathPattern=".*\\.fb2" />
-                <data android:pathPattern=".*\\.fb2\\.zip" />
-                --> 
-            </intent-filter>
+                <!--<data android:host="*" />-->
+                <!--<data android:scheme="file" />-->
+                <!--<data android:scheme="content" />-->
+                <!--<data android:mimeType="*/*" />-->
+                <!--<data android:pathPattern=".*\\.pdf" />-->
+                <!--&lt;!&ndash;  -->
+                <!--<data android:pathPattern=".*\\.djvu" />-->
+                <!--<data android:pathPattern=".*\\.djv" />-->
+                <!--<data android:pathPattern=".*\\.xps" />-->
+                <!--<data android:pathPattern=".*\\.oxps" />-->
+                <!--<data android:pathPattern=".*\\.cbz" />-->
+                <!--<data android:pathPattern=".*\\.cbr" />-->
+                <!--<data android:pathPattern=".*\\.fb2" />-->
+                <!--<data android:pathPattern=".*\\.fb2\\.zip" />-->
+                <!--&ndash;&gt; -->
+            <!--</intent-filter>-->
             
-            <!--  
-             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/*" />
-                <data android:mimeType="application/epub+zip" />
-            </intent-filter>
-           
-           --> 
 
 
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
 
-                <data android:host="*" />
-                <data android:scheme="file" />
-                <data android:scheme="content" />
-                <data android:mimeType="*/*" />
-                <data android:pathPattern=".*\\.epub" />
-                <data android:pathPattern=".*\\.txt" />
-                <!--<data android:pathPattern=".*\\.chm" />-->
-            </intent-filter>
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
+
+                <!--<data android:host="*" />-->
+                <!--<data android:scheme="file" />-->
+                <!--<data android:scheme="content" />-->
+                <!--<data android:mimeType="*/*" />-->
+                <!--<data android:pathPattern=".*\\.epub" />-->
+                <!--<data android:pathPattern=".*\\.txt" />-->
+                <!--&lt;!&ndash;<data android:pathPattern=".*\\.chm" />&ndash;&gt;-->
+            <!--</intent-filter>-->
 
         </activity>
         <activity

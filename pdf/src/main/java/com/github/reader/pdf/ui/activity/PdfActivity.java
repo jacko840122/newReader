@@ -32,6 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewAnimator;
 
 import com.github.reader.R;
@@ -94,12 +95,12 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
     private TextView mTitle;
     private ImageView mReturn;
     private SeekBar mPageSlider;
-    private ImageView mSearchButton;
+    private TextView mSearchTextView;
     private ImageView mBrowseDirButton;
     private ImageView mBrightnessButton;
     private ImageView mClipButton;
     private TextView mSwitchScreenButton;
-    private ImageView mOutlineButton;
+    private TextView mOutlineTextview;
     private ImageButton mIvInk;
     private TextView mAnnotTypeText;
     private ImageView mAnnotButton;
@@ -144,6 +145,10 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
         }
         core = (MuPDFCore) mvpPresenter.getDocManager();
         createUI();
+        if(core==null){
+            Toast.makeText(mContext,"解析文件失败",Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     @Override
@@ -152,11 +157,11 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
         if (core != null) {
             core.startAlerts();
             mvpPresenter.createAlertWaiter();
-        }
-        mvpPresenter.onResume();
-        mTitle.setText(Constants.FILE_NAME);
-        if (core != null) {
+            mvpPresenter.onResume();
+            mTitle.setText(Constants.FILE_NAME);
+
             mDocView.setDisplayedViewIndex(Constants.CURRENT_DISPLAY_INDEX);
+
         }
     }
 
@@ -417,12 +422,12 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
 
         //目录
         if (core.hasOutline()) {
-            mOutlineButton.setEnabled(true);
+            mOutlineTextview.setEnabled(true);
             if (mCatalogMenu != null) {
                 mCatalogMenu.setData(core.getOutline());
             }
         } else {
-            setButtonEnabled(mOutlineButton, false);
+            setButtonEnabled(mOutlineTextview, false);
         }
 
         //流式/板式区分
@@ -484,11 +489,13 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
        /* mTitle.setTextColor(mContext.getResources().getColor(R.color.search_button_disable_color));*/
         mReturn = (ImageView) mReaderRootView.findViewById(R.id.iv_return);
         mReturn.setColorFilter(mContext.getResources().getColor(R.color.common_white));
-        mSearchButton = (ImageView) mReaderRootView.findViewById(R.id.iv_search);
-        mSearchButton.setColorFilter(mContext.getResources().getColor(R.color.common_white));
+        mSearchTextView = (TextView) mReaderRootView.findViewById(R.id.tv_search);
+        //mSearchTextView.setColorFilter(mContext.getResources().getColor(R.color.common_white));
         mAnnotTypeText = (TextView) mReaderRootView.findViewById(R.id.annotType);
         mReturn.setOnClickListener(this);
-        mSearchButton.setOnClickListener(this);
+        mSearchTextView.setOnClickListener(this);
+
+        mTopMenuContainer.setOnClickListener(this);
 
         mCancelAccept = (ImageButton) mReaderRootView.findViewById(R.id.cancelAcceptButton);
         mSureAccept = (ImageButton) mReaderRootView.findViewById(R.id.acceptButton);
@@ -498,14 +505,14 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
         mPageNum = (TextView) mReaderRootView.findViewById(R.id.progress);
 
         mIvInk = (ImageButton) mReaderRootView.findViewById(R.id.iv_ink);
-        mOutlineButton = (ImageView) mReaderRootView.findViewById(R.id.outline_button);
+        mOutlineTextview = (TextView) mReaderRootView.findViewById(R.id.tv_outline);
         mBrowseDirButton = (ImageView) mReaderRootView.findViewById(R.id.browseDirection_button);
         mBrightnessButton = (ImageView) mReaderRootView.findViewById(R.id.brightness_button);
         mClipButton = (ImageView) mReaderRootView.findViewById(R.id.clip_button);
         mSwitchScreenButton = (TextView) mReaderRootView.findViewById(R.id.switchScreen_button);
         mAnnotButton = (ImageView) mReaderRootView.findViewById(R.id.annot_button);
         mIvInk.setOnClickListener(this);
-        mOutlineButton.setOnClickListener(this);
+        mOutlineTextview.setOnClickListener(this);
         mAnnotButton.setOnClickListener(this);
         mBrowseDirButton.setOnClickListener(this);
         mSwitchScreenButton.setOnClickListener(this);
@@ -594,7 +601,7 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
             Constants.isShowInMainSceen = !Constants.isShowInMainSceen;
             switchScreen();
 
-        } else if (i == R.id.iv_search) {
+        } else if (i == R.id.tv_search) {
             searchModeOn();
 
         } else if (i == R.id.annot_button) {
@@ -603,23 +610,34 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
         } else if (i == R.id.iv_return) {
             this.finish();
 
-        } else if (i == R.id.outline_button) {
+        } else if (i == R.id.tv_outline) {
             openCatalogMenu();
 
         } else if (i == R.id.tv_pre_page) {// Activate search invoking buttons
-            mSearchBack.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    mvpPresenter.search(-1);
-                }
-            });
+//            mSearchBack.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View v) {
+//                    mvpPresenter.search(-1);
+//                }
+//            });
+            int index = mDocView.getDisplayedViewIndex();
+            if(index>0){
+                updatePageNumView(--index);
+                mDocView.setDisplayedViewIndex(index);
+            }
+
 
 
         } else if (i == R.id.tv_next_page) {
-            mSearchFwd.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    mvpPresenter.search(1);
-                }
-            });
+//            mSearchFwd.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View v) {
+//                    mvpPresenter.search(1);
+//                }
+//            });
+            int index = mDocView.getDisplayedViewIndex();
+            if(index+1<Constants.DOC_PAGE_COUNT){
+                updatePageNumView(++index);
+                mDocView.setDisplayedViewIndex(index);
+            }
 
         } else if (i == R.id.copytext_ly) {
             onCopyTextButtonClick();
@@ -723,7 +741,7 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
     }
 
     private void showBottomAnim() {
-        Log.d(TAG, "showBottomAnim: ",new Throwable());
+        //Log.d(TAG, "showBottomAnim: ",new Throwable());
         if (mBottomContainer.getVisibility() != View.VISIBLE) {
             Animation anim = new TranslateAnimation(0, 0, mBottomContainer.getHeight(), 0);
             anim.setDuration(200);

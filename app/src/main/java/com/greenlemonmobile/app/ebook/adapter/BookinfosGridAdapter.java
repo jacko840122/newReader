@@ -16,7 +16,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.greenlemonmobile.app.ebook.LibraryActivity.ViewType;
 import com.greenlemonmobile.app.ebook.R;
 import com.greenlemonmobile.app.ebook.iBooksReaderApp;
 import com.greenlemonmobile.app.ebook.books.reader.EpubContext;
@@ -30,7 +29,6 @@ public class BookinfosGridAdapter extends BaseAdapter {
     private final Context mContext;
     private final ArrayList<LocalBook> mLocalBooks;
     private final LayoutInflater mInflater;
-    private final ViewType mItemType;
     private OnDeleteListener mListener;
     private boolean deleteMode = false;
     
@@ -42,11 +40,10 @@ public class BookinfosGridAdapter extends BaseAdapter {
 		this.deleteMode = deleteMode;
 	}
 
-	public BookinfosGridAdapter(Context context, ViewType type, ArrayList<LocalBook> books) {
+	public BookinfosGridAdapter(Context context, ArrayList<LocalBook> books) {
         mContext = context;
         mLocalBooks = books;
         mInflater = LayoutInflater.from(context);
-        mItemType = type;
     }
 
     @Override
@@ -91,20 +88,7 @@ public class BookinfosGridAdapter extends BaseAdapter {
         	return convertView;
         }
         if (convertView == null||convertView.getId()==R.id.add_book_item) {
-            switch (mItemType) {
-                case BIG_THUMB:
-                    convertView = mInflater.inflate(R.layout.library_bookinfos_big, null);
-                    break;
-                case MEDIUM_THUMB:
-                    convertView = mInflater.inflate(R.layout.library_bookinfos_medium, null);
-                    break;
-                case SMALL_THUMB:
-                    convertView = mInflater.inflate(R.layout.library_bookinfos_small, null);
-                    break;
-                case BOOK_SHELF:
-                	convertView = mInflater.inflate(R.layout.library_bookinfos_shelf, null);
-                	break;
-            }
+            convertView = mInflater.inflate(R.layout.library_bookinfos_medium, null);
             holder = new BaseViewHolder();
             convertView.setTag(holder);
             
@@ -146,7 +130,7 @@ public class BookinfosGridAdapter extends BaseAdapter {
         holder.readProgress.setText(Str2);
         holder.icon.setImageResource(BaseViewHolder.getFormatCoverDrawable(book.file));
         holder.format.setImageResource(BaseViewHolder.getFormatDrawable(book.file));
-        Bitmap bitmap = ImageBuffer.getBitmap(mContext, (mItemType == ViewType.DETAILS) ? book.detail_image : book.list_image);
+        Bitmap bitmap = ImageBuffer.getBitmap(mContext, book.list_image);
         if (bitmap != null)
         	holder.icon.setImageBitmap(bitmap);
         

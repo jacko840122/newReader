@@ -19,12 +19,12 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/bottom_operator"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="20dp"
             android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/button"
             android:contentDescription="@string/ink"
             android:src="@drawable/ink_icon"
-            />
+            android:visibility="gone" />
     </RelativeLayout>
 
     <include layout="@layout/annot_layout"/>
@@ -32,64 +32,172 @@
     <RelativeLayout
         android:id="@+id/top_menu_container"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="wrap_content"
+        >
 
         <ViewAnimator
+            android:layout_height="80dp"
             android:id="@+id/top_menu_switcher"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:background="@color/menu_bg_color">
+            android:layout_centerHorizontal="true">
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/layout_menu_top_main"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="80dp"
                 android:gravity="center_vertical"
-                android:visibility="gone"
-                >
+                android:background="@color/background_color">
+
 
                 <ImageView
                     android:id="@+id/iv_return"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="24dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_return"/>
+                    android:background="@drawable/fanhui"
+                    android:scaleType="centerInside" />
 
-                <!--搜索-->
-                <ImageView
-                    android:id="@+id/iv_search"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="24dp"
-                    android:contentDescription="@string/search_document"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/search_icon"/>
 
                 <TextView
                     android:id="@+id/tv_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginLeft="24dp"
                     android:layout_marginRight="10dp"
-                    android:layout_toLeftOf="@id/iv_search"
+                    android:layout_toLeftOf="@id/tv_search"
                     android:layout_toRightOf="@id/iv_return"
+                    android:layout_weight="1"
                     android:ellipsize="end"
                     android:gravity="left"
                     android:maxLines="1"
-                    android:textColor="@color/common_white"
-                    android:textSize="@dimen/text_size_normal"/>
+                    android:textColor="@color/common_black"
+                    android:textSize="@dimen/text_size_normal" />
 
 
-            </RelativeLayout>
+
+
+                <TextView
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:id="@+id/tv_outline"
+                    android:drawableTop="@drawable/mulu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="目录"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_size_small" />
+
+
+
+                <View
+                    android:layout_width="1px"
+                    android:layerType="software"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/vertical_dashed">
+
+                </View>
+
+
+
+
+
+                <TextView
+                    android:id="@+id/tv_style"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:drawableTop="@drawable/banshe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="版式"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_size_small" />
+
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:layerType="software"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/vertical_dashed">
+
+                </View>
+
+
+
+
+                    <!--搜索-->
+
+                <TextView
+                    android:id="@+id/tv_search"
+                    android:drawableTop="@drawable/sousuo"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/search"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_size_small" />
+
+
+                <View
+                    android:layout_width="1px"
+                    android:layerType="software"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/vertical_dashed">
+
+                </View>
+
+
+
+
+                <TextView
+                    android:id="@+id/tv_note"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:drawableTop="@drawable/zhujie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="注解"
+                    android:textColor="@color/text_color_gray"
+                    android:textSize="@dimen/text_size_small" />
+
+
+
+                <View
+                    android:layout_width="1px"
+                    android:layerType="software"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/vertical_dashed">
+
+                </View>
+
+            </LinearLayout>
 
             <RelativeLayout
+                android:background="@color/common_black"
                 android:id="@+id/layout_menu_top_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -102,7 +210,7 @@
                     android:layout_centerVertical="true"
                     android:background="@drawable/button"
                     android:contentDescription="@string/cancel"
-                    android:src="@drawable/ic_cancel"/>
+                    android:src="@drawable/ic_cancel" />
 
                 <EditText
                     android:id="@+id/searchText"
@@ -114,7 +222,7 @@
                     android:background="@drawable/search"
                     android:hint="@string/search"
                     android:inputType="text"
-                    android:singleLine="true"/>
+                    android:singleLine="true" />
 
                 <ImageButton
                     android:id="@+id/ivSearchBack"
@@ -124,7 +232,7 @@
                     android:layout_toLeftOf="@+id/ivSearchForward"
                     android:background="@drawable/button"
                     android:contentDescription="@string/search_backwards"
-                    android:src="@drawable/ic_arrow_left"/>
+                    android:src="@drawable/ic_arrow_left" />
 
                 <ImageButton
                     android:id="@+id/ivSearchForward"
@@ -134,7 +242,7 @@
                     android:layout_centerVertical="true"
                     android:background="@drawable/button"
                     android:contentDescription="@string/search_forwards"
-                    android:src="@drawable/ic_arrow_right"/>
+                    android:src="@drawable/ic_arrow_right" />
 
             </RelativeLayout>
 
@@ -143,6 +251,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/common_black"
+                android:visibility="invisible"
                 android:gravity="center_vertical">
 
                 <ImageButton
@@ -155,7 +264,7 @@
                     android:background="@drawable/button"
                     android:contentDescription="@string/cancel"
                     android:onClick="OnCancelAcceptButtonClick"
-                    android:src="@drawable/ic_cancel"/>
+                    android:src="@drawable/ic_cancel" />
 
                 <TextView
                     android:id="@+id/annotType"
@@ -168,7 +277,7 @@
                     android:singleLine="true"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/common_white"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <ImageButton
                     android:id="@+id/acceptButton"
@@ -180,23 +289,18 @@
                     android:background="@drawable/button"
                     android:contentDescription="@string/accept"
                     android:onClick="OnAcceptButtonClick"
-                    android:src="@drawable/ic_check"/>
+                    android:src="@drawable/ic_check" />
             </RelativeLayout>
 
         </ViewAnimator>
 
-        <TextView
-            android:id="@+id/progress"
-            android:layout_width="100dp"
-            android:layout_height="36dp"
+        <View
             android:layout_below="@+id/top_menu_switcher"
-            android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:background="@color/menu_bg_color"
-            android:gravity="center"
-            android:textColor="@color/common_white"
-            android:textSize="18dp"
-            />
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#000000"></View>
+
+
     </RelativeLayout>
 
 </RelativeLayout>

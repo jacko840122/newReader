@@ -107,9 +107,6 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
     private static final int REQUEST_CODE_IMPORT_FILES = 1;
     private TextView mTitle;
 
-    public enum ViewType {
-        BIG_THUMB, MEDIUM_THUMB, SMALL_THUMB, DETAILS, LIST, BOOK_SHELF
-    }
     
     private static final int MESSAGE_REFRESH_LIST = 1;
     
@@ -144,8 +141,7 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
     
     private LocalBook.OrderColumn mOrderColumn = LocalBook.OrderColumn.BY_LAST_ACCESS_TIME;
     private LocalBook.OrderType mOrderType = LocalBook.OrderType.DESC;
-    private ViewType mViewType = ViewType.BIG_THUMB;
-    
+
     private AbsListView mList;
     private BaseAdapter mAdapter;
     private ArrayList<LocalBook> mLocalBooks;
@@ -207,7 +203,7 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
         mSearchInput = (EditText) findViewById(R.id.search_input);
         mSearchInput.addTextChangedListener(this);
         mSortBtn = (Button) findViewById(R.id.library_change_sort_criteria_header);
-        mBack_btn=(ImageButton)findViewById(R.id.back_btn);
+        mBack_btn=findViewById(R.id.back_btn);
         mItems = (TextView) findViewById(R.id.items);
         mNo_books_tip_bar=(View) findViewById(R.id.no_books_tip_bar);
         String Subdir=getIntent().getStringExtra("Subdir");
@@ -259,7 +255,7 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
 
         //LoadFilesOfSomeDirectories();
         //LocalBook.getLocalBookList(this, mOrderColumn, mOrderType, mLocalBooks);
-        ViewsChanged(mViewType);
+        ViewsChanged();
 		IntentFilter filter=new IntentFilter(DownLoadService.ACTION_DOANLOAD_EBOOK_RECIEVER);
 		registerReceiver(new BroadcastReceiver() {
 
@@ -647,31 +643,6 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
                 LibraryActivity.this.startActivity(settingIntent);
                 break;
             case R.id.view_btn:
-                if (mViewsAction != null) {
-                    int selectedId = 0;
-                    switch (mViewType) {
-                        case DETAILS:
-                            selectedId = 0;
-                            break;
-                        case LIST:
-                            selectedId = 1;
-                            break;
-                        case SMALL_THUMB:
-                            selectedId = 2;
-                            break;
-                        case MEDIUM_THUMB:
-                            selectedId = 3;
-                            break;
-                        case BIG_THUMB:
-                            selectedId = 4;
-                            break;
-                        case BOOK_SHELF:
-                        	selectedId = 5;
-                        	break;
-                    }
-                    mViewsAction.setItemSelected(selectedId);
-                    mViewsAction.show(v);
-                }
                 break;
             case R.id.library_change_sort_criteria_header:
                 if (mSortAction != null) {
@@ -927,13 +898,8 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
 		}
 	};
 	
-    private void ViewsChanged(ViewType type) {
-        mViewType = type;
-//        if (mViewType == ViewType.DETAILS || mViewType == ViewType.LIST)
-//            ((CheckBox)findViewById(R.id.all_checkbox)).setVisibility(View.VISIBLE);
-//        else
-            ((CheckBox)findViewById(R.id.all_checkbox)).setVisibility(View.GONE);
-        
+    private void ViewsChanged() {
+
         if (mList != null)
             mContentContainer.removeView(mList);
 
@@ -941,39 +907,14 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
         GridView gridView = null;
         LayoutInflater inflater = LayoutInflater.from(this);
         BookinfosGridAdapter adapter;
-        switch (mViewType) {
-            case LIST:
-                listView = (ListView) inflater.inflate(R.layout.library_list, null);
-                mAdapter = new BookinfosListAdapter(this, ViewType.LIST, mLocalBooks, this);
-                break;
-            case DETAILS:
-                listView = (ListView) inflater.inflate(R.layout.library_list, null);
-                mAdapter = new BookinfosListAdapter(this, ViewType.DETAILS, mLocalBooks, this);
-                break;
-            case SMALL_THUMB:
-                gridView = (GridView) inflater.inflate(R.layout.library_grid_small, null);
-                adapter = new BookinfosGridAdapter(this, ViewType.SMALL_THUMB, mLocalBooks);
-                adapter.setDeleteMode(false);
-                adapter.setmListener(mOnDeleteListener);
-                mAdapter = adapter;
-                break;
-            case MEDIUM_THUMB:
-                gridView = (GridView) inflater.inflate(R.layout.library_grid_medium, null);
+        gridView = (GridView) inflater.inflate(R.layout.library_grid_medium, null);
 //                mAdapter = new BookinfosGridAdapter(this, ViewType.MEDIUM_THUMB, mLocalBooks);
-                adapter = new BookinfosGridAdapter(this, ViewType.MEDIUM_THUMB, mLocalBooks);
-                adapter.setDeleteMode(false);
-                adapter.setmListener(mOnDeleteListener);
-                mAdapter = adapter;
-                break;
-            case BIG_THUMB:
-                gridView = (GridView) inflater.inflate(R.layout.library_grid_big, null);
-                mAdapter = new BookinfosGridAdapter(this, ViewType.BIG_THUMB, mLocalBooks);
-                break;
-            case BOOK_SHELF:
-            	gridView = (GridView) inflater.inflate(R.layout.library_grid_shelf, null);
-            	mAdapter = new BookinfosGridAdapter(this, ViewType.BOOK_SHELF, mLocalBooks);
-            	break;
-        }
+        adapter = new BookinfosGridAdapter(this, mLocalBooks);
+        adapter.setDeleteMode(false);
+        adapter.setmListener(mOnDeleteListener);
+        mAdapter = adapter;
+
+
         if (gridView != null) {
             mList = gridView;
             gridView.setAdapter(mAdapter);
@@ -1077,39 +1018,7 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
         mViewsAction.addActionItem(large);
         mViewsAction.addActionItem(shelf);
         
-        mViewsAction.setOnActionItemClickListener(new OnActionItemClickListener() {
 
-            @Override
-            public void onItemClick(QuickAction source, int pos, int actionId) {
-//                ActionItem actionItem = mViewsActions.getActionItem(pos);
-                mPress2Exit = false;
-                ViewType type = ViewType.LIST;
-                switch (actionId) {
-                    case ID_VIEWS_DETAILS:
-                        type = ViewType.DETAILS;
-                        break;
-                    case ID_VIEWS_LIST:
-                        type = ViewType.LIST;
-                        break;
-                    case ID_VIEWS_SMALL_ICON:
-                        type = ViewType.SMALL_THUMB;
-                        break;
-                    case ID_VIEWS_MEDIUM_ICON:
-                        type = ViewType.MEDIUM_THUMB;
-                        break;
-                    case ID_VIEWS_LARGE_ICON:
-                        type = ViewType.BIG_THUMB;
-                        break;
-                    case ID_VIEWS_BOOK_SHELF:
-                    	type = ViewType.BOOK_SHELF;
-                    	break;
-                }
-                
-                if (type != mViewType)
-                    ViewsChanged(type);
-            }
-            
-        });
         
         mViewsAction.setOnDismissListener(new QuickAction.OnDismissListener() {
 
@@ -1122,32 +1031,7 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
     
     
     private void restoreConfig() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);        
-        int viewType = sp.getInt(VIEWTYPE, 3);
-        switch (viewType) {
-            case 0:
-                mViewType = ViewType.DETAILS;
-                break;
-            case 1:
-                mViewType = ViewType.LIST;
-                break;
-            case 2:
-                mViewType = ViewType.SMALL_THUMB;
-                break;
-            case 3:
-                mViewType = ViewType.MEDIUM_THUMB;
-                break;
-            case 4:
-                mViewType = ViewType.BIG_THUMB;
-                break;
-            case 5:
-            	mViewType = ViewType.BOOK_SHELF;
-            	break;
-        }
-        if (mViewType == ViewType.DETAILS || mViewType == ViewType.LIST)
-            ((CheckBox)findViewById(R.id.all_checkbox)).setVisibility(View.VISIBLE);
-        else
-            ((CheckBox)findViewById(R.id.all_checkbox)).setVisibility(View.GONE);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         
         int orderColumn = sp.getInt(ORDERCOLUMN, 0);
         switch (orderColumn) {
@@ -1179,26 +1063,6 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
     private void saveConfig() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sp.edit();
-        switch (mViewType) {
-            case DETAILS:
-                editor.putInt(VIEWTYPE, 0);
-                break;
-            case LIST:
-                editor.putInt(VIEWTYPE, 1);
-                break;
-            case SMALL_THUMB:
-                editor.putInt(VIEWTYPE, 2);
-                break;
-            case MEDIUM_THUMB:
-                editor.putInt(VIEWTYPE, 3);
-                break;
-            case BIG_THUMB:
-                editor.putInt(VIEWTYPE, 4);
-                break;
-            case BOOK_SHELF:
-            	editor.putInt(VIEWTYPE, 5);
-            	break;
-        }
         
         switch (mOrderColumn) {
             case BY_TITLE:
@@ -1275,7 +1139,7 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
 			String format = getResources().getString(R.string.items);
             if (mLocalBooks.size() > 0){
             	//mItems.setText(String.format(format, Integer.toString(mLocalBooks.size())));
-            	mNo_books_tip_bar.setVisibility(View.INVISIBLE);
+            	mNo_books_tip_bar.setVisibility(View.GONE);
             }	
             else{
             	mNo_books_tip_bar.setVisibility(View.VISIBLE);
@@ -1297,7 +1161,7 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
                 String format = getResources().getString(R.string.items);
                 if (mLocalBooks.size() > 0){
                 	//mItems.setText(String.format(format, Integer.toString(mLocalBooks.size())));
-                	mNo_books_tip_bar.setVisibility(View.INVISIBLE);
+                	mNo_books_tip_bar.setVisibility(View.GONE);
                 }	
                 else{
                 	mNo_books_tip_bar.setVisibility(View.VISIBLE);

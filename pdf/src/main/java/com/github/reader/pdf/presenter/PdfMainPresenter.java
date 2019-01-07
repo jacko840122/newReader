@@ -9,6 +9,7 @@ import android.hardware.display.DisplayManager;
 import android.net.Uri;
 import android.view.Display;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.github.reader.app.base.BasePresenter;
 import com.github.reader.app.model.entity.DocumentBean;
@@ -95,9 +96,8 @@ public class PdfMainPresenter extends BasePresenter<IPdfMainView>
                     }
                 }
                 if (reason != null) {
-                    buffer = null;
-                    if(mvpView != null)
-                        mvpView.showOpenErrorDialog(reason);
+//                    if(mvpView != null)
+//                        mvpView.showOpenErrorDialog(reason);
                     return;
                 }
             }
@@ -281,7 +281,7 @@ public class PdfMainPresenter extends BasePresenter<IPdfMainView>
         mFileName = new String(lastSlashPos == -1
                 ? path
                 : path.substring(lastSlashPos + 1));
-        Constants.FILE_NAME = mFileName;
+        Constants.FILE_NAME = mFileName==null?"":mFileName;
         Constants.DOCUMENT_PATH = path;
         try {
             core = new MuPDFCore(mContext, path);
