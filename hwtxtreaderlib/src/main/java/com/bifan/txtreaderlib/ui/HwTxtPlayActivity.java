@@ -179,6 +179,7 @@ public class HwTxtPlayActivity extends AppCompatActivity {
     protected View mCoverView;
     protected View ClipboardView;
     protected String CurrentSelectedText;
+    protected View mTvBack;
 
     protected ChapterList mChapterListPop;
     protected MenuHolder mMenuHolder = new MenuHolder();
@@ -218,6 +219,7 @@ public class HwTxtPlayActivity extends AppCompatActivity {
         mMenuHolder.mStyle3 = findViewById(R.id.hwtxtreader_menu_style3);
         mMenuHolder.mStyle4 = findViewById(R.id.hwtxtreader_menu_style4);
         mMenuHolder.mStyle5 = findViewById(R.id.hwtxtreader_menu_style5);
+        mTvBack=findViewById(R.id.iv_return);
     }
 
     private final int[] StyleTextColors = new int[]{
@@ -370,7 +372,8 @@ public class HwTxtPlayActivity extends AppCompatActivity {
         mSettingText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Show(mTopMenu, mBottomMenu, mCoverView);
+//                Show(mTopMenu, mBottomMenu, mCoverView);
+                Show(mBottomMenu, mCoverView);
             }
         });
         setMenuListener();
@@ -380,6 +383,13 @@ public class HwTxtPlayActivity extends AppCompatActivity {
         setOnTextSelectListener();
         setStyleChangeListener();
         setExtraListener();
+        mTvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
     }
 
     private void setExtraListener() {

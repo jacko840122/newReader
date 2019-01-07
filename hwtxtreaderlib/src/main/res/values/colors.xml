@@ -6,4 +6,7 @@
     <color name="hwtxtreader_styleclor3">#d4c7a5</color>
     <color name="hwtxtreader_styleclor4">#393330</color>
     <color name="hwtxtreader_styleclor5">#00141f</color>
+    <color name="background_color">#FFFFFFFF</color>
+    <color name="text_color_gray">#ff999999</color>
+    <color name="common_black">#FF000000</color>
 </resources>
