@@ -93,12 +93,12 @@ public final class NetReqUtils {
 
 
         final public static String   ACTION_CATEGORY="/books/categorymenu";;  //获取图书分类信息
-        final public static String   ACTION_BOOKS_LIST="/books/bookslist";;  //获取图书列表信息
-        final public static String   ACTION_BOOKS_INFO="/books/books_info";;  //获取图书详情信息
-        final public static String   ACTION_SAVE_FEEL="/books/savefeel";;  //保存读后感内容
-        final public static String   ACTgetpzlistION_GET_PZ_LIST="/books/getpzlist";;  //获取图书批注内容
-        final public static String   ACTION_GET_FEEL_LIST="/books/getfeellist";;  //获取读后感列表
-        final public static String   ACTION_GET_READ_NUM="/books/readnum";;  //阅读人数更新接口
+        final public static String   ACTION_BOOKS_LIST="/books/bookslist/";;  //获取图书列表信息
+        final public static String   ACTION_BOOKS_INFO="/books/books_info/";;  //获取图书详情信息
+        final public static String   ACTION_SAVE_FEEL="/books/savefeel/";;  //保存读后感内容
+        final public static String   ACTgetpzlistION_GET_PZ_LIST="/books/getpzlist/";;  //获取图书批注内容
+        final public static String   ACTION_GET_FEEL_LIST="/books/getfeellist/";;  //获取读后感列表
+        final public static String   ACTION_GET_READ_NUM="/books/readnum/";;  //阅读人数更新接口
 
 
 
@@ -127,7 +127,7 @@ public final class NetReqUtils {
         public static HashMap<String, String> getCommomHeader(Context context){
                 HashMap<String, String> map=new HashMap<String, String>();
                 map.put("Accept", "application/json");
-                map.put("Content-Type", "application/json; charset=UTF-8");
+                map.put("Content-Type", "application/x-www-form-urlencoded");
 
                 return map;
         }
@@ -183,6 +183,9 @@ public final class NetReqUtils {
 
                 if(ExtraHeader!=null) header.putAll(ExtraHeader);
                 if(ExtraParams!=null) params.putAll(ExtraParams);
+                if(url.startsWith("/")){
+                        url=BASE_URL+url;
+                }
                 Log.i(TAG,"addGsonRequest--"+url);
                 return  VolleyManager.GetVolleyManager(context).addGsonRequest(method, tag, header, params,url, clazz, listener, errorListener);
 
@@ -201,6 +204,9 @@ public final class NetReqUtils {
 
                 if(ExtraHeader!=null) header.putAll(ExtraHeader);
                 if(ExtraParams!=null) params.putAll(ExtraParams);
+                if(url.startsWith("/")){
+                        url=BASE_URL+url;
+                }
                 Log.i(TAG,"addGsonRequest--"+url);
                 return  VolleyManager.GetVolleyManager(context).addGsonRequestWithPriority(method, tag, header, params,url, clazz, listener, errorListener,priority);
 

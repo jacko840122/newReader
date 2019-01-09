@@ -1,6 +1,7 @@
 package com.common.http;
 
-import android.telecom.Log;
+
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -38,7 +39,7 @@ public class GsonRequest<T> extends Request<T> {
     protected static final String PROTOCOL_CHARSET = "utf-8";
     /** Content type for request. */
     private static final String PROTOCOL_CONTENT_TYPE =
-            String.format("application/json; charset=%s", PROTOCOL_CHARSET);
+            String.format("application/x-www-form-urlencoded; charset=%s", PROTOCOL_CHARSET);
 
     public GsonRequest(int method, Map<String, String> header,Map<String, Object>Params,String url, Class<T> clazz, Response.Listener<T> listener,
                             Response.ErrorListener errorListener) {

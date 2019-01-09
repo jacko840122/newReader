@@ -17,9 +17,11 @@ import com.android.volley.VolleyError;
 import com.common.http.NetReqUtils;
 import com.common.http.data.Books_info;
 import com.common.http.data.Categorymenu;
+import com.common.http.data.Feellist;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -37,6 +39,7 @@ import io.reactivex.disposables.Disposable;
 import static com.android.volley.Request.Method.POST;
 import static com.common.http.NetReqUtils.ACTION_BOOKS_INFO;
 import static com.common.http.NetReqUtils.ACTION_CATEGORY;
+import static com.common.http.NetReqUtils.ACTION_GET_FEEL_LIST;
 
 public class MainActivity extends AppCompatActivity implements Response.ErrorListener {
 
@@ -74,12 +77,20 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
     private Response.Listener<Categorymenu> mCatListener=new Response.Listener<Categorymenu>() {
         @Override
         public void onResponse(Categorymenu response) {
-
+            mCategorymenu=response;
         }
     };
     private Response.Listener<Books_info> mBookListener=new Response.Listener<Books_info>() {
         @Override
         public void onResponse(Books_info response) {
+            mBooks_info=response;
+        }
+    };
+    private Categorymenu mCategorymenu;
+    private Books_info mBooks_info;
+    private Response.Listener<Feellist> mFeelsListener=new Response.Listener<Feellist>() {
+        @Override
+        public void onResponse(Feellist response) {
 
         }
     };
@@ -90,15 +101,24 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
         setContentView(R.layout.main_layout);
         ButterKnife.bind(this);
         initViews();
+        getNetData();
         checkPermissions();
     }
 
     private void getNetData(){
-        NetReqUtils.addGsonRequest(this,POST,TAG,null,null,ACTION_CATEGORY,
-                Categorymenu.class,mCatListener,this);
+//        NetReqUtils.addGsonRequest(this,POST,TAG,null,null,ACTION_CATEGORY,
+//                Categorymenu.class,mCatListener,this);
 
-        NetReqUtils.addGsonRequest(this,POST,TAG,null,null,ACTION_BOOKS_INFO,
+        HashMap<String, Object> extraParams =new HashMap<>();
+        extraParams.put("booksid",92);
+        NetReqUtils.addGsonRequest(this,POST,TAG,null,extraParams,ACTION_BOOKS_INFO,
                 Books_info.class,mBookListener,this);
+
+
+//        HashMap<String, Object> extraParams2 =new HashMap<>();
+//        extraParams2.put("booksid",92);
+//        NetReqUtils.addGsonRequest(this,POST,TAG,null,extraParams,ACTION_GET_FEEL_LIST,
+//                Feellist.class,mFeelsListener,this);
     }
 
 
@@ -117,7 +137,8 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
 
     @Override
     public void onErrorResponse(VolleyError error) {
-
+        Toast.makeText(MainActivity.this,"网络连接有异常!",Toast.LENGTH_SHORT).show();
+        error.printStackTrace();
     }
 
     class SortItem{
@@ -184,7 +205,11 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
 
 
     private void checkPermissions() {
-        new RxPermissions(this).request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        String [] perssions={
+                Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.INTERNET
+        };
+        new RxPermissions(this).request(perssions)
                 .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onSubscribe(Disposable d) {

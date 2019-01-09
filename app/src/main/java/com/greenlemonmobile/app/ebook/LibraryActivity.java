@@ -157,7 +157,11 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
     private static ArrayList<String> mReadiumFiles = new ArrayList<String>();
 
     private void checkPermissions() {
-        new RxPermissions(this).request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        String [] perssions={
+                Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.INTERNET
+        };
+        new RxPermissions(this).request(perssions)
                 .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onSubscribe(Disposable d) {
