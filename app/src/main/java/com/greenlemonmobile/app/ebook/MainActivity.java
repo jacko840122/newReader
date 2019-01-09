@@ -12,6 +12,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.common.http.NetReqUtils;
+import com.common.http.data.Books_info;
+import com.common.http.data.Categorymenu;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
@@ -29,9 +34,14 @@ import butterknife.OnClick;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public class MainActivity extends AppCompatActivity {
+import static com.android.volley.Request.Method.POST;
+import static com.common.http.NetReqUtils.ACTION_BOOKS_INFO;
+import static com.common.http.NetReqUtils.ACTION_CATEGORY;
+
+public class MainActivity extends AppCompatActivity implements Response.ErrorListener {
 
 
+    private static final String TAG ="MainActivity" ;
     @BindView(R.id.search_btn)
     ImageView mSearchBtn;
     @BindView(R.id.icon_btn)
@@ -61,6 +71,18 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.search_bar2)
     LinearLayout searchBar2;
     private SortAdapter mSortAdapter;
+    private Response.Listener<Categorymenu> mCatListener=new Response.Listener<Categorymenu>() {
+        @Override
+        public void onResponse(Categorymenu response) {
+
+        }
+    };
+    private Response.Listener<Books_info> mBookListener=new Response.Listener<Books_info>() {
+        @Override
+        public void onResponse(Books_info response) {
+
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +91,14 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initViews();
         checkPermissions();
+    }
+
+    private void getNetData(){
+        NetReqUtils.addGsonRequest(this,POST,TAG,null,null,ACTION_CATEGORY,
+                Categorymenu.class,mCatListener,this);
+
+        NetReqUtils.addGsonRequest(this,POST,TAG,null,null,ACTION_BOOKS_INFO,
+                Books_info.class,mBookListener,this);
     }
 
 
@@ -82,6 +112,11 @@ public class MainActivity extends AppCompatActivity {
         mSortAdapter = new SortAdapter(list);
         mRcSort.setItemAnimator(new DefaultItemAnimator());
         mRcSort.setAdapter(mSortAdapter);
+
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
 
     }
 
