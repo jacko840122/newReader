@@ -34,6 +34,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".BookActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+
+
         <activity
             android:name="com.greenlemonmobile.app.ebook.LibraryActivity"
             android:configChanges="keyboardHidden|orientation"

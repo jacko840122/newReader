@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
+import java.net.URLDecoder;
 import java.util.Map;
 
 import static com.android.volley.DefaultRetryPolicy.DEFAULT_BACKOFF_MULT;
@@ -134,8 +135,12 @@ public class GsonRequest<T> extends Request<T> {
 
     private byte[] encodeParameters(Map<String, Object> params, String paramsEncoding) {
         try {
-
-            return new JSONObject(params).toString().getBytes(paramsEncoding);
+            StringBuilder stringBuilder=new StringBuilder();
+            for(String key:params.keySet()){
+                stringBuilder.append(key+"="+URLDecoder.decode(params.get(key).toString(),"UTF-8") + "&");
+            }
+            //return new JSONObject(params).toString().getBytes(paramsEncoding);
+            return stringBuilder.toString().getBytes();
         } catch (UnsupportedEncodingException uee) {
             throw new RuntimeException("Encoding not supported: " + paramsEncoding, uee);
         }

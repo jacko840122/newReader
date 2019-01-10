@@ -3,6 +3,7 @@ package com.greenlemonmobile.app.ebook;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.common.http.NetReqUtils;
 import com.common.http.data.Books_info;
 import com.common.http.data.Categorymenu;
 import com.common.http.data.Feellist;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
@@ -84,8 +86,44 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
         @Override
         public void onResponse(Books_info response) {
             mBooks_info=response;
+            bindBookInfo();
         }
     };
+
+    private void bindBookInfo(){
+        if(mBooks_info!=null&&mBooks_info.getData()!=null
+                &&!mBooks_info.getData().isEmpty()){
+            Books_info.DataBean boo_info=mBooks_info.getData().get(0);
+            String cover=boo_info.getB_cover();
+            String author=boo_info.getB_author();
+            String introduction=boo_info.getB_introduction();
+            String name=boo_info.getB_name();
+            String Readnum=boo_info.getReadnum();
+            if(TextUtils.isEmpty(cover)||cover.length()<5){
+                mIvCover.setImageResource(R.drawable.default_cover);
+            }else{
+                ImageLoader.getInstance().displayImage(cover,mIvCover);
+            }
+
+            if(!TextUtils.isEmpty(author)){
+                mTvBookAuthor.setText(author);
+            }
+
+            if(!TextUtils.isEmpty(introduction)){
+                mTvBrief.setText(introduction);
+            }
+            if(!TextUtils.isEmpty(name)){
+                mTvBookName.setText(name);
+            }
+
+            if(!TextUtils.isEmpty(Readnum)){
+                mTvPersonCount.setText(Readnum+"人在读");
+            }
+            mTvBookContainer.setVisibility(View.VISIBLE);
+        }else {
+            //mTvBookContainer.setVisibility(View.INVISIBLE);
+        }
+    }
     private Categorymenu mCategorymenu;
     private Books_info mBooks_info;
     private Response.Listener<Feellist> mFeelsListener=new Response.Listener<Feellist>() {
@@ -106,11 +144,11 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
     }
 
     private void getNetData(){
-//        NetReqUtils.addGsonRequest(this,POST,TAG,null,null,ACTION_CATEGORY,
-//                Categorymenu.class,mCatListener,this);
+        NetReqUtils.addGsonRequest(this,POST,TAG,null,null,ACTION_CATEGORY,
+                Categorymenu.class,mCatListener,this);
 
         HashMap<String, Object> extraParams =new HashMap<>();
-        extraParams.put("booksid",92);
+        extraParams.put("booksid",64);
         NetReqUtils.addGsonRequest(this,POST,TAG,null,extraParams,ACTION_BOOKS_INFO,
                 Books_info.class,mBookListener,this);
 
@@ -245,12 +283,17 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
         super.onResume();
     }
 
-    @OnClick({R.id.search_btn, R.id.icon_btn})
+    @OnClick({R.id.search_btn, R.id.icon_btn,R.id.rv_book_container})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.search_btn:
                 break;
             case R.id.icon_btn:
+                break;
+
+            case R.id.rv_book_container:
+                Intent intent=new Intent(this,BookActivity.class);
+                startActivity(intent);
                 break;
         }
     }

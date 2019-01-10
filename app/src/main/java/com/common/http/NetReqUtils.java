@@ -126,8 +126,6 @@ public final class NetReqUtils {
 
         public static HashMap<String, String> getCommomHeader(Context context){
                 HashMap<String, String> map=new HashMap<String, String>();
-                map.put("Accept", "application/json");
-                map.put("Content-Type", "application/x-www-form-urlencoded");
 
                 return map;
         }
