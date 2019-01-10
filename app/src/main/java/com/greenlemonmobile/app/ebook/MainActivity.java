@@ -65,8 +65,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
     TextView mTvReadTime;
     @BindView(R.id.tv_create_count)
     TextView mTvCreateCount;
-    @BindView(R.id.tv_brief)
-    TextView mTvBrief;
+
     @BindView(R.id.tv_content)
     TextView mTvContent;
     @BindView(R.id.rv_book_container)
@@ -110,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
             }
 
             if(!TextUtils.isEmpty(introduction)){
-                mTvBrief.setText(introduction);
+                mTvContent.setText(introduction);
             }
             if(!TextUtils.isEmpty(name)){
                 mTvBookName.setText(name);
@@ -293,6 +292,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
 
             case R.id.rv_book_container:
                 Intent intent=new Intent(this,BookActivity.class);
+                intent.putExtra("book_info",mBooks_info);
                 startActivity(intent);
                 break;
         }

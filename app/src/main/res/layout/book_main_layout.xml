@@ -46,6 +46,7 @@
         <ImageView
             android:id="@+id/iv_cover"
             android:layout_width="400dp"
+            android:scaleType="fitXY"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:src="@drawable/default_cover" />
@@ -133,7 +134,80 @@
             android:layout_alignLeft="@id/tv_book_name"
             android:layout_marginTop="21dp"
             android:textColor="#010101"
-            android:textSize="18sp" />
+            android:layout_alignBottom="@id/iv_cover"
+            android:ellipsize="end"
+            android:maxLines="7"
+            android:lineSpacingMultiplier="1.5"
+            android:textSize="12sp" />
     </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#0d0d0d"
+        android:src="@drawable/line"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <!--<android.support.design.widget.TabLayout-->
+            <!--android:id="@+id/tl_tab"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+
+
+        <!--<android.support.v4.view.ViewPager-->
+            <!--android:id="@+id/vp_tab_content"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"/>-->
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#0d0d0d"
+        android:src="@drawable/line"/>
+
+
+  <LinearLayout
+      android:id="@+id/ll_bottom_bar"
+      android:orientation="horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="100dp">
+
+      <TextView
+          android:id="@+id/tv_add_book"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:gravity="center"
+          android:text="加入书架"
+          android:textColor="#0d0d0d"
+          android:textSize="46sp"
+          android:textStyle="bold"
+          android:layout_weight="1"/>
+
+      <ImageView
+          android:layout_width="1dp"
+          android:layout_height="match_parent"
+          android:background="#0d0d0d" />
+
+      <TextView
+          android:id="@+id/tv_read_book"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:gravity="center"
+          android:textColor="#e0e0e0"
+          android:background="#626262"
+          android:text="阅读"
+          android:textSize="46sp"
+          android:textStyle="bold"
+          android:layout_weight="1"/>
+
+  </LinearLayout>
 
 </LinearLayout>

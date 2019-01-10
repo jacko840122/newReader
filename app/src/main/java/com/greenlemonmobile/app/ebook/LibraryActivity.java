@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -53,15 +52,10 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher.ViewFactory;
 
 import com.bifan.txtreaderlib.ui.HwTxtPlayActivity;
-import com.folioreader.Config;
-import com.folioreader.FolioReader;
-import com.folioreader.util.AppUtil;
 import com.github.reader.pdf.ui.activity.PdfActivity;
 import com.greenlemonmobile.app.ebook.adapter.BookinfosGridAdapter;
 import com.greenlemonmobile.app.ebook.adapter.BookinfosGridAdapter.OnDeleteListener;
-import com.greenlemonmobile.app.ebook.adapter.BookinfosListAdapter;
 import com.greenlemonmobile.app.ebook.books.reader.EpubContext;
-import com.greenlemonmobile.app.ebook.books.reader.EpubReaderActivity;
 import com.greenlemonmobile.app.ebook.entity.FileInfo;
 import com.greenlemonmobile.app.ebook.entity.LocalBook;
 import com.greenlemonmobile.app.utils.FileUtil;
@@ -82,6 +76,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import androidx.appcompat.app.AppCompatActivity;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 

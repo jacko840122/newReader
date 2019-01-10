@@ -1,7 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'checkstyle'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.jakewharton.butterknife'
 
 android {
@@ -79,7 +76,7 @@ dependencies {
     compile files('libs/statusclasses.jar')
     compile files('libs/universal-image-loader-1.9.5.jar')
     compile files('libs/user-center.jar')
-    implementation project(':folioreader')
+
     implementation project(':hwtxtreaderlib')
     implementation project(':pdf')
     //implementation "com.folioreader:folioreader:0.5.1"

@@ -1,8 +1,9 @@
 package com.common.http.data;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Books_info{
+public class Books_info implements Serializable {
 
 
     /**
@@ -49,7 +50,7 @@ public class Books_info{
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * id : 92
          * sid : 143
@@ -184,7 +185,7 @@ public class Books_info{
             this.catalog = catalog;
         }
 
-        public static class CatalogBean {
+        public static class CatalogBean implements Serializable{
             /**
              * cname : 第001回　宴桃园豪杰三结义　斩黄巾英雄首立功
              */
