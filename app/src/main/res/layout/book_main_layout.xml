@@ -162,6 +162,7 @@
         app:tabMaxWidth="0dp"
         app:tabTextAppearance="@style/tabTextAppearance">
 
+
     </com.google.android.material.tabs.TabLayout>
 
     <ImageView

@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@id/book_bloc_item_list"
-    style="@style/ThumbnailContainerMedium"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@drawable/list_view_item_selector"
     android:gravity="bottom|center"
     android:orientation="vertical" >
 
     <RelativeLayout
-        style="@style/ThumbnailContainerMedium"
-        android:layout_margin="2.0dip" >
+        android:layout_height="416px"
+        android:layout_width="312px">
 
         <ImageView
             android:id="@id/icon"
-            style="@style/ThumbnailImageMedium"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:scaleType="fitXY"
             android:src="@drawable/no_cover" />
 
@@ -46,6 +48,7 @@
             android:layout_alignLeft="@id/icon"
             android:background="@drawable/read_progress_bg"
             android:gravity="center_vertical|left"
+            android:visibility="gone"
             android:paddingLeft="14px"
             android:textColor="#ffffffff"
             android:textSize="20px" />

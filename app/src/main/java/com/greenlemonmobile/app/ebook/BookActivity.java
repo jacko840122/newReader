@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.common.http.VolleyManager;
 import com.common.http.data.Books_info;
 import com.google.android.material.tabs.TabLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -70,6 +71,7 @@ public class BookActivity extends AppCompatActivity implements Response.ErrorLis
 
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private FragmentPagerAdapter mPagerAdapter;
+    private ArrayList<TabLayout.Tab> mTabs=new ArrayList<>();
 
 
     private void initFrament() {
@@ -82,18 +84,23 @@ public class BookActivity extends AppCompatActivity implements Response.ErrorLis
         fragment1.setArguments(bundle1);
 
         Bundle bundle2=new Bundle();
-        bundle1.putSerializable("Catalog", (Serializable) mBook_info.getCatalog());
+        bundle2.putSerializable("Catalog", (Serializable) mBook_info.getCatalog());
         Fragment fragment2=new DirFragment();
         fragment2.setArguments(bundle2);
         mFragments.add(fragment1);
         mFragments.add(fragment2);
-        mTabContent.addTab(mTabContent.newTab());
-        mTabContent.addTab(mTabContent.newTab());
-        mTabContent.getTabAt(0).setText("读 后 感");
-        mTabContent.getTabAt(1).setText("目 录");
 
-        mTabContent.setupWithViewPager(mViewPager, false);
+        mTabs.add(mTabContent.newTab().setText("读  后  感"));
+        mTabs.add(mTabContent.newTab().setText("目  录"));
+
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return mTabs.get(position).getText();
+            }
+
             @Override
             public int getCount() {
                 return mFragments.size();
@@ -106,6 +113,7 @@ public class BookActivity extends AppCompatActivity implements Response.ErrorLis
             }
         };
         mViewPager.setAdapter(mPagerAdapter);
+        mTabContent.setupWithViewPager(mViewPager, true);
 
     }
 

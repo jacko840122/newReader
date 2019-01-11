@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.common.http.data.Books_info;
 
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class DirFragment extends Fragment {
@@ -33,49 +35,56 @@ public class DirFragment extends Fragment {
         mCatalog = (List<Books_info.DataBean.CatalogBean>) getArguments().getSerializable("Catalog");
     }
 
-    protected class DirAdapter extends  RecyclerView.Adapter{
+    protected class DirAdapter extends RecyclerView.Adapter {
         private List<Books_info.DataBean.CatalogBean> mCatalogList;
 
-        public DirAdapter(List<Books_info.DataBean.CatalogBean> catalog){
-            mCatalogList=catalog;
+        public DirAdapter(List<Books_info.DataBean.CatalogBean> catalog) {
+            mCatalogList = catalog;
         }
 
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sort, parent, false);
-            return new DirAdapter.ViewHolder(view);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dir_item, parent, false);
+            return new DirViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+            ((DirViewHolder)holder).mTvDirItem.setText( mCatalogList.get(position).getCname());
         }
+
 
         @Override
         public int getItemCount() {
-            return mCatalogList==null?0:mCatalogList.size();
+            return mCatalogList == null ? 0 : mCatalogList.size();
         }
 
-        private class ViewHolder extends RecyclerView.ViewHolder {
-            public ViewHolder(View view) {
+
+
+        class DirViewHolder extends RecyclerView.ViewHolder {
+            @BindView(R.id.tv_dir_item)
+            TextView mTvDirItem;
+            public DirViewHolder(View view) {
                 super(view);
+                ButterKnife.bind(this, view);
             }
         }
+
     }
 
     private void bindData() {
-        mDirAdapter=new DirAdapter(mCatalog);
+        mDirAdapter = new DirAdapter(mCatalog);
         mRvDir.setItemAnimator(new DefaultItemAnimator());
-        mRvDir.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
+        mRvDir.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         mRvDir.setAdapter(mDirAdapter);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.main_dir_layout, container,false);
-        mUnbinder=ButterKnife.bind(this,root);
+        View root = inflater.inflate(R.layout.main_dir_layout, container, false);
+        mUnbinder = ButterKnife.bind(this, root);
         bindData();
         return root;
     }
@@ -83,7 +92,7 @@ public class DirFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(mUnbinder!=null){
+        if (mUnbinder != null) {
             mUnbinder.unbind();
         }
     }

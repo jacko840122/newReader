@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Header"
-    android:background="#ffd2d2d2" >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100px"
+    android:background="#ffffff" >
 
     <ImageButton
         android:id="@id/back_btn"
-        style="@style/SortHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30px"
+        android:src="@drawable/return_icon"
+        android:paddingTop="15px"
+        android:paddingBottom="15px"
         android:background="@android:color/transparent"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
-        android:src="@drawable/back_button"
-        android:visibility="visible" />
+        android:gravity="center_vertical|left"
+        android:textColor="#010101"
+        android:textSize="48px"
+        android:textStyle="bold" />
 
     <CheckBox
         android:id="@id/library_order_icon"
@@ -33,25 +40,27 @@
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/back_btn"
+        android:layout_marginLeft="42px"
+        android:layout_gravity="center_vertical|left"
         android:layout_weight="1.0"
         android:gravity="center"
         android:text="我的图书"
-        android:textColor="#ffffffff"
-        android:textSize="42px" />
+        android:textColor="#010101"
+        android:textSize="36px" />
 
     <CheckBox
         android:id="@id/all_checkbox"
         style="@style/AllCheckbox"
-        android:visibility="invisible" />
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/bookdelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:visibility="invisible"
         android:src="@drawable/bookdelete_btn" />
 
     <ImageView
@@ -71,5 +80,13 @@
         android:layout_alignParentRight="true"
         android:src="@drawable/finishdelete_btn"
         android:visibility="gone" />
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_alignParentBottom="true"
+        android:background="#010101">
+
+    </View>
 
 </RelativeLayout>

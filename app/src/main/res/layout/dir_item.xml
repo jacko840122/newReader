@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="#ffffff"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_dir_item"
+        android:textColor="#0d0d0d"
+        android:layout_marginLeft="84px"
+        android:layout_marginTop="44px"
+        android:gravity="center_vertical|left"
+        tools:text="test"
+        android:textSize="30px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
