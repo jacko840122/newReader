@@ -9,19 +9,19 @@
     <include layout="@layout/search_bar"></include>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="21dp"
-        android:layout_marginBottom="21dp"
-        android:layout_marginLeft="25dp"
+        android:layout_marginTop="31px"
+        android:layout_marginBottom="31px"
+        android:layout_marginLeft="37px"
         android:id="@+id/rc_sort"
         android:layout_width="match_parent"
-        android:layout_height="160dp">
+        android:layout_height="240px">
 
     </androidx.recyclerview.widget.RecyclerView>
 
     <View
-        android:layout_marginLeft="25dp"
+        android:layout_marginLeft="37px"
         android:layout_width="match_parent"
-        android:layout_marginRight="6dp"
+        android:layout_marginRight="9px"
         android:layout_height="2px"
         android:background="#000000">
     </View>
@@ -30,15 +30,15 @@
         android:id="@+id/rv_book_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginBottom="22dp"
+        android:layout_marginLeft="37px"
+        android:layout_marginTop="33px"
+        android:layout_marginBottom="33px"
         android:layout_weight="1"
         android:visibility="visible">
 
         <ImageView
             android:id="@+id/iv_cover"
-            android:layout_width="400dp"
+            android:layout_width="600px"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:scaleType="fitXY"
@@ -48,12 +48,12 @@
             android:id="@+id/tv_book_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="45dp"
-            android:layout_marginTop="38dp"
+            android:layout_marginLeft="68px"
+            android:layout_marginTop="57px"
             android:layout_toRightOf="@id/iv_cover"
             android:text="三国演义"
             android:textColor="#010101"
-            android:textSize="24dp" />
+            android:textSize="36px" />
 
         <TextView
             android:id="@+id/tv_book_author"
@@ -61,10 +61,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_book_name"
             android:layout_alignLeft="@id/tv_book_name"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="36px"
             android:text="罗贯中"
             android:textColor="#010101"
-            android:textSize="24sp" />
+            android:textSize="36px" />
 
         <TextView
             android:id="@+id/tv_person_count"
@@ -72,26 +72,26 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_book_author"
             android:layout_alignLeft="@id/tv_book_name"
-            android:layout_marginLeft="13dp"
-            android:layout_marginTop="33dp"
+            android:layout_marginLeft="20px"
+            android:layout_marginTop="50px"
             android:drawableLeft="@drawable/man"
-            android:drawablePadding="11dp"
+            android:drawablePadding="17px"
             android:text="100人在读"
             android:textColor="#010101"
-            android:textSize="9sp" />
+            android:textSize="14px" />
 
         <TextView
             android:id="@+id/tv_read_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/tv_person_count"
-            android:layout_marginLeft="54dp"
+            android:layout_marginLeft="81px"
             android:layout_toRightOf="@id/tv_person_count"
             android:drawableLeft="@drawable/time"
-            android:drawablePadding="9dp"
+            android:drawablePadding="13px"
             android:text="阅读30分钟"
             android:textColor="#010101"
-            android:textSize="9sp" />
+            android:textSize="13px" />
 
         <TextView
             android:id="@+id/tv_create_count"
@@ -99,12 +99,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_read_time"
             android:layout_alignLeft="@+id/tv_person_count"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="38px"
             android:drawableLeft="@drawable/chuanyi"
-            android:drawablePadding="11dp"
+            android:drawablePadding="16px"
             android:text="1067个创意"
             android:textColor="#010101"
-            android:textSize="9sp" />
+            android:textSize="13px" />
 
         <TextView
             android:id="@+id/tv_brief"
@@ -112,10 +112,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_create_count"
             android:layout_alignLeft="@id/tv_book_name"
-            android:layout_marginTop="37dp"
+            android:layout_marginTop="55px"
             android:text="简介"
             android:textColor="#010101"
-            android:textSize="20sp"
+            android:textSize="30px"
             android:textStyle="bold" />
 
         <TextView
@@ -128,34 +128,34 @@
             android:ellipsize="end"
             android:maxLines="7"
             android:lineSpacingMultiplier="1.5"
-            android:layout_marginTop="21dp"
+            android:layout_marginTop="31px"
             tools:text="《三国演义》是中国古典四大名著之一，是中国第一部长篇章回体历史演义小说，全名为《三国志通俗演义》（又称《三国志演义》），作者是元末明初的著名小说家罗贯中。《三国志通俗演义》成书后有嘉靖壬午本等多个版本传于世，到了明末清初，毛宗岗对《三国演义》整顿回目、修正文辞、改换诗文。"
             android:textColor="#010101"
-            android:textSize="14sp" />
+            android:textSize="21px" />
     </RelativeLayout>
 
     <View
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
+        android:layout_marginLeft="9px"
+        android:layout_marginRight="9px"
         android:layout_width="match_parent"
-        android:layout_height="4px"
+        android:layout_height="6px"
         android:background="#000000">
     </View>
 
     <TextView
-        android:layout_marginTop="31px"
+        android:layout_marginTop="46px"
         android:layout_marginStart="41px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="读后感"
         android:textStyle="bold"
         android:textColor="#000000"
-        android:textSize="38sp"/>
+        android:textSize="46px"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_review"
         android:layout_width="match_parent"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="38px"
         android:layout_marginTop="28px"
         android:layout_marginBottom="28px"
         android:background="@drawable/review_fake"

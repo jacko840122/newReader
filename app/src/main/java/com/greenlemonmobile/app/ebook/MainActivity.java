@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Toast.makeText(MainActivity.this,"网络连接有异常!",Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this,"获取数据有异常!",Toast.LENGTH_SHORT).show();
         error.printStackTrace();
     }
 

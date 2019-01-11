@@ -10,27 +10,27 @@
     <LinearLayout
         android:id="@+id/ll_title"
         android:layout_width="match_parent"
-        android:layout_height="67dp"
+        android:layout_height="100px"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tv_return"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="30px"
             android:drawableLeft="@drawable/return_icon"
-            android:drawablePadding="28dp"
+            android:drawablePadding="42px"
             android:gravity="center_vertical|left"
             android:text="图书详情"
             android:textColor="#010101"
-            android:textSize="32sp"
+            android:textSize="48px"
             android:textStyle="bold" />
 
     </LinearLayout>
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2px"
         android:background="#0d0d0d"
         android:src="@drawable/line" />
 
@@ -38,15 +38,15 @@
     <RelativeLayout
         android:id="@+id/rv_book_container"
         android:layout_width="match_parent"
-        android:layout_height="510dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginBottom="22dp"
+        android:layout_height="765px"
+        android:layout_marginLeft="37px"
+        android:layout_marginTop="33px"
+        android:layout_marginBottom="33px"
         android:visibility="visible">
 
         <ImageView
             android:id="@+id/iv_cover"
-            android:layout_width="400dp"
+            android:layout_width="600px"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:scaleType="fitXY"
@@ -56,12 +56,12 @@
             android:id="@+id/tv_book_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="45dp"
-            android:layout_marginTop="38dp"
+            android:layout_marginLeft="67px"
+            android:layout_marginTop="57px"
             android:layout_toRightOf="@id/iv_cover"
             android:text="三国演义"
             android:textColor="#010101"
-            android:textSize="36sp" />
+            android:textSize="54px" />
 
         <TextView
             android:id="@+id/tv_book_author"
@@ -69,10 +69,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_book_name"
             android:layout_alignLeft="@id/tv_book_name"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="36px"
             android:text="罗贯中"
             android:textColor="#010101"
-            android:textSize="24sp" />
+            android:textSize="36px" />
 
         <TextView
             android:id="@+id/tv_person_count"
@@ -80,26 +80,26 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_book_author"
             android:layout_alignLeft="@id/tv_book_name"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="33dp"
+            android:layout_marginLeft="24px"
+            android:layout_marginTop="50px"
             android:drawableLeft="@drawable/man"
-            android:drawablePadding="11dp"
+            android:drawablePadding="16px"
             android:text="100人在读"
             android:textColor="#010101"
-            android:textSize="14sp" />
+            android:textSize="21px" />
 
         <TextView
             android:id="@+id/tv_read_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/tv_person_count"
-            android:layout_marginLeft="54dp"
+            android:layout_marginLeft="81px"
             android:layout_toRightOf="@id/tv_person_count"
             android:drawableLeft="@drawable/time"
-            android:drawablePadding="9dp"
+            android:drawablePadding="13px"
             android:text="阅读30分钟"
             android:textColor="#010101"
-            android:textSize="14sp" />
+            android:textSize="21px" />
 
         <TextView
             android:id="@+id/tv_create_count"
@@ -107,12 +107,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_read_time"
             android:layout_alignLeft="@+id/tv_person_count"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="37px"
             android:drawableLeft="@drawable/chuanyi"
-            android:drawablePadding="11dp"
+            android:drawablePadding="16px"
             android:text="1067个创意"
             android:textColor="#010101"
-            android:textSize="14sp" />
+            android:textSize="21px" />
 
         <TextView
             android:id="@+id/tv_brief"
@@ -120,10 +120,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_create_count"
             android:layout_alignLeft="@id/tv_book_name"
-            android:layout_marginTop="37dp"
+            android:layout_marginTop="55px"
             android:text="简介"
             android:textColor="#010101"
-            android:textSize="30sp"
+            android:textSize="45px"
             android:textStyle="bold" />
 
         <TextView
@@ -133,66 +133,51 @@
             android:layout_below="@id/tv_brief"
             android:layout_alignLeft="@id/tv_book_name"
             android:layout_alignBottom="@id/iv_cover"
-            android:layout_marginTop="21dp"
+            android:layout_marginTop="31px"
             android:ellipsize="end"
             android:lineSpacingMultiplier="1.5"
             android:maxLines="7"
             android:textColor="#010101"
-            android:textSize="12sp"
+            android:textSize="18px"
             tools:text="《三国演义》是中国古典四大名著之一，是中国第一部长篇章回体历史演义小说，全名为《三国志通俗演义》（又称《三国志演义》），作者是元末明初的著名小说家罗贯中。《三国志通俗演义》成书后有嘉靖壬午本等多个版本传于世，到了明末清初，毛宗岗对《三国演义》整顿回目、修正文辞、改换诗文。" />
     </RelativeLayout>
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="4px"
+        android:layout_marginLeft="10px"
+        android:layout_marginRight="10px"
         android:background="#0d0d0d"
         android:src="@drawable/line" />
 
-    <LinearLayout
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabGravity="fill"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorColor="#c8c8c8"
+        app:tabIndicatorHeight="9px"
+        app:tabMode="fixed"
+        app:tabMaxWidth="0dp"
+        app:tabTextAppearance="@style/tabTextAppearance">
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_marginTop="3px"
+        android:layout_height="4px"
+        android:layout_marginLeft="9px"
+        android:layout_marginRight="9px"
+        android:background="#0d0d0d" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp_tab_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <com.google.android.material.tabs.TabLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabGravity="fill"
-            app:tabIndicatorColor="#c8c8c8"
-            app:tabIndicatorHeight="6dp"
-            app:tabMode="fixed"
-            app:tabMaxWidth="0dp"
-            app:tabTextAppearance="@style/tabTextAppearance">
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="读后感" />
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="目录" />
-
-        </com.google.android.material.tabs.TabLayout>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:background="#0d0d0d"
-            android:src="@drawable/line" />
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/vp_tab_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
+        />
 
 
     <ImageView
@@ -205,7 +190,7 @@
     <LinearLayout
         android:id="@+id/ll_bottom_bar"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="150px"
         android:orientation="horizontal">
 
         <TextView
@@ -216,7 +201,7 @@
             android:gravity="center"
             android:text="加入书架"
             android:textColor="#0d0d0d"
-            android:textSize="46sp"
+            android:textSize="69px"
             android:textStyle="bold" />
 
         <ImageView
@@ -233,7 +218,7 @@
             android:gravity="center"
             android:text="阅读"
             android:textColor="#e0e0e0"
-            android:textSize="46sp"
+            android:textSize="69px"
             android:textStyle="bold" />
 
     </LinearLayout>
