@@ -56,22 +56,22 @@ public class BooksDBOnInternet {
 		 * 
 		 */
 		private static final long serialVersionUID = -3925519331623133805L;
-		protected String		id;				    //类型
-		protected String		type;				//类型
-		protected String		name;				//书名
-		protected String		publishingHouse;	//出版社
-		protected String      	author;				//作者
-		protected String		version;			//版本
-		protected String		date;				//出版日期
-		protected String		summary;			//简介
-		protected String		image;				//图片
-		protected String		path;				//下载路径
-		protected String		length;				//文件大小
-		protected String		focus;				//热门图书
-		
-		protected 	String			downloadTimes;	//下载次数
-		protected 	String			commentTimes;	//评论次数，对视频、教材和课外书有效
-		protected     String		star;			//平均星级
+		public String		id;				    //类型
+		public String		type;				//类型
+		public String		name;				//书名
+		public String		publishingHouse;	//出版社
+		public String      	author;				//作者
+		public String		version;			//版本
+		public String		date;				//出版日期
+		public String		summary;			//简介
+		public String		image;				//图片
+		public String		path;				//下载路径
+		public String		length;				//文件大小
+		public String		focus;				//热门图书
+
+		public 	String			downloadTimes;	//下载次数
+		public 	String			commentTimes;	//评论次数，对视频、教材和课外书有效
+		public     String		star;			//平均星级
 		
 		
 		

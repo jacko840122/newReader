@@ -340,7 +340,7 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
 
                 String filePath = intent.getData().getPath();
                 if (!TextUtils.isEmpty(filePath)){
-                    openFile(new File(filePath));
+                    FileUtil.openFile(this,new File(filePath),-1);
                 }
 
 
@@ -424,7 +424,7 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
  
     private void LoadFilesOfSomeDirectories() {
     	
-    	final String[]  Directories={"/mnt/sdcard/ebook","/mnt/internal_sd","/mnt/internal_sd/ebook","/mnt/external_sd","/mnt/external_sd/ebook","/mnt/internal_sd/跨学书城","/mnt/external_sd/跨学书城"};
+    	final String[]  Directories={"/mnt/sdcard/ebook","/mnt/internal_sd","/mnt/internal_sd/ebook","/mnt/external_sd","/mnt/external_sd/ebook"};
 
         String Subdir=getIntent().getStringExtra("Subdir");
     	ArrayList<File> DirList2BeImported = new ArrayList<File>();
@@ -822,64 +822,11 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
         
         if (mLocalBooks != null && mLocalBooks.size() > position) {
         	LocalBook book = mLocalBooks.get(position);
-            openFile(new File(book.file));
+            FileUtil.openFile(this,new File(book.file),-1);
 
         }
     }
 
-    private void openFile(File file){
-        final Uri data = Uri.fromFile(file);
-        CodecType codecType = CodecType.getByUri(data.toString());
-
-        if (codecType.getContextClass().getSimpleName().equals(EpubContext.class.getSimpleName())) {
-//	    		Intent intent = new Intent(this, EpubReaderActivity.class);
-//	    		intent.putExtra("BookID", book.id);
-//	    		startActivity(intent);
-            if(codecType.compareTo(CodecType.TXT)==0){
-                HwTxtPlayActivity.loadTxtFile(this, file.getPath());
-            }else {
-//                Config config = AppUtil.getSavedConfig(getApplicationContext());
-//                if (config == null)
-//                    config = new Config();
-//                config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL).setDirection(Config.Direction.HORIZONTAL);
-//                FolioReader folioReader = FolioReader.get();
-//                folioReader.setConfig(config,true).openBook(file.getPath());
-//                    Intent intent = new Intent(this, EpubReaderActivity.class);
-//                    intent.putExtra("BookID", book.id);
-//                    startActivity(intent);
-                Uri uri = Uri.parse(file.getPath());
-                Intent intent = new Intent(this, PdfActivity.class);
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(uri);
-                startActivity(intent);
-                mNeedUpdateBookMark=true;
-
-            }
-
-            mNeedUpdateBookMark=true;
-        } else {
-
-//                int currentPage = 0;
-//                Bookmark bookmark = Bookmark.getBookmark(this, Md5Encrypt.md5(book.file));
-//                if (bookmark != null)
-//                    currentPage = (int) bookmark.current_page;
-//                if (currentPage < 0)
-//                    currentPage = 0;
-//                final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.fromFile(file));
-//                intent.setClass(this, org.ebookdroid.ui.viewer.ViewerActivity.class);
-//                intent.putExtra("persistent", "false");
-//                intent.putExtra("nightMode", "false");
-//                intent.putExtra("pageIndex", Integer.toString((currentPage>0)?(currentPage-1):0));
-//                intent.putExtra("BookID", book.id);
-//                startActivity(intent);
-            Uri uri = Uri.parse(file.getPath());
-            Intent intent = new Intent(this, PdfActivity.class);
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.setData(uri);
-            startActivity(intent);
-            mNeedUpdateBookMark=true;
-        }
-    }
     
     OnDeleteListener mOnDeleteListener = new OnDeleteListener() {
 		@Override

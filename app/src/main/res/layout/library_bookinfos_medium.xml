@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/list_view_item_selector"
     android:gravity="bottom|center"
+    android:paddingTop="36px"
     android:orientation="vertical" >
 
     <RelativeLayout

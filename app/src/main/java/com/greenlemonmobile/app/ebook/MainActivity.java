@@ -19,6 +19,8 @@ import com.common.http.NetReqUtils;
 import com.common.http.data.Books_info;
 import com.common.http.data.Categorymenu;
 import com.common.http.data.Feellist;
+import com.greenlemonmobile.app.utils.FileUtil;
+import com.greenlemonmobile.app.utils.SharePrefUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -39,6 +41,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 import static com.android.volley.Request.Method.POST;
+import static com.common.http.NetReqUtils.ACTION_BOOKSKEY_INFO;
 import static com.common.http.NetReqUtils.ACTION_BOOKS_INFO;
 import static com.common.http.NetReqUtils.ACTION_CATEGORY;
 import static com.common.http.NetReqUtils.ACTION_GET_FEEL_LIST;
@@ -101,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
             if(TextUtils.isEmpty(cover)||cover.length()<5){
                 mIvCover.setImageResource(R.drawable.default_cover);
             }else{
-                ImageLoader.getInstance().displayImage(cover,mIvCover);
+                ImageLoader.getInstance().displayImage(NetReqUtils.BASE_URL+cover,mIvCover);
             }
 
             if(!TextUtils.isEmpty(author)){
@@ -140,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
         initViews();
         getNetData();
         checkPermissions();
+        FileUtil.searchFiles();
     }
 
     private void getNetData(){
@@ -147,9 +151,19 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
                 Categorymenu.class,mCatListener,this);
 
         HashMap<String, Object> extraParams =new HashMap<>();
-        extraParams.put("booksid",64);
-        NetReqUtils.addGsonRequest(this,POST,TAG,null,extraParams,ACTION_BOOKS_INFO,
-                Books_info.class,mBookListener,this);
+        int booksid=SharePrefUtil.getInstance().getInt("last_book_id");
+        String name=SharePrefUtil.getInstance().getString("last_book_name");
+        if(booksid<=0) booksid=64;
+        if(booksid>0){
+            extraParams.put("booksid",booksid);
+            NetReqUtils.addGsonRequest(this,POST,TAG,null,extraParams,ACTION_BOOKS_INFO,
+                    Books_info.class,mBookListener,this);
+
+        }else {
+            extraParams.put("booksname",name);
+            NetReqUtils.addGsonRequest(this,POST,TAG,null,extraParams,ACTION_BOOKSKEY_INFO,
+                    Books_info.class,mBookListener,this);
+        }
 
 
 //        HashMap<String, Object> extraParams2 =new HashMap<>();
@@ -284,14 +298,17 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
 
     @OnClick({R.id.search_btn, R.id.icon_btn,R.id.rv_book_container})
     public void onViewClicked(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.search_btn:
+                intent=new Intent(this,BookSearchActivity.class);
+                startActivity(intent);
                 break;
             case R.id.icon_btn:
                 break;
 
             case R.id.rv_book_container:
-                Intent intent=new Intent(this,BookActivity.class);
+                intent=new Intent(this,BookActivity.class);
                 intent.putExtra("book_info",mBooks_info);
                 startActivity(intent);
                 break;

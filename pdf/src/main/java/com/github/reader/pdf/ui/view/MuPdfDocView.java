@@ -64,7 +64,10 @@ public class MuPdfDocView extends BaseDocView {
 		// When the layout has settled ask the page to render
 		// in HQ
 		LogUtils.d(TAG,"onSettle ......");
-		((IBaseDocView) v).updateHq(false);
+		if(v!=null){
+			((IBaseDocView) v).updateHq(false);
+		}
+
 	}
 
 	/**

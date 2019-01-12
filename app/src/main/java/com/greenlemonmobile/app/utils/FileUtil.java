@@ -10,12 +10,20 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bifan.txtreaderlib.ui.HwTxtPlayActivity;
+import com.github.reader.pdf.ui.activity.PdfActivity;
+import com.github.reader.utils.SharedPreferencesUtil;
 import com.greenlemonmobile.app.constant.DefaultConstant;
+import com.greenlemonmobile.app.ebook.books.reader.EpubContext;
 import com.greenlemonmobile.app.ebook.entity.FileInfo;
+
+import org.ebookdroid.CodecType;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,7 +32,10 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 
 public class FileUtil {
 	public static final String READIUM_FOLDER = ".readium/";
@@ -350,5 +361,135 @@ public class FileUtil {
                 .getTimeFormat(context);
         Date date = new Date(time);
         return dateFormat.format(date) + " " + timeFormat.format(date);
+    }
+
+
+    private static String[] DOCUMENT_EXTS = new String[] {
+            "epub", "txt","pdf", /*"djvu", "djv", "xps", "oxps", "cbz", "cbr", /*"fb2", "fb2.zip", "chm" , "umd"*/
+    };
+
+    private static ArrayList<String> mBookPathList=new ArrayList<>() ;
+
+
+    private static boolean includeExtensions(File file,String[] extensions){
+        if(file==null|| extensions==null||extensions.length<=0) return false;
+        String path=file.getPath();
+        int index=path.lastIndexOf(".");
+        if(index>=0&&(index+1<path.length())){
+            String fileExt=path.substring(index+1);
+            for(String ext:extensions){
+                if(ext.toLowerCase().equals(fileExt.toLowerCase())){
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
+
+
+    private static ArrayList<String> searchFiles(String Path, String[] extensions, boolean IsIterative, ArrayList<String> resultList) {
+        File[] files = new File(Path).listFiles();
+
+        if(files == null)
+            return resultList;
+        for (int i = 0; i < files.length; i++)
+        {
+            File f = files[i];
+            if (f.isFile())
+            {
+                if (includeExtensions(f,extensions))
+                    resultList.add(f.getPath());
+            }
+            else {
+                if (IsIterative) {
+                    if (f.isDirectory() && f.getPath().indexOf("/.") == -1)
+                        resultList = searchFiles(f.getPath(), extensions, IsIterative, resultList);
+                }
+                else
+                    continue;;
+            }
+        }
+        return resultList;
+    }
+
+
+
+    public static void searchFiles( ) {
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                synchronized (mBookPathList){
+                    final String[]  Dirs={"/mnt/sdcard/ebook","/mnt/internal_sd","/mnt/internal_sd/ebook","/mnt/external_sd","/mnt/external_sd/ebook"};
+
+                    ArrayList<File> DirList2BeImported = new ArrayList<File>();
+                    for(String Dir:Dirs){
+                        DirList2BeImported.add(new File(Dir));
+                    }
+
+                    final ArrayList<File> DirList = DirList2BeImported;
+
+                    try {
+                        mBookPathList.clear();
+                        for (File file : DirList) {
+                            mBookPathList=searchFiles(file.getPath(),DOCUMENT_EXTS,true,mBookPathList);
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
+        }).start();
+    }
+
+    public static File findFileByName(String name){
+        synchronized (mBookPathList){
+            if(mBookPathList==null||mBookPathList.isEmpty()) return null;
+            for(String path:mBookPathList){
+                File file=new File(path);
+                String fileName=file.getName();
+                if(fileName.contains(name)){
+                    return file;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static void openFile(Context context ,File file,int bookID){
+        final Uri data = Uri.fromFile(file);
+        CodecType codecType = CodecType.getByUri(data.toString());
+
+        if (codecType.getContextClass().getSimpleName().equals(EpubContext.class.getSimpleName())) {
+            if(codecType.compareTo(CodecType.TXT)==0){
+                HwTxtPlayActivity.loadTxtFile(context, file.getPath());
+            }else {
+                Uri uri = Uri.parse(file.getPath());
+                Intent intent = new Intent(context, PdfActivity.class);
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(uri);
+                context.startActivity(intent);
+
+            }
+
+        } else {
+
+            Uri uri = Uri.parse(file.getPath());
+            Intent intent = new Intent(context, PdfActivity.class);
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setData(uri);
+            context.startActivity(intent);
+        }
+        String name=file.getName();
+        int index=name.lastIndexOf(".");
+        if(index>=0){
+            name=name.substring(0,index);
+        }
+        SharePrefUtil.getInstance().putString("last_book_name",name);
+        SharePrefUtil.getInstance().putInt("last_book_id",bookID);
     }
 }

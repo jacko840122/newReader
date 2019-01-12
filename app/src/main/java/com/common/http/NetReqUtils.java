@@ -94,7 +94,8 @@ public final class NetReqUtils {
 
         final public static String   ACTION_CATEGORY="/books/categorymenu";;  //获取图书分类信息
         final public static String   ACTION_BOOKS_LIST="/books/bookslist/";;  //获取图书列表信息
-        final public static String   ACTION_BOOKS_INFO="/books/books_info/";;  //获取图书详情信息
+        final public static String   ACTION_BOOKS_INFO="/books/books_info/";;  //获取图书详情信息,根据ID
+        final public static String   ACTION_BOOKSKEY_INFO="/books/bookskey_info/";//获取图书详情信息,根据书名
         final public static String   ACTION_SAVE_FEEL="/books/savefeel/";;  //保存读后感内容
         final public static String   ACTgetpzlistION_GET_PZ_LIST="/books/getpzlist/";;  //获取图书批注内容
         final public static String   ACTION_GET_FEEL_LIST="/books/getfeellist/";;  //获取读后感列表

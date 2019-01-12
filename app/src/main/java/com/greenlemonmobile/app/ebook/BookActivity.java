@@ -1,6 +1,9 @@
 package com.greenlemonmobile.app.ebook;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,11 +14,19 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.bifan.txtreaderlib.ui.HwTxtPlayActivity;
 import com.common.http.VolleyManager;
 import com.common.http.data.Books_info;
+import com.github.reader.pdf.ui.activity.PdfActivity;
 import com.google.android.material.tabs.TabLayout;
+import com.greenlemonmobile.app.ebook.books.reader.EpubContext;
+import com.greenlemonmobile.app.utils.FileUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import org.ebookdroid.CodecType;
+
+import java.io.File;
+import java.io.FileFilter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -169,6 +180,10 @@ public class BookActivity extends AppCompatActivity implements Response.ErrorLis
 
     }
 
+
+
+
+
     @OnClick({R.id.tv_return, R.id.tv_add_book, R.id.tv_read_book})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -179,6 +194,14 @@ public class BookActivity extends AppCompatActivity implements Response.ErrorLis
                 Toast.makeText(this, "已经加入书架", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.tv_read_book:
+                if(mBook_info==null) return;
+                File file=FileUtil.findFileByName(mBook_info.getB_name());
+                if(file!=null&&file.exists()){
+                    FileUtil.openFile(this,file,Integer.valueOf(mBook_info.getId()));
+                }else{
+                    Toast.makeText(this, "图书没有下载", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
         }
     }

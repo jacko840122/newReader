@@ -13,6 +13,7 @@ import com.github.reader.app.model.manager.DBManager;
 import com.github.reader.utils.AppUtils;
 import com.github.reader.utils.Constants;
 import com.github.reader.utils.SharedPreferencesUtil;
+import com.greenlemonmobile.app.utils.SharePrefUtil;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -41,7 +42,7 @@ public class iBooksReaderApp extends Application {
         initData();
         DBManager.getInstance().init(this);
         SharedPreferencesUtil.init(this, this.getPackageName() + "_preference", Context.MODE_PRIVATE);
-
+        SharePrefUtil.init(this, this.getPackageName() + "_pref", Context.MODE_PRIVATE);
         EBookDroidApp.init(this);
 
         EmergencyHandler.init(this);
