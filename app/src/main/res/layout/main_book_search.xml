@@ -21,7 +21,10 @@
         <EditText
             android:id="@+id/et_serch"
             android:layout_marginLeft="194px"
-            android:drawableLeft=""
+            android:layout_marginRight="194px"
+            android:hint="搜 索 我 的 书 架"
+            android:textColorHint="#0b0b0b"
+            android:drawableLeft="@drawable/search_icon"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

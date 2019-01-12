@@ -38,6 +38,7 @@ public class iBooksReaderApp extends Application {
     public void onCreate() {
         super.onCreate();
 
+
         AppUtils.init(this);
         initData();
         DBManager.getInstance().init(this);
