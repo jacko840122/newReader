@@ -44,6 +44,12 @@
             android:name=".BookSearchActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
 
+        <activity
+            android:name=".BookStoreActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+
+
+
 
         <activity
             android:name="com.greenlemonmobile.app.ebook.LibraryActivity"

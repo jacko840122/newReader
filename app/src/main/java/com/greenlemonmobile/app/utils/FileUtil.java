@@ -446,6 +446,8 @@ public class FileUtil {
         }).start();
     }
 
+
+
     public static File findFileByName(String name){
         synchronized (mBookPathList){
             if(mBookPathList==null||mBookPathList.isEmpty()) return null;
@@ -458,6 +460,10 @@ public class FileUtil {
             }
         }
         return null;
+    }
+
+    public static ArrayList<String> getBookPathList(){
+        return mBookPathList;
     }
 
     public static void openFile(Context context ,File file,int bookID){

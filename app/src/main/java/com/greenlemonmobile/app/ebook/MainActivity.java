@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
         if(mBooks_info!=null&&mBooks_info.getData()!=null
                 &&!mBooks_info.getData().isEmpty()){
             Books_info.DataBean boo_info=mBooks_info.getData().get(0);
+            mBook_info=boo_info;
             String cover=boo_info.getB_cover();
             String author=boo_info.getB_author();
             String introduction=boo_info.getB_introduction();
@@ -128,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
     }
     private Categorymenu mCategorymenu;
     private Books_info mBooks_info;
+    private Books_info.DataBean mBook_info;
     private Response.Listener<Feellist> mFeelsListener=new Response.Listener<Feellist>() {
         @Override
         public void onResponse(Feellist response) {
@@ -301,16 +303,19 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
         Intent intent;
         switch (view.getId()) {
             case R.id.search_btn:
-                intent=new Intent(this,BookSearchActivity.class);
+                intent=new Intent(this,BookStoreActivity.class);
                 startActivity(intent);
                 break;
             case R.id.icon_btn:
                 break;
 
             case R.id.rv_book_container:
-                intent=new Intent(this,BookActivity.class);
-                intent.putExtra("book_info",mBooks_info);
-                startActivity(intent);
+                if(mBook_info!=null){
+                    intent=new Intent(this,BookActivity.class);
+                    intent.putExtra("book_info",mBook_info);
+                    startActivity(intent);
+                }
+
                 break;
         }
     }

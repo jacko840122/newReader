@@ -77,7 +77,6 @@ public class BookActivity extends AppCompatActivity implements Response.ErrorLis
     ViewPager mViewPager;
     @BindView(R.id.tab_content)
     TabLayout mTabContent;
-    private Books_info mBooks_info;
     private Books_info.DataBean mBook_info;
 
     private ArrayList<Fragment> mFragments = new ArrayList<>();
@@ -134,16 +133,14 @@ public class BookActivity extends AppCompatActivity implements Response.ErrorLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_main_layout);
         ButterKnife.bind(this);
-        mBooks_info = (Books_info) getIntent().getSerializableExtra("book_info");
+        mBook_info = (Books_info.DataBean) getIntent().getSerializableExtra("book_info");
         bindBookInfo();
         initFrament();
     }
 
     private void bindBookInfo() {
-        if (mBooks_info != null && mBooks_info.getData() != null
-                && !mBooks_info.getData().isEmpty()) {
-            Books_info.DataBean book_info = mBooks_info.getData().get(0);
-            mBook_info=book_info;
+        if (mBook_info != null) {
+            Books_info.DataBean book_info = mBook_info;
             String cover = book_info.getB_cover();
             String author = book_info.getB_author();
             String introduction = book_info.getB_introduction();

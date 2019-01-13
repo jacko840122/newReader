@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -18,16 +19,78 @@
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical|left" />
 
-        <EditText
-            android:id="@+id/et_serch"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginLeft="194px"
             android:layout_marginRight="194px"
-            android:hint="搜 索 我 的 书 架"
-            android:textColorHint="#0b0b0b"
-            android:drawableLeft="@drawable/search_icon"
+            android:layout_marginTop="10px"
+            android:layout_marginBottom="10px"
+            android:background="@drawable/search_background">
+
+
+            <EditText
+                android:id="@+id/et_serch"
+                android:hint="搜 索 我 的 书 架"
+                android:textColor="#020202"
+                android:gravity="center_vertical|left"
+                android:textSize="30px"
+                android:drawablePadding="12px"
+                android:padding="12px"
+                android:textColorHint="#b0b0b0"
+                android:background="@null"
+                android:drawableLeft="@drawable/search_icon"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:lines="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:src="@drawable/search_bt"
+                android:id="@+id/iv_search"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3px"
+        android:background="#010101"></View>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/tv_tip"
+            android:gravity="center"
+            android:text="没有搜索到图书"
+            android:textSize="50px"
+            android:textColor="#070707"
+            android:background="#ffffff"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_search_content"
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+
+    </FrameLayout>
+
+
 
 </LinearLayout>
