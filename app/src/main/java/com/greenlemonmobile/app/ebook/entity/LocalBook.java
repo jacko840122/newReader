@@ -157,7 +157,7 @@ public class LocalBook {
     	return book;
     }
     
-    public static String importAssetLocalBook(Activity context, String path) {
+    public static String importAssetLocalBook(Context context, String path) {
     	
         FileGuider savePath = new FileGuider(context, FileGuider.SPACE_PRIORITY_EXTERNAL);
         savePath.setSpace(FileGuider.SPACE_PRIORITY_EXTERNAL);
@@ -216,7 +216,7 @@ public class LocalBook {
     	return null;
     }
     
-    public static void importLocalBook(Activity context, FileInfo file) {
+    public static void importLocalBook(Context context, FileInfo file) {
     	if (file.filePath.toLowerCase().endsWith(DefaultConstant.EPUB_SUFFIX)) {
             EpubParser epubParser = new EpubParser(context, file.filePath);
 

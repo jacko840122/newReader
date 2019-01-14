@@ -1,5 +1,6 @@
 package com.greenlemonmobile.app.ebook;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -87,6 +88,7 @@ public class BookSearchActivity extends AppCompatActivity implements Response.Er
         ButterKnife.bind(this);
         mSearchBooksAdapter = new SearchBooksAdapter();
         mRvSearchContent.setLayoutManager(new GridLayoutManager(this,4,RecyclerView.VERTICAL,false));
+        mRvSearchContent.addItemDecoration(new RecyclerGridLayoutItemDecoration(4,20,true));
         mRvSearchContent.setAdapter(mSearchBooksAdapter);
     }
 
@@ -115,7 +117,7 @@ public class BookSearchActivity extends AppCompatActivity implements Response.Er
         mTvTip.setVisibility(View.INVISIBLE);
     }
 
-    protected class SearchBooksAdapter extends RecyclerView.Adapter {
+    protected class SearchBooksAdapter extends RecyclerView.Adapter implements View.OnClickListener {
 
 
         private List<Books_info.DataBean> mBooksList;
@@ -142,11 +144,23 @@ public class BookSearchActivity extends AppCompatActivity implements Response.Er
             Books_info.DataBean dataBean=mBooksList.get(position);
             viewHolder.mTitle.setText(dataBean.getB_name());
             ImageLoader.getInstance().displayImage(NetReqUtils.BASE_URL+dataBean.getB_cover(),viewHolder.mIcon);
+            viewHolder.mSearchBookItem.setTag(dataBean);
+            viewHolder.mSearchBookItem.setOnClickListener(this);
         }
 
         @Override
         public int getItemCount() {
             return mBooksList == null ? 0 : mBooksList.size();
+        }
+
+        @Override
+        public void onClick(View view) {
+            Books_info.DataBean book_info = (Books_info.DataBean) view.getTag();
+            if(book_info!=null){
+                Intent intent=new Intent(BookSearchActivity.this,BookActivity.class);
+                intent.putExtra("book_info",book_info);
+                startActivity(intent);
+            }
         }
 
 

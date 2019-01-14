@@ -1,6 +1,7 @@
 package com.greenlemonmobile.app.ebook;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -24,6 +25,7 @@ import com.greenlemonmobile.app.utils.SharePrefUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -145,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
         initViews();
         getNetData();
         checkPermissions();
-        FileUtil.searchFiles();
+        FileUtil.searchFiles(this);
     }
 
     private void getNetData(){
@@ -155,7 +157,6 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
         HashMap<String, Object> extraParams =new HashMap<>();
         int booksid=SharePrefUtil.getInstance().getInt("last_book_id");
         String name=SharePrefUtil.getInstance().getString("last_book_name");
-        if(booksid<=0) booksid=64;
         if(booksid>0){
             extraParams.put("booksid",booksid);
             NetReqUtils.addGsonRequest(this,POST,TAG,null,extraParams,ACTION_BOOKS_INFO,
@@ -178,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
     private void initViews(){
         mRcSort.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         List<SortItem> list=new ArrayList<SortItem>();
-        list.add(new SortItem(R.drawable.wenxun,"文学"));
+        list.add(new SortItem(R.drawable.wenxun,"文学经典"));
         list.add(new SortItem(R.drawable.xiuyang,"人生修养"));
         list.add(new SortItem(R.drawable.minren,"名人传记"));
         list.add(new SortItem(R.drawable.kexue,"科学技术"));
@@ -310,12 +311,13 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
                 break;
 
             case R.id.rv_book_container:
-                if(mBook_info!=null){
-                    intent=new Intent(this,BookActivity.class);
-                    intent.putExtra("book_info",mBook_info);
-                    startActivity(intent);
+                if(mBook_info==null) return;
+                File file=FileUtil.findFileByName(mBook_info.getB_name());
+                if(file!=null&&file.exists()){
+                    FileUtil.openFile(this,file,Integer.valueOf(mBook_info.getId()));
+                }else{
+                    Toast.makeText(this, "图书没有下载", Toast.LENGTH_SHORT).show();
                 }
-
                 break;
         }
     }

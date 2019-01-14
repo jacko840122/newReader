@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bifan.txtreaderlib.ui.HwTxtPlayActivity;
+import com.common.http.NetReqUtils;
 import com.common.http.VolleyManager;
 import com.common.http.data.Books_info;
 import com.github.reader.pdf.ui.activity.PdfActivity;
@@ -29,6 +30,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -41,6 +43,9 @@ import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.android.volley.Request.Method.POST;
+import static com.common.http.NetReqUtils.ACTION_BOOKS_INFO;
 
 public class BookActivity extends AppCompatActivity implements Response.ErrorListener {
 
@@ -82,6 +87,19 @@ public class BookActivity extends AppCompatActivity implements Response.ErrorLis
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private FragmentPagerAdapter mPagerAdapter;
     private ArrayList<TabLayout.Tab> mTabs=new ArrayList<>();
+    private Response.Listener<Books_info> mBookListener=new Response.Listener<Books_info>() {
+        @Override
+        public void onResponse(Books_info response) {
+            if(response!=null&&response.getData()!=null
+                    &&!response.getData().isEmpty()){
+
+                mBook_info = response.getData().get(0);
+                bindBookInfo();
+                initFrament();
+            }
+
+        }
+    };
 
 
     private void initFrament() {
@@ -97,9 +115,11 @@ public class BookActivity extends AppCompatActivity implements Response.ErrorLis
         bundle2.putSerializable("Catalog", (Serializable) mBook_info.getCatalog());
         Fragment fragment2=new DirFragment();
         fragment2.setArguments(bundle2);
+        mFragments.clear();
         mFragments.add(fragment1);
         mFragments.add(fragment2);
 
+        mTabs.clear();
         mTabs.add(mTabContent.newTab().setText("读  后  感"));
         mTabs.add(mTabContent.newTab().setText("目  录"));
 
@@ -134,8 +154,14 @@ public class BookActivity extends AppCompatActivity implements Response.ErrorLis
         setContentView(R.layout.book_main_layout);
         ButterKnife.bind(this);
         mBook_info = (Books_info.DataBean) getIntent().getSerializableExtra("book_info");
-        bindBookInfo();
-        initFrament();
+        //bindBookInfo();
+        //initFrament();
+        if(mBook_info!=null&&!mBook_info.getId().isEmpty()) {
+            HashMap<String, Object> extraParams=new HashMap<>();
+            extraParams.put("booksid", mBook_info.getId());
+            NetReqUtils.addGsonRequest(this, POST, this, null, extraParams, ACTION_BOOKS_INFO,
+                    Books_info.class, mBookListener, this);
+        }
     }
 
     private void bindBookInfo() {

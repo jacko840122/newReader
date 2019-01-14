@@ -200,11 +200,12 @@ public class BookStoreFragment extends Fragment implements Response.ErrorListene
     private class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+            mTablistAdapter.setSelectedPosition(position);
         }
 
         @Override
         public void onPageSelected(int position) {
+
 
         }
 

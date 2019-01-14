@@ -22,6 +22,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -70,7 +71,6 @@ public class BookStoreSubtypeFragment extends Fragment implements Response.Error
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSortId = getArguments().getInt("sort_id");
-        getSortBooks();
     }
 
     @Override
@@ -86,8 +86,10 @@ public class BookStoreSubtypeFragment extends Fragment implements Response.Error
         mUnbinder = ButterKnife.bind(this, root);
 
         mBooksStoreSubtypeAdapter = new BooksStoreSubtypeAdapter();
-        mRvBooksContent.setLayoutManager(new GridLayoutManager(getContext(), 4, RecyclerView.VERTICAL, false));
+        mRvBooksContent.setLayoutManager(new GridLayoutManager(getContext(), 3, RecyclerView.VERTICAL, false));
+        mRvBooksContent.addItemDecoration(new RecyclerGridLayoutItemDecoration(3,50,true));
         mRvBooksContent.setAdapter(mBooksStoreSubtypeAdapter);
+        getSortBooks();
         return root;
     }
 

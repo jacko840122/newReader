@@ -20,8 +20,10 @@ import com.bifan.txtreaderlib.ui.HwTxtPlayActivity;
 import com.github.reader.pdf.ui.activity.PdfActivity;
 import com.github.reader.utils.SharedPreferencesUtil;
 import com.greenlemonmobile.app.constant.DefaultConstant;
+import com.greenlemonmobile.app.ebook.LibraryActivity;
 import com.greenlemonmobile.app.ebook.books.reader.EpubContext;
 import com.greenlemonmobile.app.ebook.entity.FileInfo;
+import com.greenlemonmobile.app.ebook.entity.LocalBook;
 
 import org.ebookdroid.CodecType;
 
@@ -415,7 +417,7 @@ public class FileUtil {
 
 
 
-    public static void searchFiles( ) {
+    public static void searchFiles(Context context) {
         new Thread(new Runnable() {
 
             @Override
@@ -432,10 +434,27 @@ public class FileUtil {
 
                     try {
                         mBookPathList.clear();
+                        LocalBook.deleteAllRecord(context);
                         for (File file : DirList) {
                             mBookPathList=searchFiles(file.getPath(),DOCUMENT_EXTS,true,mBookPathList);
 
                         }
+                        if(!mBookPathList.isEmpty()){
+                            for(String path:mBookPathList) {
+                                File child=new File(path);
+                                String absolutePath = child.getAbsolutePath();
+                                if (FileUtil.isNormalFile(absolutePath) && FileUtil.shouldShowFile(absolutePath)) {
+                                    FileInfo lFileInfo = FileUtil.GetFileInfo(child, null, false);
+                                    if (lFileInfo != null && !lFileInfo.IsDir) {
+                                        LocalBook book = LocalBook.getLocalBook(context, lFileInfo.filePath);
+                                        if (book == null) {
+                                            LocalBook.importLocalBook(context, lFileInfo);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -495,7 +514,9 @@ public class FileUtil {
         if(index>=0){
             name=name.substring(0,index);
         }
+
         SharePrefUtil.getInstance().putString("last_book_name",name);
         SharePrefUtil.getInstance().putInt("last_book_id",bookID);
+
     }
 }

@@ -150,6 +150,7 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
     private boolean mNeedUpdateBookMark=false;
     
     private static ArrayList<String> mReadiumFiles = new ArrayList<String>();
+    private String mSubdir;
 
     private void checkPermissions() {
         String [] perssions={
@@ -167,7 +168,8 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
                     public void onNext(Boolean granted) {
                         if (granted) { // 在android 6.0之前会默认返回true
                             // 已经获取权限
-                            LoadFilesOfSomeDirectories();
+                            //LoadFilesOfSomeDirectories();
+                            mUIHandler.sendEmptyMessage(MESSAGE_REFRESH_LIST);
                         } else {
                             // 未获取权限
                             Toast.makeText(LibraryActivity.this, "您没有授权该权限，请在设置中打开授权", Toast.LENGTH_SHORT).show();
@@ -192,6 +194,7 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.act_library);
+        mSubdir=getIntent().getStringExtra("Subdir");
 
         mOperationPanel = (ViewGroup) findViewById(R.id.operation_panel);
         mSearchPanel = (ViewGroup) findViewById(R.id.searchbar);
@@ -401,11 +404,6 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
         }
     }
     
-    private FilenameExtFilter documentFilter = new FilenameExtFilter(DOCUMENT_EXTS);	
-    private static String[] DOCUMENT_EXTS = new String[] {
-            "epub", "txt","pdf", /*"djvu", "djv", "xps", "oxps", "cbz", "cbr", /*"fb2", "fb2.zip", "chm" , "umd"*/
-    };
-    
     private void showImportProgress(String msg) {
         mImportProgressDialog = new ProgressDialog(this);
         mImportProgressDialog.setMessage(msg);
@@ -423,57 +421,15 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
     
  
     private void LoadFilesOfSomeDirectories() {
-    	
-    	final String[]  Directories={"/mnt/sdcard/ebook","/mnt/internal_sd","/mnt/internal_sd/ebook","/mnt/external_sd","/mnt/external_sd/ebook"};
 
-        String Subdir=getIntent().getStringExtra("Subdir");
-    	ArrayList<File> DirList2BeImported = new ArrayList<File>();
-    	if(!TextUtils.isEmpty(Subdir)){
-            File file=new File("/mnt/sdcard/ebook"+File.separator+Subdir);
-            if(!file.exists()){
-                file.mkdirs();
-            }
-            DirList2BeImported.add(file);
-        }else {
-            for(String Dir:Directories){
-                DirList2BeImported.add(new File(Dir));
-            }
-        }
-        
         showImportProgress(getResources().getString(R.string.adding_book));
-  
-        final ArrayList<File> DirList = DirList2BeImported;
+
         new Thread(new Runnable() {
 
             @Override
             public void run() {
-            	boolean hasFileImported = false;
             	try {
-            		LocalBook.deleteAllRecord(LibraryActivity.this);
-                    for (File file : DirList) {
-                    	if (file.isDirectory()) {
-                    		File file2 = new File(file.getPath());
-                            File[] listFiles = file2.listFiles(documentFilter);
-                            if (listFiles == null)
-                                continue;
-
-                            for (File child : listFiles) {
-
-                                String absolutePath = child.getAbsolutePath();
-                                if (FileUtil.isNormalFile(absolutePath) && FileUtil.shouldShowFile(absolutePath)) {
-                                    FileInfo lFileInfo = FileUtil.GetFileInfo(child, documentFilter, false);
-                                    if (lFileInfo != null && !lFileInfo.IsDir) {
-                                    	LocalBook book = LocalBook.getLocalBook(LibraryActivity.this, lFileInfo.filePath);
-                                    	if (book == null) {
-                                    		LocalBook.importLocalBook(LibraryActivity.this, lFileInfo);
-                                    		hasFileImported = true;
-                                    	}
-                                    }
-                                }
-                            }
-                    	}
-
-                    }
+            	    FileUtil.searchFiles(LibraryActivity.this);
             	} catch (Exception e) {
             		e.printStackTrace();
             	}
@@ -1094,7 +1050,24 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
             }
 		}
 	}
-	
+
+	private void filterDir(String subdir,ArrayList<LocalBook> localBooks){
+        if(subdir==null||subdir.isEmpty()||localBooks==null||localBooks.size()<=0) return ;
+        ArrayList<LocalBook> removeBooks=new ArrayList<>();
+
+        for(LocalBook localBook:localBooks){
+            if(TextUtils.isEmpty(localBook.file)||!localBook.file.contains(subdir)){
+                removeBooks.add(localBook);
+            }
+        }
+        if(!removeBooks.isEmpty()){
+            for(LocalBook localBook:removeBooks){
+                localBooks.remove(localBook);
+            }
+        }
+
+    }
+
     private Handler mUIHandler = new Handler() {
 
 		@Override
@@ -1102,6 +1075,7 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
 			switch (msg.what) {
 			case MESSAGE_REFRESH_LIST:
                 LocalBook.getLocalBookList(LibraryActivity.this, mOrderColumn, mOrderType, mLocalBooks);
+                filterDir(mSubdir,mLocalBooks);
                 if (mAdapter != null)
                     mAdapter.notifyDataSetChanged();
                 String format = getResources().getString(R.string.items);
