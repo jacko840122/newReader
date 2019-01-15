@@ -120,10 +120,10 @@ public class PDFPageView extends BasePageView implements IBaseDocView {
     }
 
     @Override
-    public void setPage(final int page, PointF size) {
+    public void setPage(final int page, PointF size,String path) {
         mPageNumber = page;
         loadAnnotations();
-        super.setPage(page, size);
+        super.setPage(page, size,path);
     }
 
     @Override
@@ -368,6 +368,7 @@ public class PDFPageView extends BasePageView implements IBaseDocView {
             }
         };
         mAddInk.execute();
+
         return true;
     }
 

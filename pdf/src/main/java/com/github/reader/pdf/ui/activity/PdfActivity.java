@@ -35,6 +35,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
 
+import com.by.api.hw.ByHwProxy;
+import com.by.hw.util.CommonUtil;
 import com.github.reader.R;
 import com.github.reader.app.base.BaseMvpActivity;
 import com.github.reader.app.model.entity.BaseAnnotation;
@@ -149,6 +151,8 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
             Toast.makeText(mContext,"解析文件失败",Toast.LENGTH_SHORT).show();
             finish();
         }
+        CommonUtil.drawEnable();
+        ByHwProxy.drawUnlock();
     }
 
     @Override
@@ -226,6 +230,7 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
             core.onDestroy();
         mvpPresenter.onDestory();
         core = null;
+        CommonUtil.drawDisable();
         super.onDestroy();
     }
 
@@ -341,13 +346,14 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
                         mAcceptMode = AcceptMode.Okdefault;
                         IBaseDocView pageView = (IBaseDocView) mDocView.getDisplayedView();
                         if (pageView != null)
-                            pageView.deselectAnnotation();
+                            pageView.deselectAnnotation();CommonUtil.drawEnable();
+ByHwProxy.drawUnlock();
                         hideButtons();*/
                         break;
                 }
             }
         };
-        mDocView.setAdapter(new MuPDFPageAdapter(this, core));
+        mDocView.setAdapter(new MuPDFPageAdapter(this, core,mvpPresenter.getPath()));
 
         //step 2
         makeButtonsView();

@@ -14,7 +14,7 @@ public interface IBaseDocView {
 	 * @param page　　页号
 	 * @param size　　页面的实际大小
 	 */
-	public void setPage(int page, PointF size);
+	public void setPage(int page, PointF size,String path);
 
 	/**
 	 * 获取当前页号

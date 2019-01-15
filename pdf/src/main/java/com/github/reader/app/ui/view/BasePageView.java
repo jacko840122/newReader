@@ -10,11 +10,13 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.by.hw.drawcomponent.ByNote;
 import com.github.reader.R;
 import com.github.reader.app.model.manager.TextSelector;
 import com.github.reader.pdf.model.AsyncTask;
@@ -22,8 +24,10 @@ import com.github.reader.pdf.model.CancellableAsyncTask;
 import com.github.reader.pdf.model.CancellableTaskDefinition;
 import com.github.reader.pdf.model.TextWord;
 import com.github.reader.utils.Constants;
+import com.github.reader.utils.FileUtil;
 import com.github.reader.utils.LogUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -48,10 +52,12 @@ public abstract class BasePageView extends ViewGroup {
     private TextWord mText[][];
     protected ArrayList<ArrayList<PointF>> mDrawing;
     protected View mSearchView;
+    protected ByNote mByNote;
     private boolean mIsBlank;
 
     private ProgressBar mBusyIndicator;
     private final Handler mHandler = new Handler();
+    private String mPath;
 
     public BasePageView(Context c, Point parentSize) {
         super(c);
@@ -118,6 +124,7 @@ public abstract class BasePageView extends ViewGroup {
             removeView(mBusyIndicator);
             mBusyIndicator = null;
         }
+        saveNoteAsFile();
     }
 
     public void releaseBitmaps() {
@@ -154,7 +161,7 @@ public abstract class BasePageView extends ViewGroup {
      * @param page
      * @param size
      */
-    public void setPage(int page, PointF size) {
+    public void setPage(int page, PointF size,String path) {
         LogUtils.d(TAG, "setpage................page=." + page);
 
         //1.停止核心渲染内容的任务
@@ -169,6 +176,7 @@ public abstract class BasePageView extends ViewGroup {
             mSearchView.invalidate();
 
         mPageNumber = page;
+        mPath=path;
 
         //3.承载Doc的imageview
         if (mEntire == null) {
@@ -334,6 +342,12 @@ public abstract class BasePageView extends ViewGroup {
             };
 
             addView(mSearchView);
+
+            if(mByNote==null){
+                mByNote=new ByNote(mContext);
+            }
+            mByNote.loadNoteDataFromeFile(FileUtil.getSavePath(mPath,mPageNumber));
+            addView(mByNote);
         }
         requestLayout();
     }
@@ -519,6 +533,10 @@ public abstract class BasePageView extends ViewGroup {
             mSearchView.layout(0, 0, w, h);
         }
 
+        if (mByNote != null) {
+            mByNote.layout(0, 0, w, h);
+        }
+
         if (mBusyIndicator != null) {
             int bw = mBusyIndicator.getMeasuredWidth();
             int bh = mBusyIndicator.getMeasuredHeight();
@@ -531,4 +549,18 @@ public abstract class BasePageView extends ViewGroup {
     public boolean isOpaque() {
         return true;
     }
+
+    public void loadNoteDataFromeFile(){
+        if(mByNote!=null){
+            mByNote.loadNoteDataFromeFile(FileUtil.getSavePath(mPath,mPageNumber));
+        }
+    }
+
+    public void saveNoteAsFile(){
+        if(mByNote!=null){
+            mByNote.saveNoteAsFile(FileUtil.getSavePath(mPath,mPageNumber));
+        }
+    }
+
+
 }

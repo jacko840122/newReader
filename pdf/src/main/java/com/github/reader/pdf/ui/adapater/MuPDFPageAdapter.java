@@ -19,11 +19,13 @@ public class MuPDFPageAdapter extends BaseAdapter {
 	private final Context mContext;
 	private final MuPDFCore mCore;
 	private final SparseArray<PointF> mPageSizes = new SparseArray<PointF>();
+	private final String mPath;
 	private       Bitmap mSharedHqBm;
 
-	public MuPDFPageAdapter(Context c, MuPDFCore core) {
+	public MuPDFPageAdapter(Context c, MuPDFCore core,String path) {
 		mContext = c;
 		mCore = core;
+		mPath=path;
 	}
 
 	public int getCount() {
@@ -62,7 +64,7 @@ public class MuPDFPageAdapter extends BaseAdapter {
 		if (pageSize != null) {
 			// We already know the page size. Set it up
 			// immediately
-			pageView.setPage(position, pageSize);
+			pageView.setPage(position, pageSize,mPath);
 		} else {
 			// Page size as yet unknown. Blank it for now, and
 			// start a background task to find the size
@@ -82,7 +84,7 @@ public class MuPDFPageAdapter extends BaseAdapter {
 					// another page since we started
 					if (pageView.getPage() == position) {
 						LogUtils.d(TAG,"position="+position+" result.width="+result.x+" result.y="+result.y);
-						pageView.setPage(position, result);
+						pageView.setPage(position, result,mPath);
 					}
 				}
 			};

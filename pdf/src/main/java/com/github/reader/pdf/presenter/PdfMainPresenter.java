@@ -54,6 +54,11 @@ public class PdfMainPresenter extends BasePresenter<IPdfMainView>
     public int mPageSliderRes;
     private SearchTask mSearchTask;
     private PdfPresentation mPresentation;
+    private String mPath="";
+
+    public String getPath(){
+        return mPath;
+    }
 
     public PdfMainPresenter(IPdfMainView mvpView,Context context) {
         super(mvpView);
@@ -110,6 +115,7 @@ public class PdfMainPresenter extends BasePresenter<IPdfMainView>
                 }
                 //TODO 根据类型创建不同的Document
                 core = openFile(path);
+                mPath=path;
             }
             SearchTaskResult.set(null);
         }

@@ -45,13 +45,24 @@
             android:src="@drawable/default_cover" />
 
         <TextView
+            android:id="@+id/tv_book_name2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="68px"
+            android:layout_marginTop="57px"
+            android:layout_toRightOf="@id/iv_cover"
+            tools:text="三国演义"
+            android:textColor="#010101"
+            android:textSize="36px" />
+
+        <TextView
             android:id="@+id/tv_book_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="68px"
             android:layout_marginTop="57px"
             android:layout_toRightOf="@id/iv_cover"
-            android:text="三国演义"
+            tools:text="三国演义"
             android:textColor="#010101"
             android:textSize="36px" />
 
@@ -62,7 +73,7 @@
             android:layout_below="@id/tv_book_name"
             android:layout_alignLeft="@id/tv_book_name"
             android:layout_marginTop="36px"
-            android:text="罗贯中"
+            tools:text="罗贯中"
             android:textColor="#010101"
             android:textSize="36px" />
 
@@ -76,7 +87,7 @@
             android:layout_marginTop="50px"
             android:drawableLeft="@drawable/man"
             android:drawablePadding="17px"
-            android:text="100人在读"
+            tools:text="100人在读"
             android:textColor="#010101"
             android:textSize="14px" />
 
@@ -89,7 +100,7 @@
             android:layout_toRightOf="@id/tv_person_count"
             android:drawableLeft="@drawable/time"
             android:drawablePadding="13px"
-            android:text="阅读30分钟"
+            tools:text="阅读30分钟"
             android:textColor="#010101"
             android:textSize="13px" />
 
@@ -102,7 +113,7 @@
             android:layout_marginTop="38px"
             android:drawableLeft="@drawable/chuanyi"
             android:drawablePadding="16px"
-            android:text="1067个创意"
+            tools:text="1067个创意"
             android:textColor="#010101"
             android:textSize="13px" />
 
