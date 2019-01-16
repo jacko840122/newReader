@@ -31,6 +31,11 @@ public class MyByNote extends ByNote {
         mPageIndex=pageIndex;
     }
 
+    public void setMyByNote(String path, int pageIndex) {
+        mPath=path;
+        mPageIndex=pageIndex;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
         if(motionEvent.getToolType(0)==MotionEvent.TOOL_TYPE_FINGER){
@@ -40,30 +45,35 @@ public class MyByNote extends ByNote {
 
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
+
+    public void myLoadNoteDataFromeFile() {
         post(new Runnable() {
             @Override
             public void run() {
-                    clearAll();
-                    ByHwProxy.clearAll();
-                    Log.d(TAG, "mPageIndex=" + mPageIndex + "--loadNoteDataFromeFile=" + FileUtil.getSavePath(mPath, mPageIndex));
-                    loadNoteDataFromeFile(FileUtil.getSavePath(mPath, mPageIndex));
-                    setPenTopLineErase(true);
+                clearAll();
+                ByHwProxy.clearAll();
+                Log.d(TAG, "pageIndex=" + mPageIndex + "--myLoadNoteDataFromeFile=" + FileUtil.getSavePath(mPath, mPageIndex));
+                loadNoteDataFromeFile(FileUtil.getSavePath(mPath, mPageIndex));
+                setPenTopLineErase(true);
             }
         });
+    }
+
+
+    public void mySaveNoteAsFile() {
+
+        Log.d(TAG,"pageIndex="+ mPageIndex +"--SavePath="+FileUtil.getSavePath(mPath, mPageIndex));
+        File file=new File(FileUtil.getSavePath(mPath, mPageIndex));
+        if(file.exists()) file.delete();
+        saveNoteAsFile(file.getPath());
+        //clearAll();
+        //ByHwProxy.clearAll();
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
-        Log.d(TAG,"mPageIndex="+mPageIndex+"--SavePath="+FileUtil.getSavePath(mPath,mPageIndex));
-        File file=new File(FileUtil.getSavePath(mPath,mPageIndex));
-        if(file.exists()) file.delete();
-        saveNoteAsFile(file.getPath());
-        clearAll();
-        ByHwProxy.clearAll();
+        mySaveNoteAsFile();
     }
 }

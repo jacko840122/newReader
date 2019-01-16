@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -195,7 +196,8 @@ public class LibraryActivity extends AppCompatActivity implements OnClickListene
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.act_library);
         mSubdir=getIntent().getStringExtra("Subdir");
-
+        File file=new File(Environment.getExternalStorageDirectory().getPath()+File.separator+"ebook"+File.separator+mSubdir);
+        if(!file.exists()) file.mkdirs();
         mOperationPanel = (ViewGroup) findViewById(R.id.operation_panel);
         mSearchPanel = (ViewGroup) findViewById(R.id.searchbar);
         mToolbar = (ViewGroup) findViewById(R.id.toolbar);

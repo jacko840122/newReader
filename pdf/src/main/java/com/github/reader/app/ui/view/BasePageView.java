@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.by.api.hw.ByHwProxy;
 import com.by.hw.drawcomponent.ByNote;
 import com.github.reader.R;
 import com.github.reader.app.model.manager.TextSelector;
@@ -344,13 +345,20 @@ public abstract class BasePageView extends ViewGroup {
             };
 
             addView(mSearchView);
+        }
 
-            if(mByNote==null){
-                mByNote=new MyByNote(mContext,mPath,mPageIndex);
-            }
+        if(mByNote==null){
+            mByNote=new MyByNote(mContext);
+        }
 
+        mByNote.setMyByNote(mPath,mPageIndex);
+
+
+        mByNote.myLoadNoteDataFromeFile();
+        if(indexOfChild(mByNote)<0){
             addView(mByNote);
         }
+
         requestLayout();
     }
 
@@ -552,17 +560,6 @@ public abstract class BasePageView extends ViewGroup {
         return true;
     }
 
-    public void loadNoteDataFromeFile(){
-        if(mByNote!=null){
-            mByNote.loadNoteDataFromeFile(FileUtil.getSavePath(mPath,mPageIndex));
-        }
-    }
-
-    public void saveNoteAsFile(){
-        if(mByNote!=null){
-            mByNote.saveNoteAsFile(FileUtil.getSavePath(mPath,mPageIndex));
-        }
-    }
 
     @Override
     protected void onAttachedToWindow() {
