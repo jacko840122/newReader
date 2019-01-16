@@ -54,7 +54,7 @@ public abstract class BasePageView extends ViewGroup {
     private TextWord mText[][];
     protected ArrayList<ArrayList<PointF>> mDrawing;
     protected View mSearchView;
-    protected ByNote mByNote;
+    protected MyByNote mByNote;
     private boolean mIsBlank;
 
     private ProgressBar mBusyIndicator;
@@ -346,21 +346,8 @@ public abstract class BasePageView extends ViewGroup {
             addView(mSearchView);
 
             if(mByNote==null){
-                mByNote=new ByNote(mContext);
+                mByNote=new MyByNote(mContext,mPath,mPageIndex);
             }
-
-            post(new Runnable() {
-                @Override
-                public void run() {
-                    if(mByNote!=null) {
-                        mByNote.clearNote();
-                        mByNote.clearAll();
-                        Log.d(TAG, "mPageIndex=" + mPageIndex + "--loadNoteDataFromeFile=" + FileUtil.getSavePath(mPath, mPageIndex));
-                        mByNote.loadNoteDataFromeFile(FileUtil.getSavePath(mPath, mPageIndex));
-                        mByNote.redrawNote();
-                    }
-                }
-            });
 
             addView(mByNote);
         }
@@ -586,13 +573,6 @@ public abstract class BasePageView extends ViewGroup {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if(mByNote!=null){
-            Log.d(TAG,"mPageIndex="+mPageIndex+"--SavePath="+FileUtil.getSavePath(mPath,mPageIndex));
-            File file=new File(FileUtil.getSavePath(mPath,mPageIndex));
-            if(file.exists()) file.delete();
-            mByNote.saveNoteAsFile(file.getPath());
-            mByNote.clearNote();
-            mByNote.clearAll();
-    }
+
     }
 }

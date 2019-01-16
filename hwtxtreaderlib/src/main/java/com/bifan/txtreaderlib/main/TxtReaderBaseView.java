@@ -62,6 +62,8 @@ public abstract class TxtReaderBaseView extends View implements GestureDetector.
     protected Mode CurrentMode = Mode.Normal;//当前页面模式
     protected boolean hasDown = false;
 
+
+
     public TxtReaderBaseView(Context context) {
         super(context);
         init();

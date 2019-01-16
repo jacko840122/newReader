@@ -110,16 +110,16 @@
 
 
                 <TextView
-                    android:id="@+id/tv_style"
+                    android:id="@+id/tv_bright"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:drawableTop="@drawable/banshe"
+                    android:drawableTop="@drawable/bright"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="版式"
+                    android:text="亮度"
                     android:textColor="@color/text_color_gray"
                     android:textSize="@dimen/text_size_small" />
 

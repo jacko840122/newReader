@@ -66,16 +66,16 @@
 
 
         <TextView
-            android:id="@+id/activity_hwtxtplay_setting_text"
+            android:id="@+id/bright_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:drawableTop="@drawable/banshe"
+            android:drawableTop="@drawable/bright"
             android:ellipsize="end"
             android:gravity="center"
             android:singleLine="true"
-            android:text="版式"
+            android:text="亮度"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_size_small" />
 
@@ -154,13 +154,25 @@
         android:background="#000000"></View>
 
 
-    <com.bifan.txtreaderlib.main.TxtReaderView
-        android:id="@+id/activity_hwtxtplay_readerView"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/activity_hwtxtplay_bottom"
         android:layout_below="@+id/activity_hwtxtplay_top"
-        android:background="#ffffff" />
+        android:background="#ffffff" >
+
+        <com.bifan.txtreaderlib.main.TxtReaderView
+            android:id="@+id/activity_hwtxtplay_readerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.bifan.txtreaderlib.main.MyByNote2
+            android:id="@+id/myby_note2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
 
     <RelativeLayout
         android:id="@+id/activity_hwtxtplay_bottom"

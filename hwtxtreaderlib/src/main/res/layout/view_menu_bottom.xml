@@ -5,7 +5,10 @@
     android:layout_alignParentBottom="true"
     android:background="#000000"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:paddingBottom="30dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="30dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -52,6 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:orientation="horizontal"
+        android:visibility="gone"
         android:weightSum="6">
 
         <LinearLayout
@@ -225,6 +229,7 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

@@ -1,6 +1,7 @@
 package com.github.reader.pdf.ui.activity;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -78,6 +79,7 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
     private ImageButton mCancelAccept;
     private ImageButton mSureAccept;
     private TextView mPageNum;
+    private TextView mTvBright;
 
     //TODO 需重新设定
     enum TopBarMode {
@@ -151,8 +153,6 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
             Toast.makeText(mContext,"解析文件失败",Toast.LENGTH_SHORT).show();
             finish();
         }
-        CommonUtil.drawEnable();
-        ByHwProxy.drawUnlock();
     }
 
     @Override
@@ -167,6 +167,8 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
             mDocView.setDisplayedViewIndex(Constants.CURRENT_DISPLAY_INDEX);
 
         }
+        CommonUtil.drawEnable();
+        ByHwProxy.drawUnlock();
     }
 
     @Override
@@ -206,6 +208,7 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
     protected void onPause() {
         super.onPause();
         mvpPresenter.onPause();
+        CommonUtil.drawDisable();
     }
 
     @Override
@@ -230,7 +233,6 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
             core.onDestroy();
         mvpPresenter.onDestory();
         core = null;
-        CommonUtil.drawDisable();
         super.onDestroy();
     }
 
@@ -515,6 +517,7 @@ ByHwProxy.drawUnlock();
         mBrowseDirButton = (ImageView) mReaderRootView.findViewById(R.id.browseDirection_button);
         mBrightnessButton = (ImageView) mReaderRootView.findViewById(R.id.brightness_button);
         mClipButton = (ImageView) mReaderRootView.findViewById(R.id.clip_button);
+        mTvBright= (TextView) mReaderRootView.findViewById(R.id.tv_bright);
         mSwitchScreenButton = (TextView) mReaderRootView.findViewById(R.id.switchScreen_button);
         mAnnotButton = (ImageView) mReaderRootView.findViewById(R.id.annot_button);
         mIvInk.setOnClickListener(this);
@@ -524,6 +527,7 @@ ByHwProxy.drawUnlock();
         mSwitchScreenButton.setOnClickListener(this);
         mBrightnessButton.setOnClickListener(this);
         mClipButton.setOnClickListener(this);
+        mTvBright.setOnClickListener(this);
         setButtonEnabled(mBrightnessButton,true);
 
         mAnnotMenu = (LinearLayout) mReaderRootView.findViewById(R.id.layout_annot_menu);
@@ -682,7 +686,14 @@ ByHwProxy.drawUnlock();
         } else if (i == R.id.clip_button) {
             ToastUtil.getInstance().showToast("暂时不支持");
 
-        } else {
+        } else if(i==R.id.tv_bright){
+            try{
+                startActivity(new Intent("com.boyue.action.LIGHT_ADJUST"));
+            }catch ( ActivityNotFoundException e){
+                e.printStackTrace();
+                Toast.makeText(this,"应用未安装",Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 

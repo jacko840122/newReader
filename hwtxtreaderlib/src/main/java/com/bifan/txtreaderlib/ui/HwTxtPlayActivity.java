@@ -1,5 +1,6 @@
 package com.bifan.txtreaderlib.ui;
 
+import android.content.ActivityNotFoundException;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -32,9 +33,12 @@ import com.bifan.txtreaderlib.interfaces.ILoadListener;
 import com.bifan.txtreaderlib.interfaces.IPageChangeListener;
 import com.bifan.txtreaderlib.interfaces.ISliderListener;
 import com.bifan.txtreaderlib.interfaces.ITextSelectListener;
+import com.bifan.txtreaderlib.main.MyByNote2;
 import com.bifan.txtreaderlib.main.TxtConfig;
 import com.bifan.txtreaderlib.main.TxtReaderView;
 import com.bifan.txtreaderlib.utils.ELogger;
+import com.by.api.hw.ByHwProxy;
+import com.by.hw.util.CommonUtil;
 
 import java.io.File;
 
@@ -46,6 +50,8 @@ import java.io.File;
 public class HwTxtPlayActivity extends AppCompatActivity {
     protected Handler mHandler;
     protected boolean FileExist = false;
+    private MyByNote2 mMyByNote2;
+    private int mLastProgress=0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -192,10 +198,11 @@ public class HwTxtPlayActivity extends AppCompatActivity {
         mTopDecoration = findViewById(R.id.activity_hwtxtplay_top);
         mBottomDecoration = findViewById(R.id.activity_hwtxtplay_bottom);
         mTxtReaderView = (TxtReaderView) findViewById(R.id.activity_hwtxtplay_readerView);
+        mMyByNote2 = (MyByNote2) findViewById(R.id.myby_note2);
         mChapterNameText = (TextView) findViewById(R.id.activity_hwtxtplay_chaptername);
         mChapterMenuText = (TextView) findViewById(R.id.activity_hwtxtplay_chapter_menutext);
         mProgressText = (TextView) findViewById(R.id.activity_hwtxtplay_progress_text);
-        mSettingText = (TextView) findViewById(R.id.activity_hwtxtplay_setting_text);
+        mSettingText = (TextView) findViewById(R.id.bright_setting);
         mTopMenu = findViewById(R.id.activity_hwtxtplay_menu_top);
         mBottomMenu = findViewById(R.id.activity_hwtxtplay_menu_bottom);
         mCoverView = findViewById(R.id.activity_hwtxtplay_cover);
@@ -256,6 +263,19 @@ public class HwTxtPlayActivity extends AppCompatActivity {
         }, 300);
 
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        CommonUtil.drawDisable();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CommonUtil.drawEnable();
+        ByHwProxy.drawUnlock();
     }
 
     protected void loadOurFile() {
@@ -373,7 +393,14 @@ public class HwTxtPlayActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 //                Show(mTopMenu, mBottomMenu, mCoverView);
-                Show(mBottomMenu, mCoverView);
+                //Show(mBottomMenu, mCoverView);
+                try{
+                    startActivity(new Intent("com.boyue.action.LIGHT_ADJUST"));
+                }catch ( ActivityNotFoundException e){
+                    e.printStackTrace();
+                    Toast.makeText(HwTxtPlayActivity.this,"应用未安装",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         setMenuListener();
@@ -467,6 +494,10 @@ public class HwTxtPlayActivity extends AppCompatActivity {
                 } else {
                     mChapterNameText.setText("无章节");
                 }
+
+                mMyByNote2.mySaveNoteAsFile(FilePath,mLastProgress);
+                mMyByNote2.myLoadNoteDataFromeFile(FilePath,p);
+                mLastProgress=p;
             }
         });
     }
@@ -475,14 +506,16 @@ public class HwTxtPlayActivity extends AppCompatActivity {
         mTxtReaderView.setOnCenterAreaClickListener(new ICenterAreaClickListener() {
             @Override
             public boolean onCenterClick(float widthPercentInView) {
-                mSettingText.performClick();
+                //mSettingText.performClick();
+                Show(mBottomMenu, mCoverView);
                 return true;
             }
 
             @Override
             public boolean onOutSideCenterClick(float widthPercentInView) {
                 if (mBottomMenu.getVisibility() == View.VISIBLE) {
-                    mSettingText.performClick();
+                    //mSettingText.performClick();
+                    Show(mBottomMenu, mCoverView);
                     return true;
                 }
                 return false;
@@ -813,6 +846,7 @@ public class HwTxtPlayActivity extends AppCompatActivity {
             hasExisted = true;
             if (mTxtReaderView != null) {
                 mTxtReaderView.saveCurrentProgress();
+                mMyByNote2.mySaveNoteAsFile(FilePath,mLastProgress);
             }
             mHandler.postDelayed(new Runnable() {
                 @Override
