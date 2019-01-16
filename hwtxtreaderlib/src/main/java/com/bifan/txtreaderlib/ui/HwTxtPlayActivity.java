@@ -51,7 +51,7 @@ public class HwTxtPlayActivity extends AppCompatActivity {
     protected Handler mHandler;
     protected boolean FileExist = false;
     private MyByNote2 mMyByNote2;
-    private int mLastProgress=0;
+    private int mLastProgress=-1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -495,7 +495,10 @@ public class HwTxtPlayActivity extends AppCompatActivity {
                     mChapterNameText.setText("无章节");
                 }
 
-                mMyByNote2.mySaveNoteAsFile(FilePath,mLastProgress);
+                if(mLastProgress>=0){
+                    mMyByNote2.mySaveNoteAsFile(FilePath,mLastProgress);
+                }
+
                 mMyByNote2.myLoadNoteDataFromeFile(FilePath,p);
                 mLastProgress=p;
             }
@@ -846,7 +849,10 @@ public class HwTxtPlayActivity extends AppCompatActivity {
             hasExisted = true;
             if (mTxtReaderView != null) {
                 mTxtReaderView.saveCurrentProgress();
-                mMyByNote2.mySaveNoteAsFile(FilePath,mLastProgress);
+                if(mLastProgress>=0){
+                    mMyByNote2.mySaveNoteAsFile(FilePath,mLastProgress);
+                }
+
             }
             mHandler.postDelayed(new Runnable() {
                 @Override

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.by.api.hw.ByHwProxy;
 import com.github.reader.pdf.model.AsyncTask;
 import com.github.reader.pdf.model.MuPDFCore;
 import com.github.reader.pdf.ui.view.PDFPageView;
@@ -50,6 +51,7 @@ public class MuPDFPageAdapter extends BaseAdapter {
 
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		final PDFPageView pageView;
+		ByHwProxy.clearAll();
 		LogUtils.d(TAG,"getView position="+position+" parent.getWidth="+parent.getWidth()+" height="+parent.getHeight());
 		if (convertView == null) {
 			if (mSharedHqBm == null || mSharedHqBm.getWidth() != parent.getWidth() || mSharedHqBm.getHeight() != parent.getHeight())

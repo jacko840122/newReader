@@ -1,7 +1,6 @@
 package com.github.reader.app.ui.view;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -14,6 +13,8 @@ import java.io.File;
 
 public class MyByNote extends ByNote {
     private static final String TAG = "MyByNote";
+    private int mPageIndex;
+    private String mPath;
 
     public MyByNote(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -21,6 +22,12 @@ public class MyByNote extends ByNote {
 
     public MyByNote(Context context) {
         super(context);
+    }
+
+    public  MyByNote(Context context,String path,int pageIndex) {
+        super(context);
+        mPath=path;
+        mPageIndex=pageIndex;
     }
 
     @Override
@@ -32,27 +39,44 @@ public class MyByNote extends ByNote {
 
     }
 
-    public void myLoadNoteDataFromeFile(final String path, final int pageIndex) {
-        post(new Runnable() {
-            @Override
-            public void run() {
-                clearAll();
-                ByHwProxy.clearAll();
-                Log.d(TAG, "pageIndex=" + pageIndex + "--myLoadNoteDataFromeFile=" + FileUtil.getSavePath(path, pageIndex));
-                loadNoteDataFromeFile(FileUtil.getSavePath(path, pageIndex));
-                setPenTopLineErase(true);
-            }
-        });
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        myLoadNoteDataFromeFile();
     }
 
+    private void myLoadNoteDataFromeFile(){
+        if(getWidth()>0){
+            clearAll();
+            //ByHwProxy.clearAll();
+            Log.d(TAG, "mPageIndex=" + mPageIndex + "--myLoadNoteDataFromeFile=" + FileUtil.getSavePath(mPath, mPageIndex));
+            loadNoteDataFromeFile(FileUtil.getSavePath(mPath, mPageIndex));
+            setPenTopLineErase(true);
+        }else {
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    clearAll();
+                    //ByHwProxy.clearAll();
+                    Log.d(TAG, "mPageIndex=" + mPageIndex + "--myLoadNoteDataFromeFile=" + FileUtil.getSavePath(mPath, mPageIndex));
+                    loadNoteDataFromeFile(FileUtil.getSavePath(mPath, mPageIndex));
+                    setPenTopLineErase(true);
+                }
+            });
+        }
+    }
 
-    public void mySaveNoteAsFile(String path, int pageIndex) {
-
-        Log.d(TAG,"pageIndex="+ pageIndex +"--SavePath="+FileUtil.getSavePath(path, pageIndex));
-        File file=new File(FileUtil.getSavePath(path, pageIndex));
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        Log.d(TAG,"mPageIndex="+ mPageIndex +"--SavePath="+FileUtil.getSavePath(mPath, mPageIndex));
+        File file=new File(FileUtil.getSavePath(mPath, mPageIndex));
         if(file.exists()) file.delete();
         saveNoteAsFile(file.getPath());
         //clearAll();
         //ByHwProxy.clearAll();
     }
+
+
+
 }

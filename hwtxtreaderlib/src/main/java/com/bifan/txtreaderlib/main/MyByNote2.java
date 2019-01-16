@@ -33,16 +33,25 @@ public class MyByNote2 extends ByNote {
     }
 
     public void myLoadNoteDataFromeFile(final String path, final int pageIndex) {
-        post(new Runnable() {
-            @Override
-            public void run() {
-                clearAll();
-                ByHwProxy.clearAll();
-                Log.d(TAG, "pageIndex=" + pageIndex + "--myLoadNoteDataFromeFile=" + FileUtil.getSavePath(path, pageIndex));
-                loadNoteDataFromeFile(FileUtil.getSavePath(path, pageIndex));
-                setPenTopLineErase(true);
-            }
-        });
+        if(getWidth()>0){
+            clearAll();
+            ByHwProxy.clearAll();
+            Log.d(TAG, "pageIndex=" + pageIndex + "--myLoadNoteDataFromeFile=" + FileUtil.getSavePath(path, pageIndex));
+            loadNoteDataFromeFile(FileUtil.getSavePath(path, pageIndex));
+            setPenTopLineErase(true);
+        }else {
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    clearAll();
+                    ByHwProxy.clearAll();
+                    Log.d(TAG, "pageIndex=" + pageIndex + "--myLoadNoteDataFromeFile=" + FileUtil.getSavePath(path, pageIndex));
+                    loadNoteDataFromeFile(FileUtil.getSavePath(path, pageIndex));
+                    setPenTopLineErase(true);
+                }
+            });
+        }
+
     }
 
 

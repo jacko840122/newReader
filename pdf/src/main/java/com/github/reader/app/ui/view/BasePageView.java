@@ -347,11 +347,13 @@ public abstract class BasePageView extends ViewGroup {
             addView(mSearchView);
         }
 
-        if(mByNote==null){
-            mByNote=new MyByNote(mContext);
-            addView(mByNote);
+        if(mByNote!=null&&indexOfChild(mByNote)>=0){
+            removeView(mByNote);
         }
 
+        mByNote=new MyByNote(mContext,mPath,mPageIndex);
+
+        addView(mByNote);
 
         requestLayout();
     }
