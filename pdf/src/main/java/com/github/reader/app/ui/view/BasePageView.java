@@ -349,15 +349,9 @@ public abstract class BasePageView extends ViewGroup {
 
         if(mByNote==null){
             mByNote=new MyByNote(mContext);
-        }
-
-        mByNote.setMyByNote(mPath,mPageIndex);
-
-
-        mByNote.myLoadNoteDataFromeFile();
-        if(indexOfChild(mByNote)<0){
             addView(mByNote);
         }
+
 
         requestLayout();
     }

@@ -903,6 +903,7 @@ ByHwProxy.drawUnlock();
         if (core == null || mPageNum == null)
             return;
         mPageNum.setText(index + 1 + "/" + Constants.DOC_PAGE_COUNT);
+
     }
 
     private void showInfo(String message) {

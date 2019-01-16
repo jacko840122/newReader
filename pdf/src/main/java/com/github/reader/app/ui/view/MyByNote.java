@@ -14,8 +14,6 @@ import java.io.File;
 
 public class MyByNote extends ByNote {
     private static final String TAG = "MyByNote";
-    private String mPath="";
-    private int mPageIndex=0;
 
     public MyByNote(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -23,17 +21,6 @@ public class MyByNote extends ByNote {
 
     public MyByNote(Context context) {
         super(context);
-    }
-
-    public MyByNote(Context context, String path, int pageIndex) {
-        super(context);
-        mPath=path;
-        mPageIndex=pageIndex;
-    }
-
-    public void setMyByNote(String path, int pageIndex) {
-        mPath=path;
-        mPageIndex=pageIndex;
     }
 
     @Override
@@ -45,35 +32,27 @@ public class MyByNote extends ByNote {
 
     }
 
-
-    public void myLoadNoteDataFromeFile() {
+    public void myLoadNoteDataFromeFile(final String path, final int pageIndex) {
         post(new Runnable() {
             @Override
             public void run() {
                 clearAll();
                 ByHwProxy.clearAll();
-                Log.d(TAG, "pageIndex=" + mPageIndex + "--myLoadNoteDataFromeFile=" + FileUtil.getSavePath(mPath, mPageIndex));
-                loadNoteDataFromeFile(FileUtil.getSavePath(mPath, mPageIndex));
+                Log.d(TAG, "pageIndex=" + pageIndex + "--myLoadNoteDataFromeFile=" + FileUtil.getSavePath(path, pageIndex));
+                loadNoteDataFromeFile(FileUtil.getSavePath(path, pageIndex));
                 setPenTopLineErase(true);
             }
         });
     }
 
 
-    public void mySaveNoteAsFile() {
+    public void mySaveNoteAsFile(String path, int pageIndex) {
 
-        Log.d(TAG,"pageIndex="+ mPageIndex +"--SavePath="+FileUtil.getSavePath(mPath, mPageIndex));
-        File file=new File(FileUtil.getSavePath(mPath, mPageIndex));
+        Log.d(TAG,"pageIndex="+ pageIndex +"--SavePath="+FileUtil.getSavePath(path, pageIndex));
+        File file=new File(FileUtil.getSavePath(path, pageIndex));
         if(file.exists()) file.delete();
         saveNoteAsFile(file.getPath());
         //clearAll();
         //ByHwProxy.clearAll();
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-
-        mySaveNoteAsFile();
     }
 }
