@@ -11,6 +11,7 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -37,6 +38,7 @@ public abstract class BasePageView extends ViewGroup {
     private static final int PROGRESS_DIALOG_DELAY = 200;
     protected final Context mContext;
     protected int mPageNumber;
+    protected int mPageIndex;
     protected Point mParentSize;
     protected Point mSize;   // Size of page at minimum zoom
     protected float mSourceScale;
@@ -124,7 +126,6 @@ public abstract class BasePageView extends ViewGroup {
             removeView(mBusyIndicator);
             mBusyIndicator = null;
         }
-        saveNoteAsFile();
     }
 
     public void releaseBitmaps() {
@@ -176,6 +177,7 @@ public abstract class BasePageView extends ViewGroup {
             mSearchView.invalidate();
 
         mPageNumber = page;
+        mPageIndex=page;
         mPath=path;
 
         //3.承载Doc的imageview
@@ -346,7 +348,20 @@ public abstract class BasePageView extends ViewGroup {
             if(mByNote==null){
                 mByNote=new ByNote(mContext);
             }
-            mByNote.loadNoteDataFromeFile(FileUtil.getSavePath(mPath,mPageNumber));
+
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    if(mByNote!=null) {
+                        mByNote.clearNote();
+                        mByNote.clearAll();
+                        Log.d(TAG, "mPageIndex=" + mPageIndex + "--loadNoteDataFromeFile=" + FileUtil.getSavePath(mPath, mPageIndex));
+                        mByNote.loadNoteDataFromeFile(FileUtil.getSavePath(mPath, mPageIndex));
+                        mByNote.redrawNote();
+                    }
+                }
+            });
+
             addView(mByNote);
         }
         requestLayout();
@@ -552,15 +567,32 @@ public abstract class BasePageView extends ViewGroup {
 
     public void loadNoteDataFromeFile(){
         if(mByNote!=null){
-            mByNote.loadNoteDataFromeFile(FileUtil.getSavePath(mPath,mPageNumber));
+            mByNote.loadNoteDataFromeFile(FileUtil.getSavePath(mPath,mPageIndex));
         }
     }
 
     public void saveNoteAsFile(){
         if(mByNote!=null){
-            mByNote.saveNoteAsFile(FileUtil.getSavePath(mPath,mPageNumber));
+            mByNote.saveNoteAsFile(FileUtil.getSavePath(mPath,mPageIndex));
         }
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
 
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if(mByNote!=null){
+            Log.d(TAG,"mPageIndex="+mPageIndex+"--SavePath="+FileUtil.getSavePath(mPath,mPageIndex));
+            File file=new File(FileUtil.getSavePath(mPath,mPageIndex));
+            if(file.exists()) file.delete();
+            mByNote.saveNoteAsFile(file.getPath());
+            mByNote.clearNote();
+            mByNote.clearAll();
+    }
+    }
 }
