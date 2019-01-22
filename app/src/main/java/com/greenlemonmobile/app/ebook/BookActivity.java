@@ -1,9 +1,6 @@
 package com.greenlemonmobile.app.ebook;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,24 +11,16 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.bifan.txtreaderlib.ui.HwTxtPlayActivity;
 import com.common.http.NetReqUtils;
-import com.common.http.VolleyManager;
 import com.common.http.data.Books_info;
-import com.github.reader.pdf.ui.activity.PdfActivity;
 import com.google.android.material.tabs.TabLayout;
-import com.greenlemonmobile.app.ebook.books.reader.EpubContext;
-import com.greenlemonmobile.app.utils.FileUtil;
+import com.common.kuaxue.utils.FileUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import org.ebookdroid.CodecType;
-
 import java.io.File;
-import java.io.FileFilter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -200,7 +189,8 @@ public class BookActivity extends AppCompatActivity implements Response.ErrorLis
 
     @Override
     public void onErrorResponse(VolleyError error) {
-
+         Toast.makeText(this, "获取数据有异常!", Toast.LENGTH_SHORT).show();
+        error.printStackTrace();
     }
 
 

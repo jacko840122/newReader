@@ -9,7 +9,7 @@ import android.widget.GridView;
 
 import com.greenlemonmobile.app.ebook.adapter.BookinfosGridAdapter;
 import com.greenlemonmobile.app.ebook.entity.LocalBook;
-import com.greenlemonmobile.app.utils.FileUtil;
+import com.common.kuaxue.utils.FileUtil;
 
 import java.io.File;
 import java.util.ArrayList;

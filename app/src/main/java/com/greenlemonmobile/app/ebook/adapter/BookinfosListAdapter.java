@@ -16,8 +16,8 @@ import android.widget.TextView;
 import com.greenlemonmobile.app.ebook.R;
 import com.greenlemonmobile.app.ebook.adapter.BookinfosGridAdapter.BaseViewHolder;
 import com.greenlemonmobile.app.ebook.entity.LocalBook;
-import com.greenlemonmobile.app.utils.FileUtil;
-import com.greenlemonmobile.app.utils.ImageBuffer;
+import com.common.kuaxue.utils.FileUtil;
+import com.common.kuaxue.utils.ImageBuffer;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

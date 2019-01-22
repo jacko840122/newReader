@@ -16,7 +16,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -56,7 +55,7 @@ import com.greenlemonmobile.app.ebook.books.views.WebReader;
 import com.greenlemonmobile.app.ebook.entity.Bookmark;
 import com.greenlemonmobile.app.ebook.entity.FileInfo;
 import com.greenlemonmobile.app.ebook.entity.LocalBook;
-import com.greenlemonmobile.app.utils.FileUtil;
+import com.common.kuaxue.utils.FileUtil;
 import com.greenlemonmobile.app.views.ActionItem;
 import com.greenlemonmobile.app.views.QuickAction;
 

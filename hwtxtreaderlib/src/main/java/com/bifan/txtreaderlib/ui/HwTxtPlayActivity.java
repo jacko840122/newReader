@@ -24,6 +24,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.bifan.txtreaderlib.R;
 import com.bifan.txtreaderlib.bean.TxtChar;
 import com.bifan.txtreaderlib.bean.TxtMsg;
@@ -39,19 +41,61 @@ import com.bifan.txtreaderlib.main.TxtReaderView;
 import com.bifan.txtreaderlib.utils.ELogger;
 import com.by.api.hw.ByHwProxy;
 import com.by.hw.util.CommonUtil;
+import com.common.Ui.CommentsList;
+import com.common.Utils.SharePrefUtil;
+import com.common.http.NetReqUtils;
+import com.common.http.data.Books_info;
+import com.common.http.data.Pzlist;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+
+import static com.android.volley.Request.Method.POST;
+import static com.common.http.NetReqUtils.ACTION_BOOKSKEY_INFO;
+import static com.common.http.NetReqUtils.ACTION_GET_PZ_LIST;
 
 /**
  * Created by bifan-wei
  * on 2017/12/8.
  */
 
-public class HwTxtPlayActivity extends AppCompatActivity {
+public class HwTxtPlayActivity extends AppCompatActivity implements Response.ErrorListener {
+    private static final String TAG ="HwTxtPlayActivity" ;
     protected Handler mHandler;
     protected boolean FileExist = false;
     private MyByNote2 mMyByNote2;
     private int mLastProgress=-1;
+    private TextView mNoteText;
+    private Response.Listener<Pzlist> mPzlistListener=new Response.Listener<Pzlist>() {
+        @Override
+        public void onResponse(Pzlist response) {
+            response=response;
+            if(response==null||response.getData()==null||response.getData().isEmpty()){
+                Toast.makeText(HwTxtPlayActivity.this,"没有获取到注解",Toast.LENGTH_SHORT).show();
+            }else {
+                mPzlist=response.getData();
+                if(mCommentsListPop!=null){
+                    mCommentsListPop.setCommentData(mPzlist);
+                }
+
+            }
+        }
+    };
+    private List<Pzlist.DataBean> mPzlist;
+    private Books_info.DataBean mBook_info;
+    private Response.Listener<Books_info> mBookListener=new Response.Listener<Books_info>() {
+        @Override
+        public void onResponse(Books_info response) {
+            if(response!=null||response.getData()!=null&&!response.getData().isEmpty()){
+                HashMap<String, Object> extraParams =new HashMap<>();
+                mBook_info=response.getData().get(0);
+                extraParams.put("bid",mBook_info.getId());
+                NetReqUtils.addGsonRequest(HwTxtPlayActivity.this,POST,TAG,null,extraParams,ACTION_GET_PZ_LIST,
+                        Pzlist.class,mPzlistListener,HwTxtPlayActivity.this);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -188,6 +232,7 @@ public class HwTxtPlayActivity extends AppCompatActivity {
     protected View mTvBack;
 
     protected ChapterList mChapterListPop;
+    protected CommentsList mCommentsListPop;
     protected MenuHolder mMenuHolder = new MenuHolder();
 
     protected void init() {
@@ -201,6 +246,7 @@ public class HwTxtPlayActivity extends AppCompatActivity {
         mMyByNote2 = (MyByNote2) findViewById(R.id.myby_note2);
         mChapterNameText = (TextView) findViewById(R.id.activity_hwtxtplay_chaptername);
         mChapterMenuText = (TextView) findViewById(R.id.activity_hwtxtplay_chapter_menutext);
+        mNoteText = (TextView) findViewById(R.id.tv_note);
         mProgressText = (TextView) findViewById(R.id.activity_hwtxtplay_progress_text);
         mSettingText = (TextView) findViewById(R.id.bright_setting);
         mTopMenu = findViewById(R.id.activity_hwtxtplay_menu_top);
@@ -268,14 +314,24 @@ public class HwTxtPlayActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        CommonUtil.drawDisable();
+        try {
+            CommonUtil.drawDisable();
+        }catch (Throwable e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        CommonUtil.drawEnable();
-        ByHwProxy.drawUnlock();
+        try {
+            CommonUtil.drawEnable();
+            ByHwProxy.drawUnlock();
+        }catch (Throwable e){
+            e.printStackTrace();
+        }
+
     }
 
     protected void loadOurFile() {
@@ -367,13 +423,14 @@ public class HwTxtPlayActivity extends AppCompatActivity {
         } else {
             mTxtReaderView.setPageSwitchByCover();
         }
+        WindowManager m = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        m.getDefaultDisplay().getMetrics(metrics);
+        int ViewHeight = metrics.heightPixels - mTopDecoration.getHeight();
         //章节初始化
         if (mTxtReaderView.getChapters() != null && mTxtReaderView.getChapters().size() > 0) {
-            WindowManager m = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-            DisplayMetrics metrics = new DisplayMetrics();
-            m.getDefaultDisplay().getMetrics(metrics);
-            int ViewHeight = metrics.heightPixels - mTopDecoration.getHeight();
             mChapterListPop = new ChapterList(this, ViewHeight, mTxtReaderView.getChapters(), mTxtReaderView.getTxtReaderContext().getParagraphData().getCharNum());
+
             mChapterListPop.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -386,6 +443,8 @@ public class HwTxtPlayActivity extends AppCompatActivity {
         } else {
             Gone(mChapterMenuText);
         }
+        mCommentsListPop= new CommentsList(this, ViewHeight, mPzlist,-1);
+        getCommentData();
     }
 
     protected void registerListener() {
@@ -576,6 +635,43 @@ public class HwTxtPlayActivity extends AppCompatActivity {
                 }
             }
         });
+        mNoteText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mCommentsListPop != null) {
+                    if (!mCommentsListPop.isShowing()) {
+                        mCommentsListPop.showAsDropDown(mNoteText);
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                IChapter currentChapter = mTxtReaderView.getCurrentChapter();
+                                if (currentChapter != null) {
+                                    mCommentsListPop.setCurChapter(currentChapter.getIndex());
+                                }
+                            }
+                        });
+                    } else {
+                        mCommentsListPop.dismiss();
+                    }
+                }
+            }
+        });
+    }
+
+    private void getCommentData(){
+        HashMap<String, Object> extraParams =new HashMap<>();
+        int booksid=SharePrefUtil.getInstance().getInt("last_book_id");
+        String name=SharePrefUtil.getInstance().getString("last_book_name");
+        if(booksid>0){
+            extraParams.put("bid",booksid);
+            NetReqUtils.addGsonRequest(HwTxtPlayActivity.this,POST,TAG,null,extraParams,ACTION_GET_PZ_LIST,
+                    Pzlist.class,mPzlistListener,HwTxtPlayActivity.this);
+
+        }else {
+            extraParams.put("booksname",name);
+            NetReqUtils.addGsonRequest(HwTxtPlayActivity.this,POST,TAG,null,extraParams,ACTION_BOOKSKEY_INFO,
+                    Books_info.class,mBookListener,HwTxtPlayActivity.this);
+        }
     }
 
     protected void setSeekBarListener() {
@@ -654,6 +750,12 @@ public class HwTxtPlayActivity extends AppCompatActivity {
             mMenuHolder.mTranslateSelectedLayout.setBackgroundResource(R.drawable.shape_menu_textsetting_unselected);
             mMenuHolder.mCoverSelectedLayout.setBackgroundResource(R.drawable.shape_menu_textsetting_selected);
         }
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Toast.makeText(this, "获取数据有异常!", Toast.LENGTH_SHORT).show();
+        error.printStackTrace();
     }
 
     private class TextSettingClickListener implements View.OnClickListener {

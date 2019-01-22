@@ -156,24 +156,24 @@
             android:name="com.greenlemonmobile.app.ebook.db.MyContentProvider"
             android:authorities="com.greenlemonmobile.app"></provider>
         <provider
-            android:name="com.kuaxue.app.bookstore.BooksCacheDataProvider"
+            android:name="com.common.kuaxue.app.bookstore.BooksCacheDataProvider"
             android:authorities="com.kuaxue.app.bookstore.db"></provider>
 
         <activity
-            android:name="com.kuaxue.app.bookstore.BookDetailsActivity"
+            android:name="com.common.kuaxue.app.bookstore.BookDetailsActivity"
             android:configChanges="orientation"
             android:screenOrientation="sensorPortrait"></activity>
         <activity
-            android:name="com.kuaxue.app.bookstore.BookDownManagerActivity"
+            android:name="com.common.kuaxue.app.bookstore.BookDownManagerActivity"
             android:configChanges="orientation"
             android:screenOrientation="sensorPortrait"></activity>
         <activity
-            android:name="com.kuaxue.app.bookstore.CommentActivity"
+            android:name="com.common.kuaxue.app.bookstore.CommentActivity"
             android:configChanges="orientation"
             android:screenOrientation="sensorPortrait"></activity>
 
 
-        <service android:name="com.kuaxue.app.bookstore.DownLoadService"></service>
+        <service android:name="com.common.kuaxue.app.bookstore.DownLoadService"></service>
     </application>
 
 </manifest>

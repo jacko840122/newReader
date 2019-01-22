@@ -21,7 +21,6 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -29,8 +28,8 @@ import android.widget.RelativeLayout;
 
 import com.greenlemonmobile.app.ebook.R;
 import com.greenlemonmobile.app.ebook.books.model.ReaderSettings;
-import com.greenlemonmobile.app.utils.DPIUtil;
-import com.greenlemonmobile.app.utils.ImageTool;
+import com.common.kuaxue.utils.DPIUtil;
+import com.common.kuaxue.utils.ImageTool;
 
 import java.util.ArrayList;
 

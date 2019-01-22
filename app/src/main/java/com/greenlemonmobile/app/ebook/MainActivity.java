@@ -1,7 +1,6 @@
 package com.greenlemonmobile.app.ebook;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -20,8 +19,8 @@ import com.common.http.NetReqUtils;
 import com.common.http.data.Books_info;
 import com.common.http.data.Categorymenu;
 import com.common.http.data.Feellist;
-import com.greenlemonmobile.app.utils.FileUtil;
-import com.greenlemonmobile.app.utils.SharePrefUtil;
+import com.common.kuaxue.utils.FileUtil;
+import com.common.Utils.SharePrefUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -46,7 +45,6 @@ import static com.android.volley.Request.Method.POST;
 import static com.common.http.NetReqUtils.ACTION_BOOKSKEY_INFO;
 import static com.common.http.NetReqUtils.ACTION_BOOKS_INFO;
 import static com.common.http.NetReqUtils.ACTION_CATEGORY;
-import static com.common.http.NetReqUtils.ACTION_GET_FEEL_LIST;
 
 public class MainActivity extends AppCompatActivity implements Response.ErrorListener {
 

@@ -35,7 +35,11 @@ public class MyByNote extends ByNote {
         if(motionEvent.getToolType(0)==MotionEvent.TOOL_TYPE_FINGER){
             return false;
         }
-        return super.onTouchEvent(motionEvent);
+        boolean ret= super.onTouchEvent(motionEvent);
+        if(motionEvent.getToolType(0)==MotionEvent.TOOL_TYPE_ERASER){
+            ByHwProxy.clearAll();
+        }
+        return ret;
 
     }
 

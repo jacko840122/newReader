@@ -52,19 +52,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher.ViewFactory;
 
-import com.bifan.txtreaderlib.ui.HwTxtPlayActivity;
-import com.github.reader.pdf.ui.activity.PdfActivity;
 import com.greenlemonmobile.app.ebook.adapter.BookinfosGridAdapter;
 import com.greenlemonmobile.app.ebook.adapter.BookinfosGridAdapter.OnDeleteListener;
-import com.greenlemonmobile.app.ebook.books.reader.EpubContext;
-import com.greenlemonmobile.app.ebook.entity.FileInfo;
 import com.greenlemonmobile.app.ebook.entity.LocalBook;
-import com.greenlemonmobile.app.utils.FileUtil;
+import com.common.kuaxue.utils.FileUtil;
 import com.greenlemonmobile.app.views.ActionItem;
 import com.greenlemonmobile.app.views.QuickAction;
 import com.greenlemonmobile.app.views.QuickAction.OnActionItemClickListener;
-import com.kuaxue.app.bookstore.BookDownManagerActivity;
-import com.kuaxue.app.bookstore.DownLoadService;
+import com.common.kuaxue.app.bookstore.BookDownManagerActivity;
+import com.common.kuaxue.app.bookstore.DownLoadService;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.ebookdroid.CodecType;

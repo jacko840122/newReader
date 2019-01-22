@@ -16,11 +16,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
@@ -36,8 +38,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.by.api.hw.ByHwProxy;
 import com.by.hw.util.CommonUtil;
+import com.common.Ui.CommentsList;
+import com.common.Utils.SharePrefUtil;
+import com.common.http.NetReqUtils;
+import com.common.http.data.Books_info;
+import com.common.http.data.Pzlist;
 import com.github.reader.R;
 import com.github.reader.app.base.BaseMvpActivity;
 import com.github.reader.app.model.entity.BaseAnnotation;
@@ -58,11 +67,18 @@ import com.github.reader.utils.Constants;
 import com.github.reader.utils.LogUtils;
 import com.github.reader.utils.ToastUtil;
 
+import java.util.HashMap;
+import java.util.List;
+
+import static com.android.volley.Request.Method.POST;
+import static com.common.http.NetReqUtils.ACTION_BOOKSKEY_INFO;
+import static com.common.http.NetReqUtils.ACTION_GET_PZ_LIST;
+
 /**
  * 主屏V的实现
  */
 public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
-        implements IPdfMainView, View.OnClickListener {
+        implements IPdfMainView, View.OnClickListener, Response.ErrorListener {
     private static final String TAG = "PdfActivity";
     private Context mContext;
     private TextView mTvPrePage;
@@ -80,6 +96,16 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
     private ImageButton mSureAccept;
     private TextView mPageNum;
     private TextView mTvBright;
+    private CommentsList mCommentsListPop;
+    private List<Pzlist.DataBean> mPzlist;
+    private ViewGroup mTopMenu;
+    private TextView mTvNote;
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Toast.makeText(this, "获取数据有异常!", Toast.LENGTH_SHORT).show();
+        error.printStackTrace();
+    }
 
     //TODO 需重新设定
     enum TopBarMode {
@@ -125,6 +151,32 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
     private AlertDialog mAlertDialog;
     private PdfPresentation mPresentation;
 
+    private Response.Listener<Pzlist> mPzlistListener=new Response.Listener<Pzlist>() {
+        @Override
+        public void onResponse(Pzlist response) {
+            if(response==null||response.getData()==null||response.getData().isEmpty()){
+                Toast.makeText(PdfActivity.this,"没有获取到注解",Toast.LENGTH_SHORT).show();
+            }else {
+                mPzlist=response.getData();
+                mCommentsListPop.setCommentData(mPzlist);
+            }
+        }
+    };
+
+    private Books_info.DataBean mBook_info;
+    private Response.Listener<Books_info> mBookListener=new Response.Listener<Books_info>() {
+        @Override
+        public void onResponse(Books_info response) {
+            if(response!=null||response.getData()!=null&&!response.getData().isEmpty()){
+                HashMap<String, Object> extraParams =new HashMap<>();
+                mBook_info=response.getData().get(0);
+                extraParams.put("bid",mBook_info.getId());
+                NetReqUtils.addGsonRequest(PdfActivity.this,POST,TAG,null,extraParams,ACTION_GET_PZ_LIST,
+                        Pzlist.class,mPzlistListener,PdfActivity.this);
+            }
+        }
+    };
+
     /**
      * Called when the activity is first created.
      */
@@ -149,6 +201,7 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
         }
         core = (MuPDFCore) mvpPresenter.getDocManager();
         createUI();
+        getCommentData();
         if(core==null){
             Toast.makeText(mContext,"解析文件失败",Toast.LENGTH_SHORT).show();
             finish();
@@ -165,10 +218,21 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
             mTitle.setText(Constants.FILE_NAME);
 
             mDocView.setDisplayedViewIndex(Constants.CURRENT_DISPLAY_INDEX);
+            WindowManager m = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+            DisplayMetrics metrics = new DisplayMetrics();
+            m.getDefaultDisplay().getMetrics(metrics);
+            int ViewHeight = metrics.heightPixels - mTopMenu.getHeight();
+            mCommentsListPop= new CommentsList(this, ViewHeight, mPzlist,-1);
 
         }
-        CommonUtil.drawEnable();
-        ByHwProxy.drawUnlock();
+
+        try {
+            CommonUtil.drawEnable();
+            ByHwProxy.drawUnlock();
+        }catch (Throwable e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -208,7 +272,12 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
     protected void onPause() {
         super.onPause();
         mvpPresenter.onPause();
-        CommonUtil.drawDisable();
+        try {
+            CommonUtil.drawDisable();
+        }catch (Throwable e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -496,6 +565,7 @@ ByHwProxy.drawUnlock();
         mTitle = (TextView) mReaderRootView.findViewById(R.id.tv_title);
        /* mTitle.setTextColor(mContext.getResources().getColor(R.color.search_button_disable_color));*/
         mReturn = (ImageView) mReaderRootView.findViewById(R.id.iv_return);
+        mTopMenu= (ViewGroup) mReaderRootView.findViewById(R.id.layout_menu_top_main);
         mReturn.setColorFilter(mContext.getResources().getColor(R.color.common_white));
         mSearchTextView = (TextView) mReaderRootView.findViewById(R.id.tv_search);
         //mSearchTextView.setColorFilter(mContext.getResources().getColor(R.color.common_white));
@@ -518,8 +588,10 @@ ByHwProxy.drawUnlock();
         mBrightnessButton = (ImageView) mReaderRootView.findViewById(R.id.brightness_button);
         mClipButton = (ImageView) mReaderRootView.findViewById(R.id.clip_button);
         mTvBright= (TextView) mReaderRootView.findViewById(R.id.tv_bright);
+        mTvNote= (TextView) mReaderRootView.findViewById(R.id.tv_note);
         mSwitchScreenButton = (TextView) mReaderRootView.findViewById(R.id.switchScreen_button);
         mAnnotButton = (ImageView) mReaderRootView.findViewById(R.id.annot_button);
+        mTvNote.setOnClickListener(this);
         mIvInk.setOnClickListener(this);
         mOutlineTextview.setOnClickListener(this);
         mAnnotButton.setOnClickListener(this);
@@ -529,6 +601,7 @@ ByHwProxy.drawUnlock();
         mClipButton.setOnClickListener(this);
         mTvBright.setOnClickListener(this);
         setButtonEnabled(mBrightnessButton,true);
+
 
         mAnnotMenu = (LinearLayout) mReaderRootView.findViewById(R.id.layout_annot_menu);
         mTvCopy = (LinearLayout) mAnnotMenu.findViewById(R.id.copytext_ly);
@@ -553,6 +626,22 @@ ByHwProxy.drawUnlock();
         mSearchBack.setOnClickListener(this);
         mSearchFwd.setOnClickListener(this);
         mIvCancelSearch.setOnClickListener(this);
+    }
+
+    private void getCommentData(){
+        HashMap<String, Object> extraParams =new HashMap<>();
+        int booksid=SharePrefUtil.getInstance().getInt("last_book_id");
+        String name=SharePrefUtil.getInstance().getString("last_book_name");
+        if(booksid>0){
+            extraParams.put("bid",booksid);
+            NetReqUtils.addGsonRequest(this,POST,TAG,null,extraParams,ACTION_GET_PZ_LIST,
+                    Pzlist.class,mPzlistListener,this);
+
+        }else {
+            extraParams.put("booksname",name);
+            NetReqUtils.addGsonRequest(this,POST,TAG,null,extraParams,ACTION_BOOKSKEY_INFO,
+                    Books_info.class,mBookListener,this);
+        }
     }
 
 
@@ -694,6 +783,21 @@ ByHwProxy.drawUnlock();
                 Toast.makeText(this,"应用未安装",Toast.LENGTH_SHORT).show();
             }
 
+        }else if(i==R.id.tv_note){
+            openOrCloseComments();
+        }
+    }
+
+    private void openOrCloseComments(){
+        if (mCommentsListPop != null) {
+            if (!mCommentsListPop.isShowing()) {
+                mCommentsListPop.showAsDropDown(mTvNote);
+                if (OutlineActivityData.get()!= null) {
+                    mCommentsListPop.setCurChapter(OutlineActivityData.get().position);
+                }
+            } else {
+                mCommentsListPop.dismiss();
+            }
         }
     }
 

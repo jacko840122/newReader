@@ -69,8 +69,7 @@ android {
 
 dependencies {
     compile 'androidx.legacy:legacy-support-v4:1.0.0'
-    compile 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+
     compile files('libs/download.jar')
     compile files('libs/GoogleAdMobAdsSdk-6.2.1.jar')
     compile files('libs/statusclasses.jar')
@@ -79,11 +78,14 @@ dependencies {
 
     implementation project(':hwtxtreaderlib')
     implementation project(':pdf')
+    implementation project(':commonlibrary')
     //implementation "com.folioreader:folioreader:0.5.1"
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     implementation 'com.google.android.material:material:1.1.0-alpha01'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
 
 }

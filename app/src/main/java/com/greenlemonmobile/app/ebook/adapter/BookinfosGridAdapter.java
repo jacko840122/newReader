@@ -21,8 +21,8 @@ import com.greenlemonmobile.app.ebook.iBooksReaderApp;
 import com.greenlemonmobile.app.ebook.books.reader.EpubContext;
 import com.greenlemonmobile.app.ebook.entity.Bookmark;
 import com.greenlemonmobile.app.ebook.entity.LocalBook;
-import com.greenlemonmobile.app.utils.ImageBuffer;
-import com.greenlemonmobile.app.utils.Md5Encrypt;
+import com.common.kuaxue.utils.ImageBuffer;
+import com.common.kuaxue.utils.Md5Encrypt;
 
 public class BookinfosGridAdapter extends BaseAdapter {
     

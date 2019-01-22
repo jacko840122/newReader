@@ -4,8 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.greenlemonmobile.app.utils.DatabaseUtil;
-import com.greenlemonmobile.app.utils.FileGuider;
+import com.common.kuaxue.utils.DatabaseUtil;
+import com.common.kuaxue.utils.FileGuider;
 
 public class MySQLiteOpenHelper {
     private static final String DATABASE_NAME = "data.db";

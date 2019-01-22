@@ -81,7 +81,7 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
     compile 'org.greenrobot:greendao:3.2.0'
-    compile 'com.google.code.gson:gson:2.6.2'
-    compile 'androidx.appcompat:appcompat:1.1.0-alpha01'
-    implementation files('../commonlib/bysdk.jar')
+
+    implementation project(':commonlibrary')
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
 }

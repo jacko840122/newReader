@@ -64,7 +64,7 @@ import com.greenlemonmobile.app.ebook.books.parser.IParser;
 import com.greenlemonmobile.app.ebook.books.parser.ParserFactory;
 import com.greenlemonmobile.app.ebook.books.utils.ParallelTask;
 import com.greenlemonmobile.app.ebook.entity.Bookmark;
-import com.greenlemonmobile.app.utils.Md5Encrypt;
+import com.common.kuaxue.utils.Md5Encrypt;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class WebReader extends RelativeLayout implements ReaderController {

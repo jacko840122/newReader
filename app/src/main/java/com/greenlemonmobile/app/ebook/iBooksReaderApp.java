@@ -13,7 +13,7 @@ import com.github.reader.app.model.manager.DBManager;
 import com.github.reader.utils.AppUtils;
 import com.github.reader.utils.Constants;
 import com.github.reader.utils.SharedPreferencesUtil;
-import com.greenlemonmobile.app.utils.SharePrefUtil;
+import com.common.Utils.SharePrefUtil;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;

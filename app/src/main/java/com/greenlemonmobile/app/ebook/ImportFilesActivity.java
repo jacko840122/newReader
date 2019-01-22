@@ -38,7 +38,7 @@ import android.widget.Toast;
 
 import com.greenlemonmobile.app.ebook.entity.FileInfo;
 import com.greenlemonmobile.app.ebook.entity.LocalBook;
-import com.greenlemonmobile.app.utils.FileUtil;
+import com.common.kuaxue.utils.FileUtil;
 
 public class ImportFilesActivity extends Activity implements OnClickListener, OnItemClickListener {
 

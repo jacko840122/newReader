@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -20,13 +19,13 @@ import com.greenlemonmobile.app.ebook.MyMd5;
 import com.greenlemonmobile.app.ebook.R;
 import com.greenlemonmobile.app.ebook.books.parser.EpubParser;
 import com.greenlemonmobile.app.ebook.db.MyContentProvider;
-import com.greenlemonmobile.app.utils.FileGuider;
-import com.greenlemonmobile.app.utils.FileUtil;
-import com.greenlemonmobile.app.utils.ImageTool;
-import com.greenlemonmobile.app.utils.Md5Encrypt;
-import com.kuaxue.app.bookstore.BookCacheData;
-import com.kuaxue.app.bookstore.BooksDBOnInternet;
-import com.kuaxue.app.bookstore.BooksDBOnInternet.BookInfo;
+import com.common.kuaxue.utils.FileGuider;
+import com.common.kuaxue.utils.FileUtil;
+import com.common.kuaxue.utils.ImageTool;
+import com.common.kuaxue.utils.Md5Encrypt;
+import com.common.kuaxue.app.bookstore.BookCacheData;
+import com.common.kuaxue.app.bookstore.BooksDBOnInternet;
+import com.common.kuaxue.app.bookstore.BooksDBOnInternet.BookInfo;
 
 public class LocalBook {
     
