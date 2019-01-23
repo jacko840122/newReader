@@ -217,5 +217,11 @@ public final class NetReqUtils {
 
         }
 
+        public static  <T> Request<T>  AddRequest(Context context,Object tag,Request<T> request){
+                VolleyManager.GetVolleyManager(context).add(request);
+                request.setTag(tag);
+                return request;
+        }
+
 
 }

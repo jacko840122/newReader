@@ -68,7 +68,7 @@ android {
 }
 
 dependencies {
-    compile 'androidx.legacy:legacy-support-v4:1.0.0'
+    //compile 'androidx.legacy:legacy-support-v4:1.0.0'
 
     compile files('libs/download.jar')
     compile files('libs/GoogleAdMobAdsSdk-6.2.1.jar')
@@ -86,6 +86,6 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.19'
     implementation 'com.google.android.material:material:1.1.0-alpha01'
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
+
 
 }
