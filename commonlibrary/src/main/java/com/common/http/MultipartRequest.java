@@ -20,7 +20,7 @@ import java.util.UUID;
 
 public class MultipartRequest extends Request<String> {
     private final String MULTIPART_FORM_DATA = "multipart/form-data"; // 数据类型
-    private final String BOUNDARY = "---------" + UUID.randomUUID().toString(); // 随机生成边界分隔线
+    private final String BOUNDARY = UUID.randomUUID().toString(); // 随机生成边界分隔线
     private final String NEW_LINE = "\r\n"; // 换行符
 
     private Map<String, Object> mParams;
@@ -159,12 +159,13 @@ public class MultipartRequest extends Request<String> {
     private void fileFormat(ByteArrayOutputStream bos, FileEntity fileEntity) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("--").append(BOUNDARY).append(NEW_LINE);
-        stringBuilder.append("Content-Disposition: form-data; name=\"").append(fileEntity.mName).append("\"").append(";filename=\"").append(fileEntity.mFileName).append("\"").append(NEW_LINE);
-        stringBuilder.append("Content-Type: ").append(fileEntity.mMime).append(";charset=").append(mCharSet).append(NEW_LINE);
-        stringBuilder.append(NEW_LINE);
+        stringBuilder.append("Content-Disposition: form-data; name=\"file\"").append(";filename=\"").append(fileEntity.mFileName).append("\"").append(NEW_LINE);
+        stringBuilder.append("Content-Type: ").append(fileEntity.mMime).append(NEW_LINE);
+        byte[] bytes=fileEntity.getFileBytes();
+        //stringBuilder.append("Content-Length: ").append(bytes.length).append(NEW_LINE);
         try {
             bos.write(stringBuilder.toString().getBytes(mCharSet));
-            bos.write(fileEntity.getFileBytes());
+            bos.write(bytes);
             bos.write(NEW_LINE.getBytes(mCharSet));
         } catch (IOException e) {
             e.printStackTrace();
