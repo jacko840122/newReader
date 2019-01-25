@@ -25,6 +25,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +46,7 @@ import static com.android.volley.Request.Method.POST;
 import static com.common.http.NetReqUtils.ACTION_BOOKSKEY_INFO;
 import static com.common.http.NetReqUtils.ACTION_BOOKS_INFO;
 import static com.common.http.NetReqUtils.ACTION_CATEGORY;
+import static com.common.http.NetReqUtils.ACTION_GET_FEEL_LIST;
 
 public class MainActivity extends AppCompatActivity implements Response.ErrorListener {
 
@@ -89,8 +91,18 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
         public void onResponse(Books_info response) {
             mBooks_info=response;
             bindBookInfo();
+            if(mBook_info!=null){
+                HashMap<String, Object> extraParams =new HashMap<>();
+                extraParams.put("bid",mBook_info.getId());
+                //extraParams.put("bid",68);
+                NetReqUtils.addGsonRequest(MainActivity.this,POST,TAG,null,extraParams,ACTION_GET_FEEL_LIST,
+                        Feellist.class,mFeelsListener,MainActivity.this);
+            }
+
         }
     };
+    private List<Feellist.DataBean> mFeellist;
+    private FeelAdapter mFeelAdapter;
 
     private void bindBookInfo(){
         if(mBooks_info!=null&&mBooks_info.getData()!=null
@@ -133,9 +145,19 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
     private Response.Listener<Feellist> mFeelsListener=new Response.Listener<Feellist>() {
         @Override
         public void onResponse(Feellist response) {
-
+            if(response!=null&&response.getData()!=null&&!response.getData().isEmpty()){
+                mFeellist=response.getData();
+                bindFeelData();
+            }
         }
     };
+
+    private void bindFeelData() {
+        mRvReview.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        mFeelAdapter = new FeelAdapter(mFeellist);
+        mRvReview.setItemAnimator(new DefaultItemAnimator());
+        mRvReview.setAdapter(mFeelAdapter);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -143,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
         setContentView(R.layout.main_layout);
         ButterKnife.bind(this);
         initViews();
-        getNetData();
+//        getNetData();
         checkPermissions();
         FileUtil.searchFiles(this);
     }
@@ -153,8 +175,8 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
                 Categorymenu.class,mCatListener,this);
 
         HashMap<String, Object> extraParams =new HashMap<>();
-        int booksid=SharePrefUtil.getInstance().getInt("last_book_id");
-        String name=SharePrefUtil.getInstance().getString("last_book_name");
+        int booksid=SharePrefUtil.getInstance().getLastBookId();
+        String name=SharePrefUtil.getInstance().getLastBookName();
         if(booksid>0){
             extraParams.put("booksid",booksid);
             NetReqUtils.addGsonRequest(this,POST,TAG,null,extraParams,ACTION_BOOKS_INFO,
@@ -166,11 +188,6 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
                     Books_info.class,mBookListener,this);
         }
 
-
-//        HashMap<String, Object> extraParams2 =new HashMap<>();
-//        extraParams2.put("booksid",92);
-//        NetReqUtils.addGsonRequest(this,POST,TAG,null,extraParams,ACTION_GET_FEEL_LIST,
-//                Feellist.class,mFeelsListener,this);
     }
 
 
@@ -254,6 +271,58 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
         }
     }
 
+    public class FeelAdapter extends RecyclerView.Adapter<FeelAdapter.ViewHolder> implements View.OnClickListener {
+        private List<Feellist.DataBean> list;
+
+        public FeelAdapter(List<Feellist.DataBean> list) {
+            this.list = list;
+        }
+
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.feel_item_sort, parent, false);
+            FeelAdapter.ViewHolder viewHolder = new FeelAdapter.ViewHolder(view);
+            return viewHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(FeelAdapter.ViewHolder holder, int position) {
+            String url=list.get(position).getPath()+list.get(position).getName();
+            if(!TextUtils.isEmpty(url)){
+                ImageLoader.getInstance().displayImage(url,holder.mIcon);
+            }
+
+            holder.mTvFeelInfo.setText(mBook_info.getB_name()+"第"+list.get(position).getChapter()+"章");
+            holder.mIcon.setTag(list.get(position));
+            holder.mIcon.setOnClickListener(this);
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return list.size();
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent intent=new Intent(MainActivity.this,FeelListActivity.class);
+            intent.putExtra("feellist", (Serializable) list);
+            startActivity(intent);
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+            ImageView mIcon;
+            TextView mTvFeelInfo;
+            ViewHolder(View itemView) {
+                super(itemView);
+                mIcon = itemView.findViewById(R.id.sort_icon);
+                mTvFeelInfo= itemView.findViewById(R.id.tv_feel_info);
+            }
+        }
+    }
+
 
 
     private void checkPermissions() {
@@ -295,6 +364,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
     @Override
     protected void onResume() {
         super.onResume();
+        getNetData();
     }
 
     @OnClick({R.id.search_btn, R.id.icon_btn,R.id.rv_book_container})

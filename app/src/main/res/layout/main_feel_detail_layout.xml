@@ -21,7 +21,7 @@
             android:drawableLeft="@drawable/return_icon"
             android:drawablePadding="42px"
             android:gravity="center_vertical|left"
-            tools:text="图书详情"
+            tools:text="读后感详情"
             android:maxLines="1"
             android:ellipsize="end"
             android:textColor="#010101"
@@ -36,36 +36,11 @@
         android:background="#0d0d0d"
         android:src="@drawable/line" />
 
-    <RelativeLayout
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:id="@+id/iv_feel_img"
+        android:scaleType="center"/>
 
-        <com.by.hw.drawcomponent.ByNote
-            android:id="@+id/by_note"
-            android:background="#ffffff"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <ImageView
-            android:id="@+id/iv_publish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="52px"
-            android:src="@drawable/bt_publish"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="38px"
-            android:text="编辑我的读后感"
-            android:textSize="24sp"
-            android:textColor="#b7b7b7"/>
-
-    </RelativeLayout>
 
 </LinearLayout>

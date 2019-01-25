@@ -162,7 +162,7 @@ public class MultipartRequest extends Request<String> {
         stringBuilder.append("Content-Disposition: form-data; name=\"file\"").append(";filename=\"").append(fileEntity.mFileName).append("\"").append(NEW_LINE);
         stringBuilder.append("Content-Type: ").append(fileEntity.mMime).append(NEW_LINE);
         byte[] bytes=fileEntity.getFileBytes();
-        //stringBuilder.append("Content-Length: ").append(bytes.length).append(NEW_LINE);
+        stringBuilder.append("Content-Length: ").append(bytes.length).append(NEW_LINE);
         try {
             bos.write(stringBuilder.toString().getBytes(mCharSet));
             bos.write(bytes);

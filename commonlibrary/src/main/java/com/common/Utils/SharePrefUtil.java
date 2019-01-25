@@ -208,4 +208,20 @@ public class SharePrefUtil {
         editor.commit();
         return this;
     }
+
+    public String getLastBookName(){
+        return getString("last_book_name");
+    }
+
+    public void setLastBookName(String name){
+        putString("last_book_name",name);
+    }
+
+    public int getLastBookId(){
+        return getInt("last_book_id");
+    }
+
+    public void setLastBookId(int id){
+        putInt("last_book_id",id);
+    }
 }

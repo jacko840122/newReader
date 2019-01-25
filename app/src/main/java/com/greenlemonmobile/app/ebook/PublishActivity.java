@@ -1,6 +1,7 @@
 package com.greenlemonmobile.app.ebook;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -14,9 +15,13 @@ import com.android.volley.VolleyError;
 import com.by.api.hw.ByHwProxy;
 import com.by.hw.drawcomponent.ByNote;
 import com.by.hw.util.CommonUtil;
+import com.by.hw.util.NoteUtil;
 import com.common.http.FileEntity;
 import com.common.http.MultipartRequest;
 import com.common.http.NetReqUtils;
+import com.common.kuaxue.utils.FileUtil;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.HashMap;
@@ -44,14 +49,20 @@ public class PublishActivity extends AppCompatActivity implements Response.Liste
     private int mChapterId;
     private String mBookFilePath;
     private String mNoteFilePath;
+    private String mChapterName;
 
 
     private void initData() {
         Intent intent = getIntent();
         mBookId = intent.getIntExtra("BookId", -1);
         mChapterId = intent.getIntExtra("ChapterId", 0);
-        ;
+        mChapterName = intent.getStringExtra("ChapterName");
         mBookFilePath = intent.getStringExtra("BookFilePath");
+        if(mChapterName!=null){
+            mTvReturn.setText(mChapterName);
+        }else {
+            mTvReturn.setText("读后感");
+        }
     }
 
     @Override
@@ -84,24 +95,31 @@ public class PublishActivity extends AppCompatActivity implements Response.Liste
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     private void publish() {
-        mNoteFilePath=Environment.getExternalStorageDirectory()+
-        File file=new File(mNoteFilePath);
-        if(!file.exists()){
-            Log.e(TAG,file+"not exist!");
-            return;
+        mNoteFilePath=FileUtil.getSavePath(mBookFilePath,mChapterId);
+        File pngfile = new File(mNoteFilePath+".png");
+        if(pngfile.exists()){
+            pngfile.delete();
         }
+//        Bitmap bitmap=mByNote.getNoteAndBgBitmap();
+//        FileUtil.saveBitMap(bitmap,pngfile.getPath());
+        mByNote.saveViewAsPng(pngfile.getPath());
         HashMap<String, Object> extraParams = new HashMap<>();
         extraParams.put("bid", mBookId);
-        extraParams.put("chapter", mChapterId);
+        extraParams.put("chapter", mChapterId+1);
         extraParams.put("type","add");
         extraParams.put("uid",7);
 
 
         FileEntity fileEntity = new FileEntity();
         fileEntity.mMime="image/*";
-        fileEntity.mFile =file ;
-        fileEntity.mFileName =file.getName();
+        fileEntity.mFile =pngfile ;
+        fileEntity.mFileName =pngfile.getName();
 
 
         MultipartRequest multipartRequest = new MultipartRequest(BASE_URL + ACTION_SAVE_FEEL, extraParams, fileEntity, this, this);
@@ -112,6 +130,18 @@ public class PublishActivity extends AppCompatActivity implements Response.Liste
     @Override
     public void onResponse(String response) {
         Log.d(TAG,"response="+response);
+        try{
+            JSONObject jsonObject=new JSONObject(response);
+            if(jsonObject.getBoolean("success")==true){
+                Toast.makeText(this, "上传数据成功!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            Toast.makeText(this, "上传数据异常!", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override

@@ -630,8 +630,8 @@ ByHwProxy.drawUnlock();
 
     private void getCommentData(){
         HashMap<String, Object> extraParams =new HashMap<>();
-        int booksid=SharePrefUtil.getInstance().getInt("last_book_id");
-        String name=SharePrefUtil.getInstance().getString("last_book_name");
+        int booksid=SharePrefUtil.getInstance().getLastBookId();
+        String name=SharePrefUtil.getInstance().getLastBookName();
         if(booksid>0){
             extraParams.put("bid",booksid);
             NetReqUtils.addGsonRequest(this,POST,TAG,null,extraParams,ACTION_GET_PZ_LIST,

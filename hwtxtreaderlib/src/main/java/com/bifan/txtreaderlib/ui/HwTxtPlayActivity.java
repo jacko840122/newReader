@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -90,12 +91,14 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
             if(response!=null||response.getData()!=null&&!response.getData().isEmpty()){
                 HashMap<String, Object> extraParams =new HashMap<>();
                 mBook_info=response.getData().get(0);
-                extraParams.put("bid",mBook_info.getId());
+                SharePrefUtil.getInstance().setLastBookId(Integer.parseInt(mBook_info.getId()));
+                extraParams.put("bid",Integer.parseInt(mBook_info.getId()));
                 NetReqUtils.addGsonRequest(HwTxtPlayActivity.this,POST,TAG,null,extraParams,ACTION_GET_PZ_LIST,
                         Pzlist.class,mPzlistListener,HwTxtPlayActivity.this);
             }
         }
     };
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -221,6 +224,7 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
     protected TextView mChapterNameText;
     protected TextView mChapterMenuText;
     protected TextView mProgressText;
+    private Button mPublish;
     protected TextView mSettingText;
     protected TextView mSelectedText;
     protected TxtReaderView mTxtReaderView;
@@ -247,7 +251,8 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
         mChapterNameText = (TextView) findViewById(R.id.activity_hwtxtplay_chaptername);
         mChapterMenuText = (TextView) findViewById(R.id.activity_hwtxtplay_chapter_menutext);
         mNoteText = (TextView) findViewById(R.id.tv_note);
-        mProgressText = (TextView) findViewById(R.id.activity_hwtxtplay_progress_text);
+        mProgressText = (TextView) findViewById(R.id.tv_progress);
+        mPublish = (Button)findViewById(R.id.bt_pulish);
         mSettingText = (TextView) findViewById(R.id.bright_setting);
         mTopMenu = findViewById(R.id.activity_hwtxtplay_menu_top);
         mBottomMenu = findViewById(R.id.activity_hwtxtplay_menu_bottom);
@@ -656,16 +661,42 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
                 }
             }
         });
+
+        mPublish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    Intent intent=new Intent("com.greenlemonmobile.app.ebook.Publish");
+                    intent.putExtra("BookId", Integer.valueOf(mBook_info.getId()));
+
+                    IChapter currentChapter = mTxtReaderView.getCurrentChapter();
+                    if (currentChapter != null) {
+                        intent.putExtra("ChapterId", currentChapter.getIndex());
+                    }
+                    intent.putExtra("ChapterName",mChapterNameText.getText());
+                    intent.putExtra("BookFilePath",FilePath);
+                    startActivity(intent);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
 
     private void getCommentData(){
         HashMap<String, Object> extraParams =new HashMap<>();
-        int booksid=SharePrefUtil.getInstance().getInt("last_book_id");
-        String name=SharePrefUtil.getInstance().getString("last_book_name");
+        int booksid=SharePrefUtil.getInstance().getLastBookId();
+        String name=SharePrefUtil.getInstance().getLastBookName();
         if(booksid>0){
+
             extraParams.put("bid",booksid);
             NetReqUtils.addGsonRequest(HwTxtPlayActivity.this,POST,TAG,null,extraParams,ACTION_GET_PZ_LIST,
                     Pzlist.class,mPzlistListener,HwTxtPlayActivity.this);
+
+            extraParams.put("booksname",name);
+            NetReqUtils.addGsonRequest(HwTxtPlayActivity.this,POST,TAG,null,extraParams,ACTION_BOOKSKEY_INFO,
+                    Books_info.class,mBookListener,HwTxtPlayActivity.this);
 
         }else {
             extraParams.put("booksname",name);

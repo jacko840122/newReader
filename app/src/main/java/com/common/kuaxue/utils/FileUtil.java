@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
@@ -307,6 +308,29 @@ public class FileUtil {
         return String.format("%,d", number);
     }
 
+    public static Boolean saveBitMap(Bitmap bitmap, String path) {
+        Boolean ret=false;
+        File f = new File(path);
+        if (f.exists()) {
+            f.delete();
+        }
+        try {
+            FileOutputStream out = new FileOutputStream(f);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return ret;
+
+    }
+
     public static class SDCardInfo {
         public long total;
 
@@ -518,14 +542,14 @@ public class FileUtil {
             name=name.substring(0,index);
         }
 
-        SharePrefUtil.getInstance().putString("last_book_name",name);
-        SharePrefUtil.getInstance().putInt("last_book_id",bookID);
+        SharePrefUtil.getInstance().setLastBookName(name);
+        SharePrefUtil.getInstance().setLastBookId(bookID);
 
     }
 
-    public static String getSavePath(String path, int page) {
-        File saveDir=new File(Environment.getExternalStorageDirectory().getPath()+File.separator+"bynote");
-        String fileName=encode(path+page)+".note";
+    public static String getSavePath(String path, int chapter) {
+        File saveDir=new File(Environment.getExternalStorageDirectory().getPath()+File.separator+"chapterBynote");
+        String fileName=encode(path+chapter)+".note";
         if(!saveDir.exists()) saveDir.mkdirs();
         return saveDir.getPath()+File.separator+fileName;
     }

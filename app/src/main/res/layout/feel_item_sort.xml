@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:background="@drawable/feel_item_bg"
+    android:layout_marginRight="25px"
+    android:padding="25px"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+        <View
+            android:layout_width="100px"
+            android:layout_height="100px"
+            android:background="@drawable/circle"></View>
+        
+        <TextView
+            android:id="@+id/tv_feel_info"
+            android:layout_marginLeft="34px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#000000"
+            android:layout_gravity="left|bottom"
+            android:textSize="14px"/>
+
+        <TextView
+            android:id="@+id/tv_zan_info"
+            android:layout_marginLeft="34px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:text="16932"
+            android:layout_gravity="left|bottom"
+            android:drawableLeft="@drawable/zan_icon"
+            android:textSize="17px"/>
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3px"
+        android:background="#808080"
+        android:layout_marginTop="18px"
+        android:layout_marginBottom="25px"></View>
+
+    <ImageView
+        android:layout_gravity="center"
+        android:id="@+id/sort_icon"
+        android:layout_width="360px"
+        android:layout_height="240px" />
+
+</LinearLayout>
