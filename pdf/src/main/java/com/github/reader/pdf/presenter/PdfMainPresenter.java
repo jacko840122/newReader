@@ -227,6 +227,7 @@ public class PdfMainPresenter extends BasePresenter<IPdfMainView>
             SharedPreferencesUtil.getInstance().putBoolean(Constants.READ_MODE, Constants.HORIZONTAL_SCROLLING);
             performSaveDocProgress();
         }
+
     }
 
     @Override

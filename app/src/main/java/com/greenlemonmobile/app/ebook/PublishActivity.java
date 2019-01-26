@@ -1,9 +1,8 @@
 package com.greenlemonmobile.app.ebook;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,7 +14,6 @@ import com.android.volley.VolleyError;
 import com.by.api.hw.ByHwProxy;
 import com.by.hw.drawcomponent.ByNote;
 import com.by.hw.util.CommonUtil;
-import com.by.hw.util.NoteUtil;
 import com.common.http.FileEntity;
 import com.common.http.MultipartRequest;
 import com.common.http.NetReqUtils;
@@ -50,6 +48,7 @@ public class PublishActivity extends AppCompatActivity implements Response.Liste
     private String mBookFilePath;
     private String mNoteFilePath;
     private String mChapterName;
+    private boolean mIsModified;
 
 
     private void initData() {
@@ -58,10 +57,21 @@ public class PublishActivity extends AppCompatActivity implements Response.Liste
         mChapterId = intent.getIntExtra("ChapterId", 0);
         mChapterName = intent.getStringExtra("ChapterName");
         mBookFilePath = intent.getStringExtra("BookFilePath");
+        mIsModified=intent.getBooleanExtra("IsModified",false);
+        mNoteFilePath=FileUtil.getSaveNotePath(mBookFilePath,mChapterId);
         if(mChapterName!=null){
             mTvReturn.setText(mChapterName);
         }else {
             mTvReturn.setText("读后感");
+        }
+        if(mIsModified){
+            mIvPublish.setImageResource(R.drawable.bt_modify);
+        }else {
+            mIvPublish.setImageResource(R.drawable.bt_publish);
+        }
+        mByNote.setPenTopLineErase(true);
+        if(mIsModified&&!TextUtils.isEmpty(mNoteFilePath)){
+            mByNote.loadNoteDataFromeFile(mNoteFilePath);
         }
     }
 
@@ -101,18 +111,27 @@ public class PublishActivity extends AppCompatActivity implements Response.Liste
     }
 
     private void publish() {
-        mNoteFilePath=FileUtil.getSavePath(mBookFilePath,mChapterId);
+        File notefile = new File(mNoteFilePath);
         File pngfile = new File(mNoteFilePath+".png");
+        if(notefile.exists()){
+            notefile.delete();
+        }
         if(pngfile.exists()){
             pngfile.delete();
         }
 //        Bitmap bitmap=mByNote.getNoteAndBgBitmap();
 //        FileUtil.saveBitMap(bitmap,pngfile.getPath());
+        mByNote.saveNoteAsFile(mNoteFilePath);
         mByNote.saveViewAsPng(pngfile.getPath());
         HashMap<String, Object> extraParams = new HashMap<>();
         extraParams.put("bid", mBookId);
-        extraParams.put("chapter", mChapterId+1);
-        extraParams.put("type","add");
+        extraParams.put("chapter", mChapterId);
+        if(mIsModified){
+            extraParams.put("type","edit");
+        }else {
+            extraParams.put("type","add");
+        }
+
         extraParams.put("uid",7);
 
 

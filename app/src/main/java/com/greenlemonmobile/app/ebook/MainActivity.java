@@ -308,6 +308,8 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
         @Override
         public void onClick(View view) {
             Intent intent=new Intent(MainActivity.this,FeelListActivity.class);
+            intent.putExtra("BookInfo",mBook_info);
+            intent.putExtra("FilePath",FileUtil.findFileByName(mBook_info.getB_name()).getPath());
             intent.putExtra("feellist", (Serializable) list);
             startActivity(intent);
         }

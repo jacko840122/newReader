@@ -324,6 +324,9 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
         }catch (Throwable e){
             e.printStackTrace();
         }
+        if(mLastProgress>=0){
+            mMyByNote2.mySaveNoteAsFile(FilePath,mLastProgress);
+        }
 
     }
 
@@ -333,9 +336,11 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
         try {
             CommonUtil.drawEnable();
             ByHwProxy.drawUnlock();
+            ByHwProxy.clearAll();
         }catch (Throwable e){
             e.printStackTrace();
         }
+        mMyByNote2.myReloadNoteDataFromeFile();
 
     }
 
@@ -671,7 +676,7 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
 
                     IChapter currentChapter = mTxtReaderView.getCurrentChapter();
                     if (currentChapter != null) {
-                        intent.putExtra("ChapterId", currentChapter.getIndex());
+                        intent.putExtra("ChapterId", currentChapter.getIndex()+1);
                     }
                     intent.putExtra("ChapterName",mChapterNameText.getText());
                     intent.putExtra("BookFilePath",FilePath);

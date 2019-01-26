@@ -48,10 +48,32 @@
         android:layout_marginTop="18px"
         android:layout_marginBottom="25px"></View>
 
-    <ImageView
-        android:layout_gravity="center"
-        android:id="@+id/sort_icon"
-        android:layout_width="360px"
-        android:layout_height="240px" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:layout_gravity="center"
+            android:id="@+id/sort_icon"
+            android:scaleType="centerInside"
+            android:layout_width="match_parent"
+            android:layout_height="175px" />
+
+        <ImageButton
+            android:layout_gravity="right|bottom"
+            android:id="@+id/iv_modify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bt_modify"
+            android:visibility="invisible"
+            android:background="@android:color/transparent"
+            android:layout_marginRight="40px"
+            android:layout_marginBottom="20px"
+            />
+
+    </FrameLayout>
+
+
 
 </LinearLayout>

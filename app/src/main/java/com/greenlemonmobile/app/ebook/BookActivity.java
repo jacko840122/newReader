@@ -97,11 +97,13 @@ public class BookActivity extends AppCompatActivity implements Response.ErrorLis
 
         Bundle bundle1=new Bundle();
         bundle1.putString("book_id",mBook_info.getId());
+        bundle1.putSerializable("book_info",mBook_info);
         Fragment fragment1=new FeelsFragment();
         fragment1.setArguments(bundle1);
 
         Bundle bundle2=new Bundle();
         bundle2.putSerializable("Catalog", (Serializable) mBook_info.getCatalog());
+        bundle2.putSerializable("book_info",mBook_info);
         Fragment fragment2=new DirFragment();
         fragment2.setArguments(bundle2);
         mFragments.clear();

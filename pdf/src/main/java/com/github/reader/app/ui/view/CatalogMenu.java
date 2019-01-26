@@ -98,6 +98,8 @@ public class CatalogMenu extends LinearLayout {
         initData();
     }
 
+
+
     public int getCurPage(int position){
         return mOutLineItems[position].page;
     }
@@ -106,4 +108,16 @@ public class CatalogMenu extends LinearLayout {
     public void setOnItemClickListener(AdapterView.OnItemClickListener listener){
         mListener = listener;
     }
+
+    public OutlineItem getCurOutlineItem(int pageIndex){
+        if(mOutLineItems==null||mOutLineItems.length<=0) return null;
+        for(OutlineItem outlineItem:mOutLineItems){
+            if(outlineItem.page<=pageIndex){
+                return outlineItem;
+            }
+        }
+        return mOutLineItems[mOutLineItems.length-1];
+    }
+
+
 }

@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -547,11 +548,18 @@ public class FileUtil {
 
     }
 
-    public static String getSavePath(String path, int chapter) {
+    public static String getSaveNotePath(String path, int chapter) {
         File saveDir=new File(Environment.getExternalStorageDirectory().getPath()+File.separator+"chapterBynote");
         String fileName=encode(path+chapter)+".note";
         if(!saveDir.exists()) saveDir.mkdirs();
         return saveDir.getPath()+File.separator+fileName;
+    }
+
+    public static boolean saveNoteExist(String path, int chapter){
+        String notePath=getSaveNotePath(path,chapter);
+        if(TextUtils.isEmpty(notePath)) return false;
+        File file=new File(notePath);
+        return file.exists();
     }
 
     public static String encode(String str) {

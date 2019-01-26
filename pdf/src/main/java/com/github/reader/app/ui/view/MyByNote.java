@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 
 import com.by.api.hw.ByHwProxy;
 import com.by.hw.drawcomponent.ByNote;
@@ -49,10 +50,25 @@ public class MyByNote extends ByNote {
         myLoadNoteDataFromeFile();
     }
 
+    @Override
+    protected void onLayout(boolean b, int i, int i1, int i2, int i3) {
+        super.onLayout(b, i, i1, i2, i3);
+    }
+
+    @Override
+    protected void onVisibilityChanged(View view, int visibility) {
+        super.onVisibilityChanged(view, visibility);
+        if(View.VISIBLE!=visibility){
+            mySaveNoteAsFile();
+        }else {
+            myLoadNoteDataFromeFile();
+        }
+    }
+
     private void myLoadNoteDataFromeFile(){
         if(getWidth()>0){
             clearAll();
-            //ByHwProxy.clearAll();
+            ByHwProxy.clearAll();
             Log.d(TAG, "mPageIndex=" + mPageIndex + "--myLoadNoteDataFromeFile=" + FileUtil.getSavePath(mPath, mPageIndex));
             loadNoteDataFromeFile(FileUtil.getSavePath(mPath, mPageIndex));
             setPenTopLineErase(true);
@@ -61,7 +77,7 @@ public class MyByNote extends ByNote {
                 @Override
                 public void run() {
                     clearAll();
-                    //ByHwProxy.clearAll();
+                    ByHwProxy.clearAll();
                     Log.d(TAG, "mPageIndex=" + mPageIndex + "--myLoadNoteDataFromeFile=" + FileUtil.getSavePath(mPath, mPageIndex));
                     loadNoteDataFromeFile(FileUtil.getSavePath(mPath, mPageIndex));
                     setPenTopLineErase(true);
@@ -70,15 +86,19 @@ public class MyByNote extends ByNote {
         }
     }
 
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
+    private void mySaveNoteAsFile(){
         Log.d(TAG,"mPageIndex="+ mPageIndex +"--SavePath="+FileUtil.getSavePath(mPath, mPageIndex));
         File file=new File(FileUtil.getSavePath(mPath, mPageIndex));
         if(file.exists()) file.delete();
         saveNoteAsFile(file.getPath());
         //clearAll();
         //ByHwProxy.clearAll();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mySaveNoteAsFile();
     }
 
 

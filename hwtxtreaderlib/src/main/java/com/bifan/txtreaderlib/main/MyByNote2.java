@@ -14,6 +14,8 @@ import java.io.File;
 public class MyByNote2 extends ByNote {
 
     private static final String TAG = "MyByNote2";
+    private String mPath="";
+    private int mPageIndex=-1;
 
     public MyByNote2(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -33,6 +35,8 @@ public class MyByNote2 extends ByNote {
     }
 
     public void myLoadNoteDataFromeFile(final String path, final int pageIndex) {
+        mPath=path;
+        mPageIndex=pageIndex;
         if(getWidth()>0){
             clearAll();
             ByHwProxy.clearAll();
@@ -52,6 +56,10 @@ public class MyByNote2 extends ByNote {
             });
         }
 
+    }
+
+    public  void myReloadNoteDataFromeFile(){
+        myLoadNoteDataFromeFile(mPath,mPageIndex);
     }
 
 

@@ -57,6 +57,7 @@ import com.github.reader.pdf.model.Hit;
 import com.github.reader.pdf.model.MuPDFAlert;
 import com.github.reader.pdf.model.MuPDFCore;
 import com.github.reader.pdf.model.OutlineActivityData;
+import com.github.reader.pdf.model.OutlineItem;
 import com.github.reader.pdf.model.SearchTaskResult;
 import com.github.reader.pdf.presenter.PdfMainPresenter;
 import com.github.reader.pdf.ui.adapater.MuPDFPageAdapter;
@@ -72,6 +73,7 @@ import java.util.List;
 
 import static com.android.volley.Request.Method.POST;
 import static com.common.http.NetReqUtils.ACTION_BOOKSKEY_INFO;
+import static com.common.http.NetReqUtils.ACTION_BOOKS_INFO;
 import static com.common.http.NetReqUtils.ACTION_GET_PZ_LIST;
 
 /**
@@ -100,6 +102,7 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
     private List<Pzlist.DataBean> mPzlist;
     private ViewGroup mTopMenu;
     private TextView mTvNote;
+    private TextView mPublish;
 
     @Override
     public void onErrorResponse(VolleyError error) {
@@ -170,7 +173,7 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
             if(response!=null||response.getData()!=null&&!response.getData().isEmpty()){
                 HashMap<String, Object> extraParams =new HashMap<>();
                 mBook_info=response.getData().get(0);
-                extraParams.put("bid",mBook_info.getId());
+                extraParams.put("bid",Integer.valueOf(mBook_info.getId()));
                 NetReqUtils.addGsonRequest(PdfActivity.this,POST,TAG,null,extraParams,ACTION_GET_PZ_LIST,
                         Pzlist.class,mPzlistListener,PdfActivity.this);
             }
@@ -229,6 +232,7 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
         try {
             CommonUtil.drawEnable();
             ByHwProxy.drawUnlock();
+            ByHwProxy.clearAll();
         }catch (Throwable e){
             e.printStackTrace();
         }
@@ -277,6 +281,7 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
         }catch (Throwable e){
             e.printStackTrace();
         }
+
 
     }
 
@@ -558,6 +563,7 @@ ByHwProxy.drawUnlock();
         });
 
         mReadWidget = (FrameLayout) mReaderRootView.findViewById(R.id.flReadWidget);
+        mPublish = (TextView) mReaderRootView.findViewById(R.id.bt_pulish);
         mMenuRoot = (RelativeLayout) mReaderRootView.findViewById(R.id.layout_menu);
         mBottomContainer = (RelativeLayout) mReaderRootView.findViewById(R.id.bottom_container);
         mTopMenuContainer = (RelativeLayout) mReaderRootView.findViewById(R.id.top_menu_container);
@@ -571,6 +577,7 @@ ByHwProxy.drawUnlock();
         //mSearchTextView.setColorFilter(mContext.getResources().getColor(R.color.common_white));
         mAnnotTypeText = (TextView) mReaderRootView.findViewById(R.id.annotType);
         mReturn.setOnClickListener(this);
+        mPublish.setOnClickListener(this);
         mSearchTextView.setOnClickListener(this);
 
         mTopMenuContainer.setOnClickListener(this);
@@ -634,6 +641,10 @@ ByHwProxy.drawUnlock();
         String name=SharePrefUtil.getInstance().getLastBookName();
         if(booksid>0){
             extraParams.put("bid",booksid);
+            extraParams.put("booksid",booksid);
+            NetReqUtils.addGsonRequest(this,POST,TAG,null,extraParams,ACTION_BOOKS_INFO,
+                    Books_info.class,mBookListener,this);
+
             NetReqUtils.addGsonRequest(this,POST,TAG,null,extraParams,ACTION_GET_PZ_LIST,
                     Pzlist.class,mPzlistListener,this);
 
@@ -785,6 +796,27 @@ ByHwProxy.drawUnlock();
 
         }else if(i==R.id.tv_note){
             openOrCloseComments();
+        }else if(i==R.id.bt_pulish){
+            openPublish();
+        }
+    }
+
+    private void openPublish(){
+        try{
+            Intent intent=new Intent("com.greenlemonmobile.app.ebook.Publish");
+            intent.putExtra("BookId", Integer.valueOf(mBook_info.getId()));
+
+
+            OutlineItem outlineItem=mCatalogMenu.getCurOutlineItem(mDocView.getDisplayedViewIndex());
+            if (outlineItem != null) {
+
+                intent.putExtra("ChapterId", outlineItem.page+1);
+                intent.putExtra("ChapterName",outlineItem.title);
+            }
+            intent.putExtra("BookFilePath",mvpPresenter.getPath());
+            startActivity(intent);
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
