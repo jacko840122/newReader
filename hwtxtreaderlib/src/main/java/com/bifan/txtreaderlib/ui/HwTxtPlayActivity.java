@@ -43,6 +43,8 @@ import com.bifan.txtreaderlib.utils.ELogger;
 import com.by.api.hw.ByHwProxy;
 import com.by.hw.util.CommonUtil;
 import com.common.Ui.CommentsList;
+import com.common.Ui.PopMore;
+import com.common.Ui.PopPen;
 import com.common.Utils.SharePrefUtil;
 import com.common.http.NetReqUtils;
 import com.common.http.data.Books_info;
@@ -61,7 +63,7 @@ import static com.common.http.NetReqUtils.ACTION_GET_PZ_LIST;
  * on 2017/12/8.
  */
 
-public class HwTxtPlayActivity extends AppCompatActivity implements Response.ErrorListener {
+public class HwTxtPlayActivity extends AppCompatActivity implements Response.ErrorListener, PopPen.PopPenListener, PopMore.ItemOnclickedListener {
     private static final String TAG ="HwTxtPlayActivity" ;
     protected Handler mHandler;
     protected boolean FileExist = false;
@@ -98,6 +100,7 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
             }
         }
     };
+
 
 
     @Override
@@ -226,6 +229,7 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
     protected TextView mProgressText;
     private Button mPublish;
     protected TextView mSettingText;
+    private TextView mSearchText;
     protected TextView mSelectedText;
     protected TxtReaderView mTxtReaderView;
     protected View mTopMenu;
@@ -234,6 +238,10 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
     protected View ClipboardView;
     protected String CurrentSelectedText;
     protected View mTvBack;
+
+    private PopPen mPopPen;
+
+    private PopMore mPopMore;
 
     protected ChapterList mChapterListPop;
     protected CommentsList mCommentsListPop;
@@ -254,6 +262,7 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
         mProgressText = (TextView) findViewById(R.id.tv_progress);
         mPublish = (Button)findViewById(R.id.bt_pulish);
         mSettingText = (TextView) findViewById(R.id.bright_setting);
+        mSearchText = (TextView) findViewById(R.id.tv_search);
         mTopMenu = findViewById(R.id.activity_hwtxtplay_menu_top);
         mBottomMenu = findViewById(R.id.activity_hwtxtplay_menu_bottom);
         mCoverView = findViewById(R.id.activity_hwtxtplay_cover);
@@ -278,6 +287,11 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
         mMenuHolder.mStyle4 = findViewById(R.id.hwtxtreader_menu_style4);
         mMenuHolder.mStyle5 = findViewById(R.id.hwtxtreader_menu_style5);
         mTvBack=findViewById(R.id.iv_return);
+
+        mPopPen=new PopPen(this);
+        mPopPen.setPopPenListener(this);
+        mPopMore=new PopMore(this);
+        mPopMore.setListener(this);
     }
 
     private final int[] StyleTextColors = new int[]{
@@ -469,6 +483,13 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
                     e.printStackTrace();
                     Toast.makeText(HwTxtPlayActivity.this,"应用未安装",Toast.LENGTH_SHORT).show();
                 }
+
+            }
+        });
+
+        mSearchText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
             }
         });
@@ -792,6 +813,43 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
     public void onErrorResponse(VolleyError error) {
         Toast.makeText(this, "获取数据有异常!", Toast.LENGTH_SHORT).show();
         error.printStackTrace();
+    }
+
+    @Override
+    public void onPenClick(View view) {
+
+    }
+
+    @Override
+    public void onPenSizeChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+    }
+
+    @Override
+    public void onPenSizeStartTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onPenSizeStopTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onItemClick(View v) {
+        int id = v.getId();
+        if (id == R.id.bright_setting) {
+            try{
+                startActivity(new Intent("com.boyue.action.LIGHT_ADJUST"));
+            }catch ( ActivityNotFoundException e){
+                e.printStackTrace();
+                Toast.makeText(HwTxtPlayActivity.this,"应用未安装",Toast.LENGTH_SHORT).show();
+            }
+        }else if(id == R.id.pen_setting){
+
+        }else if(id == R.id.search_setting){
+
+        }
     }
 
     private class TextSettingClickListener implements View.OnClickListener {

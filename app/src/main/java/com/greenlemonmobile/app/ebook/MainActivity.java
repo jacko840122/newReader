@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
         initViews();
 //        getNetData();
         checkPermissions();
-        FileUtil.searchFiles(this);
+
     }
 
     private void getNetData(){
@@ -343,6 +343,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
                     public void onNext(Boolean granted) {
                         if (granted) { // 在android 6.0之前会默认返回true
                             // 已经获取权限
+                            FileUtil.searchFiles(MainActivity.this);
                         } else {
                             // 未获取权限
                             Toast.makeText(MainActivity.this, "您没有授权该权限，请在设置中打开授权", Toast.LENGTH_SHORT).show();

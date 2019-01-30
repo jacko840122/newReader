@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+    android:background="@drawable/sharp_pen_pop"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/bright_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/bright_bt"
+        android:drawablePadding="10dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="背光"
+        android:textColor="#ff999999"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/pen_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:drawableTop="@drawable/pen_bt"
+        android:drawablePadding="10dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="钢笔"
+        app:layout_constraintLeft_toRightOf="@id/bright_setting"
+        android:textColor="#ff999999"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/search_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:drawablePadding="10dp"
+        android:drawableTop="@drawable/search_bt"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="搜索"
+        android:textColor="#ff999999"
+        app:layout_constraintTop_toBottomOf="@id/bright_setting"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textSize="16sp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

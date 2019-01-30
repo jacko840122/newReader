@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dip"
+    android:layout_height="245.3dip"
+    android:background="@drawable/sharp_pen_pop"
+    android:paddingStart="40px"
+    android:paddingTop="54px"
+    android:paddingEnd="54px"
+    android:paddingBottom="54px">
+
+    <TextView
+        android:id="@+id/pen_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="类型"
+        android:textColor="#626262"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@id/menu_pen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/menu_pen" />
+
+    <ImageButton
+        android:id="@+id/menu_pen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="31.3dip"
+        android:layout_marginEnd="54px"
+        android:background="@drawable/selector_menu_pen"
+        app:layout_constraintStart_toEndOf="@id/pen_type"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/menu_pen_des"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23.3dip"
+        android:gravity="center"
+        android:text="钢笔"
+        android:textColor="#626262"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@id/menu_pen"
+        app:layout_constraintStart_toStartOf="@+id/menu_pen"
+        app:layout_constraintTop_toBottomOf="@id/menu_pen" />
+
+    <ImageButton
+        android:id="@+id/menu_ballpen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="46px"
+        android:layout_marginEnd="54px"
+        android:background="@drawable/selector_menu_ballpen"
+        app:layout_constraintStart_toEndOf="@id/menu_pen"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35px"
+        android:gravity="center"
+        android:text="圆珠笔"
+        android:textColor="#626262"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@id/menu_ballpen"
+        app:layout_constraintStart_toStartOf="@+id/menu_ballpen"
+        app:layout_constraintTop_toBottomOf="@id/menu_ballpen" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="40px"
+        android:background="#656565"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/menu_pen_des" />
+
+    <TextView
+        android:id="@+id/pen_property"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="粗细"
+        android:layout_marginTop="40px"
+        android:textColor="#626262"
+        android:textSize="22sp"
+        app:layout_constraintTop_toBottomOf="@id/line"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/thick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60px"
+        android:layout_marginEnd="25px"
+        android:gravity="center"
+        android:text="粗"
+        android:textColor="#626262"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/pen_property"
+        app:layout_constraintStart_toEndOf="@+id/pen_property"
+        app:layout_constraintTop_toTopOf="@+id/pen_property" />
+
+    <SeekBar
+        android:id="@+id/pen_size"
+        style="@style/SeekBar"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:progress="1"
+        app:layout_constraintBottom_toBottomOf="@+id/pen_property"
+        app:layout_constraintEnd_toStartOf="@id/thin"
+        app:layout_constraintStart_toEndOf="@+id/thick"
+        app:layout_constraintTop_toTopOf="@+id/pen_property" />
+
+    <TextView
+        android:id="@+id/thin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25px"
+        android:gravity="center"
+        android:text="细"
+        android:textColor="#626262"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/pen_property" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

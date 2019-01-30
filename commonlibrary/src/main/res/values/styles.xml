@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SeekBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/seek</item>
+        <item name="android:minHeight">8dip</item>
+        <item name="android:maxHeight">8dip</item>
+        <item name="android:splitTrack">false</item>
+        <item name="android:thumb">@drawable/thumb_seek</item>
+        <item name="android:focusable">true</item>
+    </style>
+</resources>
