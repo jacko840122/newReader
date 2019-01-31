@@ -34,7 +34,7 @@
             android:padding="12px"
             android:textColorHint="#b0b0b0"
             android:drawableLeft="@drawable/search_icon"
-            android:drawableRight="@drawable/search_bt"
+            android:drawableRight="@drawable/search_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

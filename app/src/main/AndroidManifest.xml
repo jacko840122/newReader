@@ -51,6 +51,17 @@
 
         </activity>
 
+        <activity android:name=".MarkActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+            <intent-filter >
+                <action android:name="com.greenlemonmobile.app.ebook.Mark"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+            </intent-filter>
+
+        </activity>
+
         <activity android:name=".FeelListActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
 

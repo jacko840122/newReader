@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
-                android:src="@drawable/search_bt"
+                android:src="@drawable/search_button"
                 android:id="@+id/iv_search"/>
 
         </LinearLayout>

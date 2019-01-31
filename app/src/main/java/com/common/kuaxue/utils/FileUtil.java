@@ -332,6 +332,7 @@ public class FileUtil {
 
     }
 
+
     public static class SDCardInfo {
         public long total;
 
@@ -560,6 +561,13 @@ public class FileUtil {
         if(TextUtils.isEmpty(notePath)) return false;
         File file=new File(notePath);
         return file.exists();
+    }
+
+
+    public static String getmThumbnailDir(String bookFilePath) {
+        File saveDir=new File(Environment.getExternalStorageDirectory().getPath()+File.separator+"Thumbnail"+File.separator+encode(bookFilePath));
+        if(!saveDir.exists()) saveDir.mkdirs();
+        return saveDir.getPath();
     }
 
     public static String encode(String str) {

@@ -1,10 +1,13 @@
 package com.bifan.txtreaderlib.utils;
 
+import android.graphics.Bitmap;
 import android.os.Environment;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -132,5 +135,32 @@ public class FileUtil {
             e.printStackTrace();
             return null;
         }
+    }
+    public static String getmThumbnailDir(String bookFilePath) {
+        File saveDir=new File(Environment.getExternalStorageDirectory().getPath()+File.separator+"Thumbnail"+File.separator+encode(bookFilePath));
+        if(!saveDir.exists()) saveDir.mkdirs();
+        return saveDir.getPath();
+    }
+
+    public static Boolean saveBitMap(Bitmap bitmap, String path) {
+        Boolean ret=false;
+        File f = new File(path);
+        if (f.exists()) {
+            f.delete();
+        }
+        try {
+            FileOutputStream out = new FileOutputStream(f);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, out);
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return ret;
     }
 }

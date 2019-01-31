@@ -224,4 +224,20 @@ public class SharePrefUtil {
     public void setLastBookId(int id){
         putInt("last_book_id",id);
     }
+
+    public void  setIsPen(boolean isPen){
+        putBoolean("isPen",isPen);
+    }
+
+    public void setPenSize(int penSize){
+        putInt("penSize",penSize);
+    }
+
+    public boolean  getIsPen(){
+        return getBoolean("isPen",true);
+    }
+
+    public int getPenSize(){
+        return getInt("penSize",1);
+    }
 }

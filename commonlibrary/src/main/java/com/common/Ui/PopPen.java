@@ -2,6 +2,7 @@ package com.common.Ui;
 
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,25 +79,32 @@ public class PopPen implements View.OnClickListener {
         this.listener = l;
     }
 
-    public void showAsDropDown(boolean isPen, int penSize, View parent) {
+    public void show(boolean isPen, int penSize, View parent) {
         btnPen.setSelected(isPen);
         btnBallpen.setSelected(!isPen);
         penSeek.setProgress(penSize);
         //WindowManager.LayoutParams lp = this.activityTarget.getWindow().getAttributes();
         //lp.alpha = 0.5f;
         mPopupWindow.update();
-        mPopupWindow.showAsDropDown(parent,0,8);
+        mPopupWindow.showAtLocation(parent, Gravity.CENTER,0,0);
     }
 
-    public void showAsDropDown(View anchor, int xoff, int yoff) {
+    public void show(View anchor, int xoff, int yoff) {
         //WindowManager.LayoutParams lp = this.activityTarget.getWindow().getAttributes();
         //lp.alpha = 0.5f;
-        mPopupWindow.showAsDropDown(anchor, xoff, yoff);
+        mPopupWindow.showAtLocation(anchor,Gravity.CENTER, xoff, yoff);
     }
 
     @Override
     public void onClick(View v) {
-        mPopupWindow.dismiss();
+        //mPopupWindow.dismiss();
+        if(v.getId()==R.id.menu_pen){
+            btnPen.setSelected(true);
+            btnBallpen.setSelected(false);
+        }else if(v.getId()==R.id.menu_ballpen){
+            btnBallpen.setSelected(true);
+            btnPen.setSelected(false);
+        }
         if (listener != null) {
             listener.onPenClick(v);
         }

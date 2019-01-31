@@ -29,7 +29,6 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/tv_search"
             android:layout_toRightOf="@id/iv_return"
             android:layout_weight="1"
             android:ellipsize="end"
@@ -45,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:drawableTop="@drawable/mulu"
+            android:drawableTop="@drawable/dir_bt"
             android:ellipsize="end"
             android:gravity="center"
             android:singleLine="true"
@@ -66,16 +65,16 @@
 
 
         <TextView
-            android:id="@+id/bright_setting"
+            android:id="@+id/mark_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:drawableTop="@drawable/bright"
+            android:drawableTop="@drawable/note_bt"
             android:ellipsize="end"
             android:gravity="center"
             android:singleLine="true"
-            android:text="亮度"
+            android:text="标记"
             android:textColor="@color/text_color_gray"
             android:textSize="@dimen/text_size_small" />
 
@@ -91,32 +90,8 @@
         </View>
 
 
-        <!--搜索-->
-
-        <TextView
-            android:id="@+id/tv_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:drawableTop="@drawable/sousuo"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="搜索"
-            android:textColor="@color/text_color_gray"
-            android:textSize="@dimen/text_size_small" />
 
 
-        <View
-            android:layout_width="1px"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/vertical_dashed"
-            android:layerType="software">
-
-        </View>
 
 
         <TextView
@@ -125,7 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:drawableTop="@drawable/zhujie"
+            android:drawableTop="@drawable/mark_bt"
             android:ellipsize="end"
             android:gravity="center"
             android:singleLine="true"
@@ -145,6 +120,30 @@
 
         </View>
 
+        <TextView
+            android:id="@+id/tv_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:drawableTop="@drawable/more_bt"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="更多"
+            android:textColor="@color/text_color_gray"
+            android:textSize="@dimen/text_size_small" />
+
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/vertical_dashed"
+            android:layerType="software">
+
+        </View>
+
     </LinearLayout>
 
     <View
@@ -155,6 +154,7 @@
 
 
     <FrameLayout
+        android:layout_marginTop="1px"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/activity_hwtxtplay_bottom"

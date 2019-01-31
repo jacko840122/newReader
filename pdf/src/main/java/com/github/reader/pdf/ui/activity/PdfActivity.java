@@ -13,6 +13,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
@@ -43,6 +44,8 @@ import com.android.volley.VolleyError;
 import com.by.api.hw.ByHwProxy;
 import com.by.hw.util.CommonUtil;
 import com.common.Ui.CommentsList;
+import com.common.Ui.PopMore;
+import com.common.Ui.PopPen;
 import com.common.Utils.SharePrefUtil;
 import com.common.http.NetReqUtils;
 import com.common.http.data.Books_info;
@@ -80,7 +83,7 @@ import static com.common.http.NetReqUtils.ACTION_GET_PZ_LIST;
  * 主屏V的实现
  */
 public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
-        implements IPdfMainView, View.OnClickListener, Response.ErrorListener {
+        implements IPdfMainView, View.OnClickListener, Response.ErrorListener, PopPen.PopPenListener, PopMore.ItemOnclickedListener {
     private static final String TAG = "PdfActivity";
     private Context mContext;
     private TextView mTvPrePage;
@@ -97,17 +100,62 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
     private ImageButton mCancelAccept;
     private ImageButton mSureAccept;
     private TextView mPageNum;
-    private TextView mTvBright;
     private CommentsList mCommentsListPop;
     private List<Pzlist.DataBean> mPzlist;
     private ViewGroup mTopMenu;
     private TextView mTvNote;
     private TextView mPublish;
+    private TextView mMoreText;
+    private TextView mTvMark;
+    private Handler mHandler=new Handler();
 
     @Override
     public void onErrorResponse(VolleyError error) {
         Toast.makeText(this, "获取数据有异常!", Toast.LENGTH_SHORT).show();
         error.printStackTrace();
+    }
+
+    @Override
+    public void onPenClick(View view) {
+        int i = view.getId();
+        if (i == R.id.menu_pen) {
+            SharePrefUtil.getInstance().setIsPen(true);
+
+        }else  if(i == R.id.menu_ballpen){
+            SharePrefUtil.getInstance().setIsPen(false);
+        }
+    }
+
+    @Override
+    public void onPenSizeChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        SharePrefUtil.getInstance().setPenSize(progress);
+    }
+
+    @Override
+    public void onPenSizeStartTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onPenSizeStopTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onItemClick(View v) {
+        int id = v.getId();
+        if (id == R.id.bright_setting) {
+            try{
+                startActivity(new Intent("com.boyue.action.LIGHT_ADJUST"));
+            }catch ( ActivityNotFoundException e){
+                e.printStackTrace();
+                Toast.makeText(this,"应用未安装",Toast.LENGTH_SHORT).show();
+            }
+        }else if(id == R.id.pen_setting){
+            mPopPen.show(SharePrefUtil.getInstance().getIsPen(),SharePrefUtil.getInstance().getPenSize(),v.getRootView());
+        }else if(id == R.id.search_setting){
+            searchModeOn();
+        }
     }
 
     //TODO 需重新设定
@@ -128,7 +176,7 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
     private TextView mTitle;
     private ImageView mReturn;
     private SeekBar mPageSlider;
-    private TextView mSearchTextView;
+
     private ImageView mBrowseDirButton;
     private ImageView mBrightnessButton;
     private ImageView mClipButton;
@@ -153,6 +201,10 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
     private boolean isSearchMode;
     private AlertDialog mAlertDialog;
     private PdfPresentation mPresentation;
+
+    private PopPen mPopPen;
+
+    private PopMore mPopMore;
 
     private Response.Listener<Pzlist> mPzlistListener=new Response.Listener<Pzlist>() {
         @Override
@@ -337,7 +389,7 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                mDrawerLayout.closeDrawer(Gravity.LEFT,false);
                 return true;
             }
         }
@@ -556,7 +608,7 @@ ByHwProxy.drawUnlock();
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 OutlineActivityData.get().position = position;
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                mDrawerLayout.closeDrawer(Gravity.LEFT,false);
                 mDocView.setDisplayedViewIndex(mCatalogMenu.getCurPage(position));
                 Log.d(TAG, "onItemClick: position=" + position + " 当前页码:=" + mCatalogMenu.getCurPage(position));
             }
@@ -573,12 +625,11 @@ ByHwProxy.drawUnlock();
         mReturn = (ImageView) mReaderRootView.findViewById(R.id.iv_return);
         mTopMenu= (ViewGroup) mReaderRootView.findViewById(R.id.layout_menu_top_main);
         mReturn.setColorFilter(mContext.getResources().getColor(R.color.common_white));
-        mSearchTextView = (TextView) mReaderRootView.findViewById(R.id.tv_search);
         //mSearchTextView.setColorFilter(mContext.getResources().getColor(R.color.common_white));
         mAnnotTypeText = (TextView) mReaderRootView.findViewById(R.id.annotType);
         mReturn.setOnClickListener(this);
         mPublish.setOnClickListener(this);
-        mSearchTextView.setOnClickListener(this);
+
 
         mTopMenuContainer.setOnClickListener(this);
 
@@ -594,11 +645,13 @@ ByHwProxy.drawUnlock();
         mBrowseDirButton = (ImageView) mReaderRootView.findViewById(R.id.browseDirection_button);
         mBrightnessButton = (ImageView) mReaderRootView.findViewById(R.id.brightness_button);
         mClipButton = (ImageView) mReaderRootView.findViewById(R.id.clip_button);
-        mTvBright= (TextView) mReaderRootView.findViewById(R.id.tv_bright);
+
         mTvNote= (TextView) mReaderRootView.findViewById(R.id.tv_note);
+        mTvMark= (TextView) mReaderRootView.findViewById(R.id.mark_note_setting);
         mSwitchScreenButton = (TextView) mReaderRootView.findViewById(R.id.switchScreen_button);
         mAnnotButton = (ImageView) mReaderRootView.findViewById(R.id.annot_button);
         mTvNote.setOnClickListener(this);
+        mTvMark.setOnClickListener(this);
         mIvInk.setOnClickListener(this);
         mOutlineTextview.setOnClickListener(this);
         mAnnotButton.setOnClickListener(this);
@@ -606,7 +659,6 @@ ByHwProxy.drawUnlock();
         mSwitchScreenButton.setOnClickListener(this);
         mBrightnessButton.setOnClickListener(this);
         mClipButton.setOnClickListener(this);
-        mTvBright.setOnClickListener(this);
         setButtonEnabled(mBrightnessButton,true);
 
 
@@ -629,10 +681,16 @@ ByHwProxy.drawUnlock();
         mSearchBack = (ImageButton) mReaderRootView.findViewById(R.id.ivSearchBack);
         mSearchFwd = (ImageButton) mReaderRootView.findViewById(R.id.ivSearchForward);
         mSearchText = (EditText) mReaderRootView.findViewById(R.id.searchText);
+        mMoreText = (TextView) mReaderRootView.findViewById(R.id.tv_more);
         mIvCancelSearch = (ImageView) mReaderRootView.findViewById(R.id.ivCancelSearch);
         mSearchBack.setOnClickListener(this);
         mSearchFwd.setOnClickListener(this);
+        mMoreText.setOnClickListener(this);
         mIvCancelSearch.setOnClickListener(this);
+        mPopPen=new PopPen(this);
+        mPopPen.setPopPenListener(this);
+        mPopMore=new PopMore(this);
+        mPopMore.setListener(this);
     }
 
     private void getCommentData(){
@@ -662,13 +720,19 @@ ByHwProxy.drawUnlock();
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, final int resultCode, Intent data) {
         switch (requestCode) {
             case OUTLINE_REQUEST:
                 Log.d(TAG, "onActivityResult: resultCode=" + resultCode);
                 if (resultCode >= 0) {
-                    mDocView.setDisplayedViewIndex(resultCode);
-                }
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mDocView.setDisplayedViewIndex(resultCode);
+                        }
+                    });
+
+            }
                 break;
             default:
                 break;
@@ -711,8 +775,6 @@ ByHwProxy.drawUnlock();
             Constants.isShowInMainSceen = !Constants.isShowInMainSceen;
             switchScreen();
 
-        } else if (i == R.id.tv_search) {
-            searchModeOn();
 
         } else if (i == R.id.annot_button) {
             onAnnotButtonClick();
@@ -786,20 +848,28 @@ ByHwProxy.drawUnlock();
         } else if (i == R.id.clip_button) {
             ToastUtil.getInstance().showToast("暂时不支持");
 
-        } else if(i==R.id.tv_bright){
-            try{
-                startActivity(new Intent("com.boyue.action.LIGHT_ADJUST"));
-            }catch ( ActivityNotFoundException e){
-                e.printStackTrace();
-                Toast.makeText(this,"应用未安装",Toast.LENGTH_SHORT).show();
-            }
-
         }else if(i==R.id.tv_note){
             openOrCloseComments();
         }else if(i==R.id.bt_pulish){
             openPublish();
+        }else if(i==R.id.tv_more){
+            mPopMore.showAsDropDown(v,0,0);
+        }else if(i==R.id.mark_note_setting){
+            openMark();
         }
     }
+
+    private void openMark(){
+        try{
+            Intent intent=new Intent("com.greenlemonmobile.app.ebook.Mark");
+            intent.putExtra("BookFilePath",mvpPresenter.getPath());
+            startActivityForResult(intent);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
 
     private void openPublish(){
         try{
@@ -835,9 +905,9 @@ ByHwProxy.drawUnlock();
 
     private void openCatalogMenu() {
         if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            mDrawerLayout.closeDrawer(Gravity.LEFT,false);
         } else {
-            mDrawerLayout.openDrawer(Gravity.LEFT);
+            mDrawerLayout.openDrawer(Gravity.LEFT,false);
         }
 
     }

@@ -37,12 +37,12 @@ public class PopMore implements View.OnClickListener {
     public PopMore (Activity activity) {
         activityTarget = activity;
         rootView = LayoutInflater.from(activity).inflate(R.layout.layout_more_menu, null);
-        mTvBright = rootView.findViewById(R.id.menu_pen);
+        mTvBright = rootView.findViewById(R.id.bright_setting);
         mTvBright.setOnClickListener(this);
-        mTvPen = rootView.findViewById(R.id.menu_ballpen);
+        mTvPen = rootView.findViewById(R.id.pen_setting);
         mTvPen.setOnClickListener(this);
 
-        mTvSearch = rootView.findViewById(R.id.menu_ballpen);
+        mTvSearch = rootView.findViewById(R.id.search_setting);
         mTvSearch.setOnClickListener(this);
 
         mPopupWindow = new PopupWindow(rootView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);

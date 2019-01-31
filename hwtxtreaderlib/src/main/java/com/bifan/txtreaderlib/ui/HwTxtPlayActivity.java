@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -65,11 +66,14 @@ import static com.common.http.NetReqUtils.ACTION_GET_PZ_LIST;
 
 public class HwTxtPlayActivity extends AppCompatActivity implements Response.ErrorListener, PopPen.PopPenListener, PopMore.ItemOnclickedListener {
     private static final String TAG ="HwTxtPlayActivity" ;
+    private static final int OUTLINE_REQUEST = 0x100;
     protected Handler mHandler;
     protected boolean FileExist = false;
     private MyByNote2 mMyByNote2;
     private int mLastProgress=-1;
     private TextView mNoteText;
+    private TextView mMoreText;
+    private TextView mMarkText;
     private Response.Listener<Pzlist> mPzlistListener=new Response.Listener<Pzlist>() {
         @Override
         public void onResponse(Pzlist response) {
@@ -228,8 +232,6 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
     protected TextView mChapterMenuText;
     protected TextView mProgressText;
     private Button mPublish;
-    protected TextView mSettingText;
-    private TextView mSearchText;
     protected TextView mSelectedText;
     protected TxtReaderView mTxtReaderView;
     protected View mTopMenu;
@@ -259,10 +261,10 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
         mChapterNameText = (TextView) findViewById(R.id.activity_hwtxtplay_chaptername);
         mChapterMenuText = (TextView) findViewById(R.id.activity_hwtxtplay_chapter_menutext);
         mNoteText = (TextView) findViewById(R.id.tv_note);
+        mMarkText = (TextView) findViewById(R.id.mark_setting);
+        mMoreText = (TextView) findViewById(R.id.tv_more);
         mProgressText = (TextView) findViewById(R.id.tv_progress);
         mPublish = (Button)findViewById(R.id.bt_pulish);
-        mSettingText = (TextView) findViewById(R.id.bright_setting);
-        mSearchText = (TextView) findViewById(R.id.tv_search);
         mTopMenu = findViewById(R.id.activity_hwtxtplay_menu_top);
         mBottomMenu = findViewById(R.id.activity_hwtxtplay_menu_bottom);
         mCoverView = findViewById(R.id.activity_hwtxtplay_cover);
@@ -472,27 +474,7 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
     }
 
     protected void registerListener() {
-        mSettingText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Show(mTopMenu, mBottomMenu, mCoverView);
-                //Show(mBottomMenu, mCoverView);
-                try{
-                    startActivity(new Intent("com.boyue.action.LIGHT_ADJUST"));
-                }catch ( ActivityNotFoundException e){
-                    e.printStackTrace();
-                    Toast.makeText(HwTxtPlayActivity.this,"应用未安装",Toast.LENGTH_SHORT).show();
-                }
 
-            }
-        });
-
-        mSearchText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
         setMenuListener();
         setSeekBarListener();
         setCenterClickListener();
@@ -708,6 +690,55 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
 
             }
         });
+
+        mMoreText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPopMore.showAsDropDown(v,0,0);
+            }
+        });
+
+        mMarkText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openMark();
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, final int resultCode, Intent data) {
+        switch (requestCode) {
+            case OUTLINE_REQUEST:
+                Log.d(TAG, "onActivityResult: resultCode=" + resultCode);
+                if (resultCode >= 0) {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mTxtReaderView.loadFromProgress(resultCode);
+                        }
+                    });
+
+                }
+                break;
+            default:
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void startActivityForResult(Intent intent) {
+        startActivityForResult(intent, OUTLINE_REQUEST);
+    }
+
+    private void openMark(){
+        try{
+            Intent intent=new Intent("com.greenlemonmobile.app.ebook.Mark");
+            intent.putExtra("BookFilePath",FilePath);
+            startActivityForResult(intent);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void getCommentData(){
@@ -817,12 +848,18 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
 
     @Override
     public void onPenClick(View view) {
+        int i = view.getId();
+        if (i == R.id.menu_pen) {
+            SharePrefUtil.getInstance().setIsPen(true);
 
+        }else  if(i == R.id.menu_ballpen){
+            SharePrefUtil.getInstance().setIsPen(false);
+        }
     }
 
     @Override
     public void onPenSizeChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+        SharePrefUtil.getInstance().setPenSize(progress);
     }
 
     @Override
@@ -846,7 +883,7 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
                 Toast.makeText(HwTxtPlayActivity.this,"应用未安装",Toast.LENGTH_SHORT).show();
             }
         }else if(id == R.id.pen_setting){
-
+            mPopPen.show(SharePrefUtil.getInstance().getIsPen(),SharePrefUtil.getInstance().getPenSize(),v.getRootView());
         }else if(id == R.id.search_setting){
 
         }
