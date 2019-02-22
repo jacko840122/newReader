@@ -27,6 +27,9 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -155,6 +158,19 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
         public void onResponse(Feellist response) {
             if (response != null && response.getData() != null && !response.getData().isEmpty()) {
                 mFeellist = response.getData();
+                Collections.sort(mFeellist,new Comparator<Feellist.DataBean>() {
+                    @Override
+                    public int compare(Feellist.DataBean o1, Feellist.DataBean o2) {
+                        int ret=-1;
+                        try{
+                            ret=Integer.valueOf(o2.getTime())-Integer.valueOf(o1.getTime());
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        return ret;
+
+                    }
+                });
                 bindFeelData();
             }
         }
