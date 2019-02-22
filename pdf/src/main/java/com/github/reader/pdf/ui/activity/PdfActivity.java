@@ -222,7 +222,7 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
     private Response.Listener<Books_info> mBookListener=new Response.Listener<Books_info>() {
         @Override
         public void onResponse(Books_info response) {
-            if(response!=null||response.getData()!=null&&!response.getData().isEmpty()){
+            if(response!=null&&response.getData()!=null&&!response.getData().isEmpty()){
                 HashMap<String, Object> extraParams =new HashMap<>();
                 mBook_info=response.getData().get(0);
                 extraParams.put("bid",Integer.valueOf(mBook_info.getId()));
