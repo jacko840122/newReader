@@ -162,7 +162,12 @@ public class PdfMainPresenter extends BasePresenter<IPdfMainView>
                 }
             };
         }
-        performResumeDocProgress();
+        try{
+            performResumeDocProgress();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     public void performResumeDocProgress() {

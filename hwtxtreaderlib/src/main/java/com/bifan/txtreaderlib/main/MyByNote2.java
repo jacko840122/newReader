@@ -55,6 +55,10 @@ public class MyByNote2 extends ByNote {
         if(motionEvent.getToolType(0)==MotionEvent.TOOL_TYPE_FINGER){
             return false;
         }
+        if(motionEvent.getToolType(0)==MotionEvent.TOOL_TYPE_STYLUS
+                &&motionEvent.getButtonState()==32){
+            return false;
+        }
 
         return super.onTouchEvent(motionEvent);
 

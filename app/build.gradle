@@ -79,6 +79,7 @@ dependencies {
     implementation project(':hwtxtreaderlib')
     implementation project(':pdf')
     implementation project(':commonlibrary')
+    //implementation project(':fbReader')
     //implementation "com.folioreader:folioreader:0.5.1"
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
     implementation 'com.jakewharton:butterknife:10.0.0'

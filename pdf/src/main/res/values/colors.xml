@@ -21,7 +21,7 @@
 	<color name="seek_progress">@color/common_white</color>
 
 
-	<color name="highlight_color">#802572AC</color>
+	<color name="highlight_color">#e02572AC</color>
 	<color name="link_color">#80AC7225</color>
 	<color name="box_color">#FF4444FF</color>
 	<color name="ink_color">#FFFF0000</color>

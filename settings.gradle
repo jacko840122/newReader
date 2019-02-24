@@ -1,4 +1,3 @@
 include 'pdf'
 include ':hwtxtreaderlib', ':commonlibrary'
-include 'fbReader'
 include ':app'

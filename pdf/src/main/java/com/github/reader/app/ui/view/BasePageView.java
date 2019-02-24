@@ -197,6 +197,7 @@ public abstract class BasePageView extends ViewGroup {
         } else {
             mSourceScale = Math.max(mParentSize.x / size.x, mParentSize.y / size.y);
         }
+
         Point newSize = new Point((int) (size.x * mSourceScale), (int) (size.y * mSourceScale));
         mSize = newSize;
         LogUtils.d(TAG, "最终效果是高度适配屏幕高度原始尺寸size.x=" + size.x + " size.y=" + size.y + " 新尺寸mSize.x=" + mSize.x + " mSize.y=" + mSize.y + " mSourceScale=" + mSourceScale);

@@ -530,6 +530,8 @@ public class FileUtil {
 
             }
 
+
+
         } else {
 
             Uri uri = Uri.parse(file.getPath());

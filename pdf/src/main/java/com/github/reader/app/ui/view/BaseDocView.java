@@ -59,6 +59,10 @@ public class BaseDocView
         mMode = m;
     }
 
+    public Mode getMode( ) {
+        return mMode ;
+    }
+
     private boolean tapDisabled = false; //表示此时刻隐藏buttons
     private int tapPageMargin;
 
@@ -163,6 +167,14 @@ public class BaseDocView
      */
     protected void onHit(Hit item) {
     }
+
+    protected void onSelectText() {
+    }
+
+    protected void onDeselectText() {
+    }
+
+
 
     /**
      * 返回当前展示的页号
@@ -494,94 +506,95 @@ public class BaseDocView
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
                            float velocityY) {
 
-        return false;
-//        switch (mMode) {
-//            case Viewing:
-//                break;
-//            default:
-//                return true;
-//        }
-//
-//        if (mScaling)
-//            return true;
-//
-//        LogUtils.d(TAG, "onFling.................velocityX=..." + velocityX + " velocityY=" + velocityY
-//                + " e1.x=" + e1.getRawX() + " e1.y=" + e1.getRawY() + " e2.x=" + e2.getRawX() + " e2.y=" + e2.getRawY());
-//        View v = mChildViews.get(mCurrent);
-//        if (v != null) {
-//            Rect bounds = getScrollBounds(v);
-//            switch (directionOfTravel(velocityX, velocityY)) {
-//                case MOVING_LEFT:
-//                    if (Constants.HORIZONTAL_SCROLLING && bounds.left >= 0) {
-//                        // Fling off to the left bring next view onto screen
-//                        View vl = mChildViews.get(mCurrent + 1);
-//
-//                        if (vl != null) {
-//                            slideViewOntoScreen(vl);
-//                            return true;
-//                        }
-//                    }
-//                    break;
-//                case MOVING_UP:
-//                    if (!Constants.HORIZONTAL_SCROLLING && bounds.top >= 0) {
-//                        // Fling off to the top bring next view onto screen
-//                        View vl = mChildViews.get(mCurrent + 1);
-//
-//                        if (vl != null) {
-//                            slideViewOntoScreen(vl);
-//                            return true;
-//                        }
-//                    }
-//                    break;
-//                case MOVING_RIGHT:
-//                    if (Constants.HORIZONTAL_SCROLLING && bounds.right <= 0) {
-//                        // Fling off to the right bring previous view onto screen
-//                        View vr = mChildViews.get(mCurrent - 1);
-//
-//                        if (vr != null) {
-//                            slideViewOntoScreen(vr);
-//                            return true;
-//                        }
-//                    }
-//                    break;
-//                case MOVING_DOWN:
-//                    if (!Constants.HORIZONTAL_SCROLLING && bounds.bottom <= 0) {
-//                        // Fling off to the bottom bring previous view onto screen
-//                        View vr = mChildViews.get(mCurrent - 1);
-//
-//                        if (vr != null) {
-//                            slideViewOntoScreen(vr);
-//                            return true;
-//                        }
-//                    }
-//                    break;
-//            }
-//            mScrollerLastX = mScrollerLastY = 0;
-//            // If the page has been dragged out of bounds then we want to spring back
-//            // nicely. fling jumps back into bounds instantly, so we don't want to use
-//            // fling in that case. On the other hand, we don't want to forgo a fling
-//            // just because of a slightly off-angle drag taking us out of bounds other
-//            // than in the direction of the drag, so we test for out of bounds only
-//            // in the direction of travel.
-//            //
-//            // Also don't fling if out of bounds in any direction by more than fling
-//            // margin
-//            Rect expandedBounds = new Rect(bounds);
-//            expandedBounds.inset(-FLING_MARGIN, -FLING_MARGIN);
-//
-//            if (withinBoundsInDirectionOfTravel(bounds, velocityX, velocityY)
-//                    && expandedBounds.contains(0, 0)) {
-//                mScroller.fling(0, 0, (int) velocityX, (int) velocityY, bounds.left, bounds.right, bounds.top, bounds.bottom);
-//                Log.d(TAG, "onFling: mScroller.fling bounds.left="+bounds.left+" bounds.right="+bounds.right+" bounds.top="+bounds.top+" bounds.bottom="+bounds.bottom);
-//                mStepper.prod();
-//            }
-//        }
-//
-//        return true;
+        switch (mMode) {
+            case Viewing:
+                break;
+            default:
+                return true;
+        }
+
+        if (mScaling)
+            return true;
+
+        LogUtils.d(TAG, "onFling.................velocityX=..." + velocityX + " velocityY=" + velocityY
+                + " e1.x=" + e1.getRawX() + " e1.y=" + e1.getRawY() + " e2.x=" + e2.getRawX() + " e2.y=" + e2.getRawY());
+        View v = mChildViews.get(mCurrent);
+        if (v != null) {
+            Rect bounds = getScrollBounds(v);
+            switch (directionOfTravel(velocityX, velocityY)) {
+                case MOVING_LEFT:
+                    if (Constants.HORIZONTAL_SCROLLING && bounds.left >= 0) {
+                        // Fling off to the left bring next view onto screen
+                        View vl = mChildViews.get(mCurrent + 1);
+
+                        if (vl != null) {
+                            slideViewOntoScreen(vl);
+                            return true;
+                        }
+                    }
+                    break;
+                case MOVING_UP:
+                    if (!Constants.HORIZONTAL_SCROLLING && bounds.top >= 0) {
+                        // Fling off to the top bring next view onto screen
+                        View vl = mChildViews.get(mCurrent + 1);
+
+                        if (vl != null) {
+                            slideViewOntoScreen(vl);
+                            return true;
+                        }
+                    }
+                    break;
+                case MOVING_RIGHT:
+                    if (Constants.HORIZONTAL_SCROLLING && bounds.right <= 0) {
+                        // Fling off to the right bring previous view onto screen
+                        View vr = mChildViews.get(mCurrent - 1);
+
+                        if (vr != null) {
+                            slideViewOntoScreen(vr);
+                            return true;
+                        }
+                    }
+                    break;
+                case MOVING_DOWN:
+                    if (!Constants.HORIZONTAL_SCROLLING && bounds.bottom <= 0) {
+                        // Fling off to the bottom bring previous view onto screen
+                        View vr = mChildViews.get(mCurrent - 1);
+
+                        if (vr != null) {
+                            slideViewOntoScreen(vr);
+                            return true;
+                        }
+                    }
+                    break;
+            }
+            mScrollerLastX = mScrollerLastY = 0;
+            // If the page has been dragged out of bounds then we want to spring back
+            // nicely. fling jumps back into bounds instantly, so we don't want to use
+            // fling in that case. On the other hand, we don't want to forgo a fling
+            // just because of a slightly off-angle drag taking us out of bounds other
+            // than in the direction of the drag, so we test for out of bounds only
+            // in the direction of travel.
+            //
+            // Also don't fling if out of bounds in any direction by more than fling
+            // margin
+            Rect expandedBounds = new Rect(bounds);
+            expandedBounds.inset(-FLING_MARGIN, -FLING_MARGIN);
+
+            if (withinBoundsInDirectionOfTravel(bounds, velocityX, velocityY)
+                    && expandedBounds.contains(0, 0)) {
+                mScroller.fling(0, 0, (int) velocityX, (int) velocityY, bounds.left, bounds.right, bounds.top, bounds.bottom);
+                Log.d(TAG, "onFling: mScroller.fling bounds.left="+bounds.left+" bounds.right="+bounds.right+" bounds.top="+bounds.top+" bounds.bottom="+bounds.bottom);
+                mStepper.prod();
+            }
+        }
+
+        return true;
     }
 
     public void onLongPress(MotionEvent e) {
+        onSelectText();
     }
+
 
     /**
      * @param e1
@@ -592,31 +605,30 @@ public class BaseDocView
      */
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
                             float distanceY) {
-            return  false;
 
-//        Log.d(TAG, "onScroll: ..................");
-//        IBaseDocView pageView = (IBaseDocView) getDisplayedView();
-//        switch (mMode) {
-//            case Viewing:
-//                //滑动时，如果button显示，则先隐藏
-//                if (!tapDisabled)
-//                    onDocMotion();
-//                break;
-//            case Selecting:
-//                if (pageView != null)
-//                    pageView.selectText(e1.getX(), e1.getY(), e2.getX(), e2.getY());
-//                return true;
-//            default:
-//                return true;
-//        }
-//
+        Log.d(TAG, "onScroll: ..................");
+        IBaseDocView pageView = (IBaseDocView) getDisplayedView();
+        switch (mMode) {
+            case Viewing:
+                //滑动时，如果button显示，则先隐藏
+                if (!tapDisabled)
+                    onDocMotion();
+                break;
+            case Selecting:
+                if (pageView != null)
+                    pageView.selectText(e1.getX(), e1.getY(), e2.getX(), e2.getY());
+                return true;
+            default:
+                return true;
+        }
+
 //        if (!mScaling) {
 //            mXScroll -= distanceX;
 //            mYScroll -= distanceY;
 //            requestLayout();
 //        }
-//        LogUtils.d(TAG, "onScroll end distanceX=" + distanceX + " distanceY=" + distanceY + " mXScroll=" + mXScroll + " mYScroll=" + mYScroll);
-//        return true;
+        LogUtils.d(TAG, "onScroll end distanceX=" + distanceX + " distanceY=" + distanceY + " mXScroll=" + mXScroll + " mYScroll=" + mYScroll);
+        return true;
     }
 
     public void onShowPress(MotionEvent e) {
@@ -654,6 +666,8 @@ public class BaseDocView
                     }
                 }
             }
+        }else if(mMode == Mode.Selecting){
+            onDeselectText();
         }
         return false;
     }

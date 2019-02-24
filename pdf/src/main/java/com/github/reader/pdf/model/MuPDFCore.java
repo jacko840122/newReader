@@ -313,9 +313,16 @@ public class MuPDFCore
 
 				for (TextChar[] sp: ln) {
 					for (TextChar tc: sp) {
-						if (tc.c != ' ') {
-							wd.Add(tc);
-						} else if (wd.w.length() > 0) {
+//						if (tc.c != ' ') {
+//							wd.Add(tc);
+//						} else if (wd.w.length() > 0) {
+//							wds.add(wd);
+//							wd = new TextWord();
+//						}
+
+
+						wd.Add(tc);
+						if (wd.w.length() > 0) {
 							wds.add(wd);
 							wd = new TextWord();
 						}

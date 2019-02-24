@@ -21,6 +21,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -432,6 +433,16 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
                 }
             }
 
+            @Override
+            protected void onSelectText() {
+                onCopyTextButtonClick();
+            }
+
+            @Override
+            protected void onDeselectText() {
+                onCancelAcceptButtonClick();
+            }
+
             /**
              * 滑动文档时,隐藏buttons
              */
@@ -501,11 +512,11 @@ ByHwProxy.drawUnlock();
         });
 
         //step 4
-        if (core.fileFormat().startsWith("PDF") && core.isUnencryptedPDF() && !core.wasOpenedFromBuffer()) {
-            mAnnotButton.setEnabled(true);
-        } else {
-            mAnnotButton.setEnabled(false);
-        }
+//        if (core.fileFormat().startsWith("PDF") && core.isUnencryptedPDF() && !core.wasOpenedFromBuffer()) {
+//            mAnnotButton.setEnabled(true);
+//        } else {
+//            mAnnotButton.setEnabled(false);
+//        }
 
         //step 5 Search invoking buttons are disabled while there is no text specified
         mSearchBack.setEnabled(false);
@@ -1405,4 +1416,18 @@ ByHwProxy.drawUnlock();
         mAlertDialog.show();
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent motionEvent) {
+//        if(motionEvent.getAction()==MotionEvent.ACTION_DOWN
+//                &&motionEvent.getToolType(0)==MotionEvent.TOOL_TYPE_STYLUS
+//                &&motionEvent.getButtonState()==32) {
+//            onHighlightButtonClick();
+//            ByHwProxy.drawDisable();
+//            return true;
+//        }else {
+//            ByHwProxy.drawEnable();
+//        }
+
+        return super.dispatchTouchEvent(motionEvent);
+    }
 }
