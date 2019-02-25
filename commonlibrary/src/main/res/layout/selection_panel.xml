@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="25dp"
+    android:layout_marginBottom="25dp"
+    android:background="@drawable/panel"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp">
+
+
+        <TextView
+            android:id="@+id/selection_panel_copy"
+            android:layout_width="200px"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:textSize="46px"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:background="@android:color/transparent"
+            android:text="复制"/>
+
+        <TextView
+            android:id="@+id/selection_panel_translate"
+            android:layout_width="200px"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:textSize="46px"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:background="@android:color/transparent"
+            android:text="词典" />
+    </LinearLayout>
+</FrameLayout>

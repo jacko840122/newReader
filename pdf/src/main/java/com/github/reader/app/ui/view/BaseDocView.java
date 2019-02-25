@@ -33,6 +33,10 @@ public class BaseDocView
     private static final String TAG = "ReaderView";
     private Context mContext;
     private boolean isVerticalScrollInit = false;
+    private float mSelectStartX;
+    private float mSelectStartY;
+    private float mSelectEndX;
+    private float mSelectEndY;
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -168,7 +172,10 @@ public class BaseDocView
     protected void onHit(Hit item) {
     }
 
-    protected void onSelectText() {
+    protected void onSelectTextStart() {
+    }
+
+    protected void onSelectTextEnd(float x0, float y0, float x1, float y1) {
     }
 
     protected void onDeselectText() {
@@ -592,7 +599,9 @@ public class BaseDocView
     }
 
     public void onLongPress(MotionEvent e) {
-        onSelectText();
+        onSelectTextStart();
+        mSelectStartX=e.getX();
+        mSelectStartY=e.getY();
     }
 
 
@@ -614,10 +623,10 @@ public class BaseDocView
                 if (!tapDisabled)
                     onDocMotion();
                 break;
-            case Selecting:
-                if (pageView != null)
-                    pageView.selectText(e1.getX(), e1.getY(), e2.getX(), e2.getY());
-                return true;
+//            case Selecting:
+//                if (pageView != null)
+//                    pageView.selectText(e1.getX(), e1.getY(), e2.getX(), e2.getY());
+//                return true;
             default:
                 return true;
         }
@@ -737,10 +746,9 @@ public class BaseDocView
         LogUtils.d(TAG, "ReaderView onTouchEvent");
         mScaleGestureDetector.onTouchEvent(event);
         mGestureDetector.onTouchEvent(event);
-
+        float x = event.getX();
+        float y = event.getY();
         if (mMode == Mode.Drawing) {
-            float x = event.getX();
-            float y = event.getY();
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     touch_start(x, y);
@@ -752,6 +760,29 @@ public class BaseDocView
                     touch_up();
                     break;
             }
+        }else if(mMode == Mode.Selecting){
+            IBaseDocView pageView = (IBaseDocView) getDisplayedView();
+            if (pageView != null){
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        mSelectStartX=x;
+                        mSelectStartY=y;
+                        Log.d(TAG,"Selecting-SelectStartX="+mSelectStartX+"  mSelectStartY="+mSelectStartY);
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        mSelectEndX=x;
+                        mSelectEndY=y;
+                        pageView.selectText(mSelectStartX, mSelectStartY, mSelectEndX, mSelectEndY);
+                        Log.d(TAG,"Selecting-SelectStartX="+mSelectStartX+"  mSelectStartY="+mSelectStartY+" mSelectEndX="+mSelectEndX+" mSelectEndY="+mSelectEndY);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        onSelectTextEnd(mSelectStartX, mSelectStartY, mSelectEndX, mSelectEndY);
+                        break;
+                }
+                requestLayout();
+                return true;
+            }
+
         }
 
         if ((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN) {

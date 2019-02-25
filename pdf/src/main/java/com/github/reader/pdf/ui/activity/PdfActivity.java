@@ -47,6 +47,7 @@ import com.by.hw.util.CommonUtil;
 import com.common.Ui.CommentsList;
 import com.common.Ui.PopMore;
 import com.common.Ui.PopPen;
+import com.common.Ui.PopSelectTextMenu;
 import com.common.Utils.SharePrefUtil;
 import com.common.http.NetReqUtils;
 import com.common.http.data.Books_info;
@@ -84,7 +85,7 @@ import static com.common.http.NetReqUtils.ACTION_GET_PZ_LIST;
  * 主屏V的实现
  */
 public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
-        implements IPdfMainView, View.OnClickListener, Response.ErrorListener, PopPen.PopPenListener, PopMore.ItemOnclickedListener {
+        implements IPdfMainView, View.OnClickListener, Response.ErrorListener, PopPen.PopPenListener, PopMore.ItemOnclickedListener, PopSelectTextMenu.PopSelectTextMenuListener {
     private static final String TAG = "PdfActivity";
     private Context mContext;
     private TextView mTvPrePage;
@@ -159,6 +160,21 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
         }
     }
 
+    @Override
+    public void onPopSelectTextMenuItemClick(View view) {
+        int i = view.getId();
+        if (i == R.id.selection_panel_copy) {
+            onAcceptButtonClick();
+        } else if (i == R.id.selection_panel_translate) {
+            onCancelAcceptButtonClick();
+        }
+    }
+
+    @Override
+    public void onDismiss() {
+        onCancelAcceptButtonClick();
+    }
+
     //TODO 需重新设定
     enum TopBarMode {
         Main, Search, Annot
@@ -206,6 +222,7 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
     private PopPen mPopPen;
 
     private PopMore mPopMore;
+    private PopSelectTextMenu mPopSelectTextMenu;
 
     private Response.Listener<Pzlist> mPzlistListener=new Response.Listener<Pzlist>() {
         @Override
@@ -434,8 +451,15 @@ public class PdfActivity extends BaseMvpActivity<PdfMainPresenter>
             }
 
             @Override
-            protected void onSelectText() {
+            protected void onSelectTextStart() {
                 onCopyTextButtonClick();
+            }
+
+
+
+            @Override
+            protected void onSelectTextEnd(float x0, float y0, float x1, float y1) {
+                mPopSelectTextMenu.show(getDocView(),(x0+x1)/2,(y0+y1)/2);
             }
 
             @Override
@@ -702,6 +726,8 @@ ByHwProxy.drawUnlock();
         mPopPen.setPopPenListener(this);
         mPopMore=new PopMore(this);
         mPopMore.setListener(this);
+        mPopSelectTextMenu=new PopSelectTextMenu(this);
+        mPopSelectTextMenu.setPopSelectTextMenuListener(this);
     }
 
     private void getCommentData(){
@@ -1205,7 +1231,7 @@ ByHwProxy.drawUnlock();
 
     public void onAnnotItemClick() {
         mTopBarMode = TopBarMode.Annot;
-        mTopMenuSwitcher.setDisplayedChild(mTopBarMode.ordinal());
+        //mTopMenuSwitcher.setDisplayedChild(mTopBarMode.ordinal());
         hideAnnotView();
     }
 
