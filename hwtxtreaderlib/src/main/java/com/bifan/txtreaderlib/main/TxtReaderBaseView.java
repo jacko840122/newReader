@@ -533,16 +533,16 @@ public abstract class TxtReaderBaseView extends View implements GestureDetector.
      */
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-//        float MaxVelocityX = 1000;
-//        if (CurrentMode == Mode.Normal) {//正常情况下快速滑动，执行翻页动作
-//            if (isPagePre() && !isFirstPage() && velocityX > MaxVelocityX) {
-//                startPagePreAnimation();
-//                return true;
-//            } else if (isPageNext() && !isLastPage() && velocityX < -MaxVelocityX) {
-//                startPageNextAnimation();
-//                return true;
-//            }
-//        }
+        float MaxVelocityX = 1000;
+        if (CurrentMode == Mode.Normal) {//正常情况下快速滑动，执行翻页动作
+            if (isPagePre() && !isFirstPage() && velocityX > MaxVelocityX) {
+                startPagePreAnimation();
+                return true;
+            } else if (isPageNext() && !isLastPage() && velocityX < -MaxVelocityX) {
+                startPageNextAnimation();
+                return true;
+            }
+        }
         return false;
     }
 

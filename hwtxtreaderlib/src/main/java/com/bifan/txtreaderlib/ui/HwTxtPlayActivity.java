@@ -46,6 +46,7 @@ import com.by.hw.util.CommonUtil;
 import com.common.Ui.CommentsList;
 import com.common.Ui.PopMore;
 import com.common.Ui.PopPen;
+import com.common.Ui.PopSelectTextMenu;
 import com.common.Utils.SharePrefUtil;
 import com.common.http.NetReqUtils;
 import com.common.http.data.Books_info;
@@ -64,7 +65,7 @@ import static com.common.http.NetReqUtils.ACTION_GET_PZ_LIST;
  * on 2017/12/8.
  */
 
-public class HwTxtPlayActivity extends AppCompatActivity implements Response.ErrorListener, PopPen.PopPenListener, PopMore.ItemOnclickedListener {
+public class HwTxtPlayActivity extends AppCompatActivity implements Response.ErrorListener, PopPen.PopPenListener, PopMore.ItemOnclickedListener, PopSelectTextMenu.PopSelectTextMenuListener {
     private static final String TAG ="HwTxtPlayActivity" ;
     private static final int OUTLINE_REQUEST = 0x100;
     protected Handler mHandler;
@@ -245,6 +246,8 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
 
     private PopMore mPopMore;
 
+    private PopSelectTextMenu mPopSelectTextMenu;
+
     protected ChapterList mChapterListPop;
     protected CommentsList mCommentsListPop;
     protected MenuHolder mMenuHolder = new MenuHolder();
@@ -294,6 +297,9 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
         mPopPen.setPopPenListener(this);
         mPopMore=new PopMore(this);
         mPopMore.setListener(this);
+        mPopSelectTextMenu=new PopSelectTextMenu(this);
+        mPopSelectTextMenu.setPopSelectTextMenuListener(this);
+
     }
 
     private final int[] StyleTextColors = new int[]{
@@ -518,6 +524,7 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
                 //  firstSelectedChar.Bottom
                 // 这里可以根据 firstSelectedChar与lastSelectedChar的top与bottom的位置
                 //计算显示你要显示的弹窗位置，如果需要的话
+                mPopSelectTextMenu.show(mTxtReaderView,(firstSelectedChar.Left+lastSelectedChar.Right)/2,(firstSelectedChar.Top+lastSelectedChar.Bottom)/2);
             }
 
             @Override
@@ -542,12 +549,12 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
             @Override
             public void onShowSlider(String currentSelectedText) {
                 onCurrentSelectedText(currentSelectedText);
-                Show(ClipboardView);
+                //Show(ClipboardView);
             }
 
             @Override
             public void onReleaseSlider() {
-                Gone(ClipboardView);
+                //Gone(ClipboardView);
             }
         });
 
@@ -887,6 +894,25 @@ public class HwTxtPlayActivity extends AppCompatActivity implements Response.Err
         }else if(id == R.id.search_setting){
 
         }
+    }
+
+    @Override
+    public void onPopSelectTextMenuItemClick(View view) {
+        int i = view.getId();
+        if (i == R.id.selection_panel_copy) {
+            onCopyText(view);
+        } else if (i == R.id.selection_panel_translate) {
+            onCurrentSelectedText("");
+            mTxtReaderView.releaseSelectedState();
+            Gone(ClipboardView);
+        }
+    }
+
+    @Override
+    public void onDismiss() {
+        onCurrentSelectedText("");
+        mTxtReaderView.releaseSelectedState();
+        Gone(ClipboardView);
     }
 
     private class TextSettingClickListener implements View.OnClickListener {

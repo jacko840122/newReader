@@ -50,8 +50,9 @@ public class NormalTextSelectDrawer implements ITextSelectDrawer {
                 RectF rect = new RectF(fistChar.Left, fistChar.Top,
                         lastChar.Right, lastChar.Bottom);
 
-                canvas.drawRoundRect(rect, fw / 2,
-                        paint.getTextSize() / 2, paint);
+//                canvas.drawRoundRect(rect, fw / 2,
+//                        paint.getTextSize() / 2, paint);
+                canvas.drawRect(rect, paint);
 
             }
         }

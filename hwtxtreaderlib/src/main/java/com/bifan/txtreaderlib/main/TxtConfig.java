@@ -36,7 +36,7 @@ public class TxtConfig {
 
     public static  int MAX_TEXT_SIZE = 150;//in px
     public static  int MIN_TEXT_SIZE = 40;//in px
-    public static  int DEFAULT_SELECT_TEXT_COLOR = Color.parseColor("#44f6950b");
+    public static  int DEFAULT_SELECT_TEXT_COLOR = Color.parseColor("#e02572AC");
     public static  int DEFAULT_SLIDER_COLOR = Color.parseColor("#1f4cf5");
 
     public int textSize = MIN_TEXT_SIZE;//字体大小
